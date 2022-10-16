@@ -7,7 +7,7 @@ int main() {
     Console::SetScreenBufferSize(62, 25);
     Console::SetWindowSize(62, 25);
 
-    cause error line
+    cout << "kiet_pullRequest" << endl;
 
     return 0;
 }
