@@ -9,5 +9,6 @@ int main() {
     int n;
     cin >> n;
     cout << n;
+    cout << "kietPush2";
     return 0;
 }
