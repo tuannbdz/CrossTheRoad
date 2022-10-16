@@ -7,6 +7,6 @@ int main() {
     Console::SetScreenBufferSize(62, 25);
     Console::SetWindowSize(62, 25);
     
-    cout << "hello";
+    cout << "hello world";
     return 0;
 }
