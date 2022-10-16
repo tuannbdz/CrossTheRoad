@@ -10,5 +10,6 @@ int main() {
     cin >> n;
     cout << n;
     cout << "kietPush2";
+    cout << "tuanPush3";
     return 0;
 }
