@@ -6,4 +6,7 @@ int main() {
 
     Console::SetScreenBufferSize(62, 25);
     Console::SetWindowSize(62, 25);
+
+    cout << "TuanBranchPush1";
+    return 0;
 }
