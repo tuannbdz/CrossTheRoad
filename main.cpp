@@ -11,5 +11,7 @@ int main() {
     string s;
     cin >> s;
     cout << s;
+    cout << "TuanBranchPush1";
+    cout << "TuanBranhPush2";
     return 0;
 }
