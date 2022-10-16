@@ -15,6 +15,7 @@ void Console::SetWindowSize(SHORT width, SHORT height)
     WindowSize.Left = 0;
     WindowSize.Bottom = height - 1;
     WindowSize.Right = width - 1;
+    //redundant line
 
     SetConsoleWindowInfo(hStdout, 1, &WindowSize);
 }
