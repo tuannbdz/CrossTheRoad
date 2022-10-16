@@ -8,6 +8,7 @@ int main() {
     Console::SetWindowSize(62, 25);
 
     cout << "kiet_pullRequest" << endl;
+    cout << "push2";
 
     return 0;
 }
