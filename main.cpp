@@ -6,5 +6,6 @@ int main() {
     Console::SetScreenBufferSize(62, 25);
     Console::SetWindowSize(62, 25);
 
+    cause error line
     return 0;
 }
