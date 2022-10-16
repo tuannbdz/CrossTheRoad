@@ -5,6 +5,6 @@ int main() {
     srand(time(NULL));
     Console::SetScreenBufferSize(80, 25);
     Console::SetWindowSize(80, 25);
-    cout << "TPush";
+    cout << "TuanPush";
     return 0;
 }
