@@ -143,9 +143,11 @@
     <ClCompile Include="learderboard.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="classes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="console.h" />
+    <ClInclude Include="classes.h" />
     <ClInclude Include="leaderboard.h" />
     <ClInclude Include="lib.h" />
   </ItemGroup>
