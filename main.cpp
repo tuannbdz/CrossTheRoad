@@ -6,9 +6,8 @@ int main() {
 
     Console::SetScreenBufferSize(62, 25);
     Console::SetWindowSize(62, 25);
-
-    cout << "kiet_pullRequest" << endl;
-    cout << "push2";
-
+    int n;
+    cin >> n;
+    cout << n;
     return 0;
 }
