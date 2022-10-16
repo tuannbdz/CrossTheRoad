@@ -3,8 +3,11 @@
 
 int main() {
     srand(time(NULL));
-    Console::SetScreenBufferSize(80, 25);
-    Console::SetWindowSize(80, 25);
-    cout << "TuanPush";
+
+    Console::SetScreenBufferSize(62, 25);
+    Console::SetWindowSize(62, 25);
+
+    cause error line
+
     return 0;
 }
