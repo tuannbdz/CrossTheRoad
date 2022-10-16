@@ -1,11 +1,11 @@
 #include "lib.h"
 #include "classes.h"
 
-void CHAR::Move(int dir) {
+void HUMAN::Move(int dir) {
 
 }
 
-void CHAR::isCollide(const OBSTACLE*& ob) {
+void HUMAN::isCollide(const OBSTACLE*& ob) {
 
 }
 

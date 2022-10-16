@@ -32,11 +32,11 @@ public:
 	ANIMAL();
 };
 
-class CHAR {
+class HUMAN {
 	int x, y;
 	short state;
 public:
-	CHAR();
+	HUMAN();
 	static void Move(int);
 	static void isCollide(const OBSTACLE*&);
 };
