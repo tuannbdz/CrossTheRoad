@@ -3,8 +3,12 @@
 
 int main() {
     srand(time(NULL));
-    Console::SetScreenBufferSize(80, 25);
-    Console::SetWindowSize(80, 25);
-    cout << "TuanPush";
+
+    Console::SetScreenBufferSize(62, 25);
+    Console::SetWindowSize(62, 25);
+
+    cout << "kiet_pullRequest" << endl;
+    cout << "push2";
+
     return 0;
 }
