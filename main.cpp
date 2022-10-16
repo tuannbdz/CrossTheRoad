@@ -8,5 +8,6 @@ int main() {
     Console::SetWindowSize(62, 25);
     
     cout << "TuanBranchPush1";
+    cout << "TuanBranhPush2";
     return 0;
 }
