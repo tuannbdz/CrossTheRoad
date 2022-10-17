@@ -39,11 +39,11 @@ void UI::ChooseCommand(int cX, int cY) {
 	{
 		//reset color of previous command
 		Console::gotoxy(cX, pY);
-		Console::fixFontColor(7);
+		Console::fixFontColor(241);
 		cout << ui->listCommands[pC];
 		
 		Console::gotoxy(cX, cY);
-		Console::fixFontColor(6);
+		Console::fixFontColor(31);
 		cout << ui->listCommands[ui->command];
 
 		int c = toupper(_getch());
