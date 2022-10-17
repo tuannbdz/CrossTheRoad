@@ -10,6 +10,8 @@ int main() {
     Console::SetWindowSize(180, 44);
     Console::DisableResizeWindow();
     UI::DrawTitle(10, 0);
+    UI::DrawMenu(10, 0);
+    UI::ChooseCommand(85, 18);
     _getch();
     //cout << "CMM";
     return 0;
