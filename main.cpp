@@ -1,10 +1,16 @@
 #include "lib.h"
 #include "console.h"
+#include "ui.h"
 
 int main() {
     srand(time(NULL));
-    Console::SetScreenBufferSize(98, 27);
-    Console::SetWindowSize(98, 27);
+    system("cls");
+    Console::fixFontSize(16);
+    Console::SetScreenBufferSize(180, 44);
+    Console::SetWindowSize(180, 44);
     Console::DisableResizeWindow();
+    UI::DrawTitle(10, 0);
+    _getch();
+    //cout << "CMM";
     return 0;
 }

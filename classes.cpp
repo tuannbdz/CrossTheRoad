@@ -8,4 +8,3 @@ void HUMAN::Move(int dir) {
 void HUMAN::isCollide(const OBSTACLE*& ob) {
 
 }
-
