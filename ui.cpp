@@ -2,6 +2,17 @@
 #include "ui.h"
 #include "console.h"
 #include "classes.h"
+
+void UI::Init() {
+	ifstream fi("frame.txt");
+	string s;
+	int i = 0;
+	while (getline(fi, s)) {
+		frame.push_back(s);
+		i++;
+	}
+	fi.close();
+}
 void UI::DrawTitle(int pX, int pY) {
 	ifstream fi("title.txt");
 	string t;
@@ -17,6 +28,12 @@ void UI::DrawTitle(int pX, int pY) {
 		cout << s[i];
 	}
 	Console::gotoxy(pX, pY);
+}
+void UI::DrawFrame(int pX, int pY) {
+	for (int i = 0; i < this->frame.size(); i++) {
+		Console::gotoxy(pX, pY + i);
+		cout << this->frame[i];
+	}
 }
 void UI::DrawMenu(int pX, int pY) {
 	int cX = 85, cY = 18;
@@ -34,7 +51,6 @@ void UI::DrawGameScreen(int pX, int pY) {
 	cout << "Game Screen\n";
 	Console::gotoxy(pX, pY);
 }
-
 void UI::ChooseCommand(int cX, int cY) {
 	UI* ui = new UI;
 	int n = ui->listCommands.size();
@@ -88,4 +104,12 @@ void UI::ChooseCommand(int cX, int cY) {
 
 	} while (1);
 	delete ui;
+}
+void UI::DrawRect(vector<string>& obj, int x, int y, int w, int h) {
+	FOR(i, y, y + h - 1)
+		FOR(j, x, x + w - 1) {
+		Console::gotoxy(j, i);
+		//cout << i << " " << j << '\n';
+		cout << obj[i][j];
+	}
 }

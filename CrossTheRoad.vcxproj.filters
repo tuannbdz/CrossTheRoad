@@ -55,5 +55,8 @@
     <Text Include="title.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="frame.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

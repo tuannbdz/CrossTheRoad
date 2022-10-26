@@ -10,6 +10,8 @@ class OBSTACLE {
 	int x, y;
 	int speed;
 	int dir;
+public:
+	void DrawItself();
 };
 
 class TRUCK : public OBSTACLE{
@@ -32,13 +34,29 @@ public:
 	ANIMAL();
 };
 
-class HUMAN {
+class PLAYER {
 	int x, y;
 	short state;
+	vector<string> sprite;
 public:
-	HUMAN();
-	static void Move(int);
-	static void isCollide(const OBSTACLE*&);
+	PLAYER() {
+		x = 0;
+		y = 0;
+		state = 1;
+		sprite.resize(3);
+		sprite[0] = " 0 ";
+		sprite[1] = "/|\\";
+		sprite[2] = "/ \\";
+	};
+	void DrawItself();
+	int GetX() { return x; };
+	int GetY() { return y; };
+	void SetX(int);
+	void SetY(int);
+	void Move(int);
+	void isCollide(const OBSTACLE*&);
+	~PLAYER() {
+	}
 };
 
 class GAME {
