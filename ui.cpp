@@ -1,6 +1,7 @@
 #include "lib.h"
 #include "ui.h"
 #include "console.h"
+#include "classes.h"
 void UI::DrawTitle(int pX, int pY) {
 	ifstream fi("title.txt");
 	string t;
@@ -28,6 +29,11 @@ void UI::DrawMenu(int pX, int pY) {
 	delete ui;
 	Console::gotoxy(pX, pY);
 }
+void UI::DrawGameScreen(int pX, int pY) {
+	Console::gotoxy(5, 5);
+	cout << "Game Screen\n";
+	Console::gotoxy(pX, pY);
+}
 
 void UI::ChooseCommand(int cX, int cY) {
 	UI* ui = new UI;
@@ -39,7 +45,7 @@ void UI::ChooseCommand(int cX, int cY) {
 	{
 		//reset color of previous command
 		Console::gotoxy(cX, pY);
-		Console::fixFontColor(241);
+		Console::fixFontColor(240);
 		cout << ui->listCommands[pC];
 		
 		Console::gotoxy(cX, cY);
@@ -70,6 +76,12 @@ void UI::ChooseCommand(int cX, int cY) {
 			case KEY_ENTER: case KEY_SPACE:
 			{
 				if (ui->command == n - 1) exit(0);
+				if (ui->command == 0) {
+					Console::fixFontColor(241);
+					system("cls");
+					DrawGameScreen(0, 0);
+					GAME::StartGame();
+				}
 				break;
 			}
 		}

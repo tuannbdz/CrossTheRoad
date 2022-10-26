@@ -5,7 +5,9 @@
 int main() {
     srand(time(NULL));
 
-    system("color F1");
+    //system("color F1");
+    Console::fixFontColor(240);
+    system("cls");
     Console::fixFontSize(16);
     Console::SetScreenBufferSize(180, 44);
     Console::SetWindowSize(180, 44);
