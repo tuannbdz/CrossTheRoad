@@ -3,7 +3,7 @@
 #include "console.h"
 #include "classes.h"
 
-void UI::Init() {
+UI::UI() {
 	ifstream fi("frame.txt");
 	string s;
 	int i = 0;
@@ -37,13 +37,11 @@ void UI::DrawFrame(int pX, int pY) {
 }
 void UI::DrawMenu(int pX, int pY) {
 	int cX = 85, cY = 18;
-	UI* ui = new UI;
-	vector<string> s = ui->listCommands;
+	vector<string> s = this->listCommands;
 	for (int i = 0; i < s.size(); i++) {
 		Console::gotoxy(cX, cY + i);
 		cout << s[i];
 	}
-	delete ui;
 	Console::gotoxy(pX, pY);
 }
 void UI::DrawGameScreen(int pX, int pY) {
@@ -52,21 +50,20 @@ void UI::DrawGameScreen(int pX, int pY) {
 	Console::gotoxy(pX, pY);
 }
 void UI::ChooseCommand(int cX, int cY) {
-	UI* ui = new UI;
-	int n = ui->listCommands.size();
+	int n = this->listCommands.size();
 	int pY = cY;
-	int pC = ui->command;
+	int pC = this->command;
 	Console::setCursor(0);
 	do
 	{
 		//reset color of previous command
 		Console::gotoxy(cX, pY);
 		Console::fixFontColor(240);
-		cout << ui->listCommands[pC];
+		cout << this->listCommands[pC];
 		
 		Console::gotoxy(cX, cY);
 		Console::fixFontColor(31);
-		cout << ui->listCommands[ui->command];
+		cout << this->listCommands[this->command];
 
 		int c = toupper(_getch());
 		switch (c)
@@ -74,25 +71,25 @@ void UI::ChooseCommand(int cX, int cY) {
 			case 'W':case KEY_UP:
 			{
 				pY = cY;
-				pC = ui->command;
-				ui->command = (ui->command - 1 + n) % n;
-				cY = ui->command + 18;
+				pC = this->command;
+				this->command = (this->command - 1 + n) % n;
+				cY = this->command + 18;
 				Console::gotoxy(cX, cY);
 				break;
 			}
 			case 'S':case KEY_DOWN:
 			{
 				pY = cY;
-				pC = ui->command;
-				ui->command = (ui->command + 1) % n;
-				cY = ui->command + 18;
+				pC = this->command;
+				this->command = (this->command + 1) % n;
+				cY = this->command + 18;
 				Console::gotoxy(cX, cY);
 				break;
 			}
 			case KEY_ENTER: case KEY_SPACE:
 			{
-				if (ui->command == n - 1) exit(0);
-				if (ui->command == 0) {
+				if (this->command == n - 1) exit(0);
+				if (this->command == 0) {
 					Console::fixFontColor(241);
 					system("cls");
 					DrawGameScreen(0, 0);
@@ -103,7 +100,6 @@ void UI::ChooseCommand(int cX, int cY) {
 		}
 
 	} while (1);
-	delete ui;
 }
 void UI::DrawRect(vector<string>& obj, int x, int y, int w, int h) {
 	FOR(i, y, y + h - 1)

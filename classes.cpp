@@ -24,7 +24,6 @@ void PLAYER::DrawItself() {
 
 void PLAYER::Move(int dir) {
     UI ui;
-    ui.Init();
     if (dir == 0)
     {
         //ui.DrawRect(ui.frame, PLAYER::GetX() + 2, PLAYER::GetY(), 1, 3);
@@ -66,7 +65,6 @@ void GAME::StartGame() {
     int cX = 0, cY = 0;
     //Draw frame
     UI ui;
-    ui.Init();
     ui.DrawFrame(cX, cY);
     PLAYER pl;
     pl.SetY(20);
