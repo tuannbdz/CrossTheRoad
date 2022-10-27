@@ -7,7 +7,7 @@ class UI {
 public:
 	vector<string> frame;
 	//static void 
-	void Init();
+	UI();
 	void DrawTitle(int, int);
 	void DrawMenu(int, int);
 	void DrawFrame(int, int);
