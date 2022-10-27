@@ -13,6 +13,5 @@ public:
 	void DrawFrame(int, int);
 	void DrawGameScreen(int, int);
 	void ChooseCommand(int, int);
-	// hello
 	void DrawRect(vector<string>&, int, int, int, int);
 };
