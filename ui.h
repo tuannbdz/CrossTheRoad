@@ -15,12 +15,3 @@ public:
 	void ChooseCommand(int, int);
 	void DrawRect(vector<string>&, int, int, int, int);
 };
-
-class Temp {
-	vector<string> o;
-public:
-	void draw(int, int);
-};
-vector<Temp> listCommands;
-Temp title;
-Temp background;
