@@ -18,7 +18,7 @@ Button::Button(const string& text)
 	b_text = text;
 }
 
-Button::Button(const std::string& text, const COORD& pos)
+Button::Button(const string& text, const COORD& pos)
 {
 	Initialize();
 
@@ -26,7 +26,7 @@ Button::Button(const std::string& text, const COORD& pos)
 	b_pos = pos;
 }
 
-Button::Button(const std::string& text, const COORD& pos, const Color& color)
+Button::Button(const string& text, const COORD& pos, const Color& color)
 {
 	Initialize();
 
@@ -35,7 +35,7 @@ Button::Button(const std::string& text, const COORD& pos, const Color& color)
 	b_color = color;
 }
 
-Button::Button(const std::string& text, const COORD& pos, const Color& color, const string& filename)
+Button::Button(const string& text, const COORD& pos, const Color& color, const string& filename)
 {
 	Initialize();
 
@@ -77,7 +77,7 @@ void Button::DrawEffect(const Color& color)
 	Draw(color);
 }
 
-void Button::SetText(const std::string& text)
+void Button::SetText(const string& text)
 {
 	b_text = text;
 }

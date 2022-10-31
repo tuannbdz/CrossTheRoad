@@ -51,7 +51,7 @@ private:
 
 	void Initialize();
 public:
-	Console(const short& width, const short& height, const std::wstring& title, const bool& cursor, const Color& color);
+	Console(const short& width, const short& height, const wstring& title, const bool& cursor, const Color& color);
 	Console();
 
 	static void SetColor(const Color& color);
@@ -71,7 +71,7 @@ public:
 	static void gotoxy(int pX, int pY);
 	static void GotoXY(const COORD& pos);
 	static COORD GetXY();
-	static std::string GetChar(const COORD& pos, const short& w, const short& h);
+	static string GetChar(const COORD& pos, const short& w, const short& h);
 	static SHORT KeyPress(const KeyCode& key);
 
 	static void OpenMusic(const wchar_t* filename);

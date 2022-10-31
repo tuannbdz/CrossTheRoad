@@ -9,19 +9,9 @@ void Console::Initialize()
 
 Console::Console(const short& width, const short& height, const std::wstring& title, const bool& cursor, const Color& color)
 {
-<<<<<<< Updated upstream
-    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-    SMALL_RECT WindowSize;
-    WindowSize.Top = 0;
-    WindowSize.Left = 0;
-    WindowSize.Bottom = height - 1;
-    WindowSize.Right = width - 1;
-    //redundant line
-=======
 	SetColor(color);
 	system("cls"); //color the console as setcolor
 	Initialize();
->>>>>>> Stashed changes
 
 	SetConsoleOutputCP(CP_UTF8);
 
