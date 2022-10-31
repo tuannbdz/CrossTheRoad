@@ -36,6 +36,7 @@ public:
 	static void DrawTexts(const string& text);
 
 	static void RemoveArea(const COORD& s_pos, const COORD& e_pos);
+	static void ClearScreen(); 
 	static vector<string> GetGraphics(const string& filename);
 	static vector<string> GetGraphicsR(const string& filename);
 	static void DrawGraphics(COORD pos, const string& filename, const Color& color);

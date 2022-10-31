@@ -20,6 +20,7 @@ void Menu::AddSettingButtons()
 
 void Menu::DrawMainMenu()
 {
+	Graphics::ClearScreen(); 
 	buttons.clear(); 
 	AddMainMenuButtons(); 
 	Graphics::drawBlueGradientGraphics({ 10, 0 }, "graphics/Menu/title.txt");
@@ -32,7 +33,9 @@ void Menu::DrawMainMenu()
 
 void Menu::drawSettings()
 {
+	Graphics::ClearScreen();
 	buttons.clear(); 
+	Graphics::drawBlueGradientGraphics({ 45, 0 }, "graphics/Menu/settings/settings.txt");
 	Graphics::DrawGraphics({ 68, 11 }, "graphics/Menu/frame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 	AddSettingButtons(); 
 	for (int i = 0; i < buttons.size(); ++i)
@@ -101,7 +104,7 @@ void Menu::ExecuteCommands(const Mode& mode)
 			
 			break;
 		case (int)MainMenuButtons::settings:
-			Graphics::RemoveArea({75, 14}, {125, 35}); 
+			//Graphics::RemoveArea({75, 14}, {125, 35}); 
 			drawSettings(); 
 			ChooseCommand(75, 14, Mode::settings); 
 			break;

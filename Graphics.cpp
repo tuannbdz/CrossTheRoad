@@ -50,6 +50,11 @@ void Graphics::DrawTexts(const std::string& str)
 	std::cerr << str;
 }
 
+void Graphics::ClearScreen()
+{
+	Console::SetColor(DEFAULT_COLOR); 
+	system("cls"); 
+}
 void Graphics::RemoveArea(const COORD& s_point, const COORD& e_point)
 {
 	Console::SetColor(DEFAULT_COLOR); 

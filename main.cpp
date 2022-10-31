@@ -5,7 +5,6 @@
 
 int main() {
     srand(time(NULL));
-    bool gameStarts = 0; 
 
     Console* console = new Console(1312, 700, L"Cross The Road", false, Graphics::GetColor(Color::brightwhite, Color::black)); 
     
