@@ -139,23 +139,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="console.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="classes.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="learderboard.cpp" />
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="classes.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ui.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="console.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="classes.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="Graphics.h" />
     <ClInclude Include="leaderboard.h" />
     <ClInclude Include="lib.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="ui.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="frame.txt" />
-    <Text Include="title.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

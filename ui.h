@@ -9,9 +9,7 @@ public:
 	//static void 
 	UI();
 	void DrawTitle(int, int);
-	void DrawMenu(int, int);
 	void DrawFrame(int, int);
 	void DrawGameScreen(int, int);
-	void ChooseCommand(int, int);
 	void DrawRect(vector<string>&, int, int, int, int);
 };
