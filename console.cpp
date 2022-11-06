@@ -69,7 +69,11 @@ void Console::SetSize(const short& width, const short& height)
 
 	SetScreenBufferSize(180, 41);
 	SetWindowSize(180, 41);
+	SetFont(L"Consolas");
+}
 
+void Console::SetFont(const wstring& fontname)
+{
 	CONSOLE_FONT_INFOEX cfi;
 	cfi.cbSize = sizeof(cfi);
 	cfi.nFont = 0;
@@ -77,8 +81,9 @@ void Console::SetSize(const short& width, const short& height)
 	cfi.dwFontSize.Y = 16;
 	cfi.FontFamily = FF_DONTCARE;
 	cfi.FontWeight = FW_NORMAL;
-	std::wcscpy(cfi.FaceName, L"Consolas");
-	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
+	std::wcscpy(cfi.FaceName, fontname.c_str());
+	SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), NULL, &cfi);
+
 }
 
 void Console::FixSingle()

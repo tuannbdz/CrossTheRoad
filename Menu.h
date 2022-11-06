@@ -23,15 +23,23 @@ const enum class Mode {
 };
 class Menu
 {
-	int command = 0; 
+	int command; 
+	bool gameStarted, isRunning; 
 	vector<Button>buttons; 
 
 	void DrawMainMenu(); 
-	void drawSettings(); 
+	void DrawSettings(); 
+	void DrawLoadGame(); 
+	void DrawAbout(); 
 	void AddMainMenuButtons(); 
 	void AddSettingButtons(); 
 public: 
+	Menu(); 
 	void Run();
+
+	void setMenuStatus(bool gameStarted, bool isRunning); 
+	bool getGameStartedStatus() const; 
+	bool getIsRunning() const; 
 	void ChooseCommand(int, int, Mode); 
 	void ExecuteCommands(const Mode&); 
 };

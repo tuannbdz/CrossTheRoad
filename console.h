@@ -57,6 +57,7 @@ public:
 	static void SetColor(const Color& color);
 	static void fixFontColor(int fontColor);
 	void SetSize(const short& width, const short& height);
+	static void SetFont(const wstring& fontname); 
 	void SetWindowSize(SHORT width, SHORT height);
 	static void SetScreenBufferSize(SHORT width, SHORT height);
 

@@ -55,35 +55,3 @@
 //void PLAYER::isCollide(const OBSTACLE*& ob) {
 //
 //}
-//void GAME::ExitGame() {
-//    UI ui;
-//    ui.DrawTitle(10, 0);
-//}
-//void GAME::StartGame() {
-//    int cX = 0, cY = 0;
-//    //Draw frame
-//    UI ui;
-//    ui.DrawFrame(cX, cY);
-//    PLAYER pl;
-//    pl.SetY(20);
-//    pl.SetX(15);
-//    pl.DrawItself();
-//    char cmd = '.';
-//    while (cmd != KEY_ESC) {
-//        cmd = toupper(_getch());
-//        if (cmd == KEY_UP || cmd == 'W') {
-//            pl.Move(2);
-//        }
-//        else
-//            if (cmd == KEY_DOWN || cmd == 'S') {
-//                pl.Move(3);
-//            }
-//            else
-//                if (cmd == KEY_RIGHT || cmd == 'A') {
-//                    pl.Move(1);
-//                }
-//                else if (cmd == KEY_LEFT || cmd == 'D') {
-//                    pl.Move(0);
-//                }
-//    }
-//}
