@@ -1,8 +1,5 @@
-#include "lib.h"
+#include "GAME.h"
 
-#include "Console.h" //not supposed to include them here so this is temporary
-#include "Graphics.h"
-#include "Menu.h"
 
 
 int main() {
@@ -11,10 +8,8 @@ int main() {
 
     Console* console = new Console(1312, 700, L"Cross The Road", false, Graphics::GetColor(Color::brightwhite, Color::black)); 
     
-    Menu menu;
-    menu.Run(); //will be in Game class
-     
+    GAME::Run(); 
     delete console; 
-
+    system("pause >nul"); 
     return 0;
 }

@@ -46,5 +46,5 @@ public:
 };
 
 const Color UNSELECTED_COLOR = Graphics::GetColor(Color::brightwhite, Color::blue);
-const Color SELECTED_COLOR = Graphics::GetColor(Color::brightwhite, Color::lightred);
+const Color SELECTED_COLOR = Graphics::GetColor(Color::brightwhite, Color::yellow);
 const Color DEFAULT_COLOR = Graphics::GetColor(Color::brightwhite, Color::black);

@@ -59,19 +59,3 @@
 //	}
 //};
 //
-//class GAME {
-//public:
-//	GAME();
-//	static void DrawGame();
-//	static void ResetGame();
-//	static void StartGame();
-//	static void ExitGame();
-//	static void LoadGame();
-//	static void SaveGame();
-//	static void PauseGame();
-//	static void ResumeGame();
-//	static void UpdatePosChar();
-//	static void UpdatePosObstacle();
-//	~GAME();
-//
-//};

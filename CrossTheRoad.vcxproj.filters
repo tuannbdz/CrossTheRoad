@@ -28,10 +28,7 @@
     <ClCompile Include="classes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="classes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ui.cpp">
+    <ClCompile Include="GAME.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -61,6 +58,9 @@
     </ClInclude>
 
     <ClInclude Include="classes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GAME.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
