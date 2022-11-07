@@ -7,8 +7,8 @@ int main() {
 
 
     Console* console = new Console(1312, 700, L"Cross The Road", false, Graphics::GetColor(Color::brightwhite, Color::black)); 
-    
-    GAME::Run(); 
+    GAME g;
+    g.Run(); 
     delete console; 
     system("pause >nul"); 
     return 0;

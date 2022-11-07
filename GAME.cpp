@@ -1,9 +1,15 @@
 #include "GAME.h"
 
+void GAME::Initialize() {
+	t_running = 1;
+	g_running = 1;
+	//g_board = Graphics::GetGraphics("Map/frame.txt");
+	pl = new Player(70, 33);
+}
 
 GAME::GAME()
 {
-	
+	Initialize();
 }
 
 void GAME::DrawGame()
@@ -15,7 +21,7 @@ void GAME::DrawGame()
 	Graphics::DrawGraphics({ 138, 20 }, "graphics/Game/load_game_ingame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 
 	DrawControls(); 
-	system("pause >nul"); //tempory line, delete this
+	//system("pause >nul"); //tempory line, delete this
 }
 
 void GAME::DrawControls()
@@ -24,8 +30,31 @@ void GAME::DrawControls()
 
 }
 
-void GAME::ExitGame() {
+void GAME::ExitGame(thread& t) {
+	t_running = 0;
+	t.join();
+}
 
+void GAME::PauseGame(thread& t) {
+	if (t_running) {
+		t_running = 0;
+		t.join();
+	}
+	else {
+		t_running = 1;
+		t = thread(&GAME::ProcessGame, this);
+	}
+}
+
+void GAME::UpdatePlayer() {
+	pl->Move();
+}
+
+void GAME::ProcessGame() {
+	this_thread::sleep_for(milliseconds(20));
+	while (t_running) {
+		UpdatePlayer();
+	}
 }
 
 void GAME::Run()
@@ -35,5 +64,29 @@ void GAME::Run()
 	if (menu.getGameStartedStatus() && !menu.getIsRunning())
 	{
 		DrawGame(); 
+		StartGame();
+	}
+}
+
+void GAME::StartGame() {
+	thread t_game(&GAME::ProcessGame, this);
+	// a thread handles the in-game event
+	//Graphics::DrawGraphics({ 0, 0 }, "graphics/Map/frame.txt", UNSELECTED_COLOR);
+	while (1) {
+		int Inst_command = tolower(_getch());
+		switch (Inst_command)
+		{
+			case VK_ESCAPE:
+			{
+				if (t_running) ExitGame(t_game);
+				break;
+			}
+			case 'r':
+			{
+				PauseGame(t_game);
+				break;
+			}
+		}
+
 	}
 }

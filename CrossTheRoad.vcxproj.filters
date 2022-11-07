@@ -31,6 +31,9 @@
     <ClCompile Include="GAME.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -45,22 +48,22 @@
     <ClInclude Include="leaderboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-
     <ClInclude Include="lib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
-
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-
     <ClInclude Include="classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GAME.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,6 +77,5 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{e1619a2e-35b9-4a8f-9450-46b951be224f}</UniqueIdentifier>
     </Filter>
-
   </ItemGroup>
 </Project>

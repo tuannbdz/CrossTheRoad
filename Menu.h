@@ -26,6 +26,7 @@ class Menu
 	int command; 
 	bool gameStarted, isRunning; 
 	vector<Button>buttons; 
+	//vector<string> title;
 
 	void DrawMainMenu(); 
 	void DrawSettings(); 
