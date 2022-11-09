@@ -133,6 +133,23 @@ void Graphics::DrawGraphics(COORD pos, const std::string& filename, const Color&
 	inp.close();
 }
 
+void Graphics::DrawGraphics(const vector<string>& sprite, COORD pos, const Color& color) {
+	Console::SetColor(color);
+	for (auto& row : sprite) {
+		Console::GotoXY(pos);
+		cout << row;
+		pos.Y++;
+	}
+}
+
+void Graphics::DrawGraphics(const vector<string>& sprite, COORD pos, int x, int y, int width, int height, const Color& color) {
+	Console::SetColor(color);
+	for (int h = y; h < y + height; h++, pos.Y++) {
+		Console::GotoXY(pos);
+		cout << sprite[h].substr(x, width);
+	}
+	
+}
 void Graphics::drawBlueGradientGraphics(COORD pos, const std::string& filename)
 {
 	std::ifstream inp(filename);

@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "GAME.h"
+#include "common.h"
 
 Player::Player(int _x, int _y) {
     x = _x;
@@ -34,28 +35,26 @@ void Player::Draw() {
 
 void Player::Move() {
     vector<string> s = getSprite();
-
     if (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))
     {
-        GAME::DrawGame();
-        //Graphics::DrawGraphic({ x, y }, { x, y }, Graphics::GetGraphics("graphics/Map/frame.txt"), 3, 3, UNSELECTED_COLOR);
+        Graphics::DrawGraphics(g_board, {x, y}, x - 10, y - 6, 4, 3, Graphics::GetColor(Color::gray, Color::white));
         y--;
     }
     if (GetAsyncKeyState(VK_DOWN) || GetAsyncKeyState('S'))
     {
-        GAME::DrawGame();
+        Graphics::DrawGraphics(g_board, {x, y}, x - 10, y - 6, 3, 3, Graphics::GetColor(Color::gray, Color::white));
         //Graphics::DrawGraphic({ x, y }, { x, y }, Graphics::GetGraphics("graphics/Map/frame.txt"), 3, 3, UNSELECTED_COLOR);
         ++y;
     }
     if (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A'))
     {
-        GAME::DrawGame();
+        Graphics::DrawGraphics(g_board, {x, y}, x - 10, y - 6, 3, 3, Graphics::GetColor(Color::gray, Color::white));
         //Graphics::DrawGraphic({ x, y }, { x, y }, Graphics::GetGraphics("graphics/Map/frame.txt"), 3, 3, UNSELECTED_COLOR);
         x -= 2;
     }
     if (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))
     {
-        GAME::DrawGame();
+        Graphics::DrawGraphics(g_board, {x, y}, x - 10, y - 6, 3, 3, Graphics::GetColor(Color::gray, Color::white));
         //Graphics::DrawGraphic({ x, y }, { x, y }, Graphics::GetGraphics("graphics/Map/frame.txt"), 3, 3, UNSELECTED_COLOR);
         x += 2;
     }

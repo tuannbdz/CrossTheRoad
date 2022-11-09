@@ -11,10 +11,10 @@ class GAME {
 private:
 	bool g_running;
 	bool t_running;
-	Player* pl;
 	//string data; //this is the filename that the user entered to save game process
 	
 public:
+	Player* pl;
 	GAME();
 	void Run();
 	static void DrawGame();

@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-
 using namespace std;
 using namespace std::chrono;
 
@@ -29,3 +28,4 @@ using namespace std::chrono;
 #define KEY_SPACE 32
 #define KEY_BACKSPACE 8
 
+//global variables

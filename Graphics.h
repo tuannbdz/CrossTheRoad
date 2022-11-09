@@ -1,6 +1,6 @@
 #pragma once
 #include "lib.h"
-
+#include "common.h"
 
 const enum class Color
 {
@@ -42,7 +42,10 @@ public:
 	static void DrawGraphics(COORD pos, const string& filename, const Color& color);
 	static void DrawGraphicsR(COORD pos, const string& filename, const Color& color);
 	static Color GetColor(const Color& background, const Color& text);
-	static void drawBlueGradientGraphics(COORD pos, const string& filename); 
+	static void drawBlueGradientGraphics(COORD pos, const string& filename);
+
+	static void DrawGraphics(const vector<string>&, COORD, const Color&);
+	static void DrawGraphics(const vector<string>&, COORD, int, int, int, int, const Color&);
 };
 
 const Color UNSELECTED_COLOR = Graphics::GetColor(Color::brightwhite, Color::blue);
