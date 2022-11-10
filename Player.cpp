@@ -7,9 +7,9 @@ Player::Player(int _x, int _y) {
     y = _y;
     state = 1;
     sprite.resize(3);
-    sprite[0] = " 0 ";
-    sprite[1] = "/|\\";
-    sprite[2] = "/ \\";
+    sprite[0] = L" 0 ";
+    sprite[1] = L"/|\\";
+    sprite[2] = L"/ \\";
     color = Graphics::GetColor(Color::gray, Color::brightwhite);
 }
 
@@ -26,36 +26,33 @@ void Player::SetY(int v) {
 void Player::Draw() {
     Console::SetColor(color);
     Console::gotoxy(x, y);
-    cout << sprite[0];
+    wcout << sprite[0];
     Console::gotoxy(x, y + 1);
-    cout << sprite[1];
+    wcout << sprite[1];
     Console::gotoxy(x, y + 2);
-    cout << sprite[2];
+    wcout << sprite[2];
 }
 
 void Player::Move() {
-    vector<string> s = getSprite();
+     Console::gotoxy(160, 33);
     if (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))
     {
-        Graphics::DrawGraphics(g_board, {x, y}, x - 10, y - 6, 4, 3, Graphics::GetColor(Color::gray, Color::white));
+        Graphics::DrawGraphics(g_board, {x,y}, x - 10, y - 6, 3, 3, Graphics::GetColor(Color::gray, Color::white));
         y--;
     }
     if (GetAsyncKeyState(VK_DOWN) || GetAsyncKeyState('S'))
     {
         Graphics::DrawGraphics(g_board, {x, y}, x - 10, y - 6, 3, 3, Graphics::GetColor(Color::gray, Color::white));
-        //Graphics::DrawGraphic({ x, y }, { x, y }, Graphics::GetGraphics("graphics/Map/frame.txt"), 3, 3, UNSELECTED_COLOR);
         ++y;
     }
     if (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A'))
     {
         Graphics::DrawGraphics(g_board, {x, y}, x - 10, y - 6, 3, 3, Graphics::GetColor(Color::gray, Color::white));
-        //Graphics::DrawGraphic({ x, y }, { x, y }, Graphics::GetGraphics("graphics/Map/frame.txt"), 3, 3, UNSELECTED_COLOR);
         x -= 2;
     }
     if (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))
     {
         Graphics::DrawGraphics(g_board, {x, y}, x - 10, y - 6, 3, 3, Graphics::GetColor(Color::gray, Color::white));
-        //Graphics::DrawGraphic({ x, y }, { x, y }, Graphics::GetGraphics("graphics/Map/frame.txt"), 3, 3, UNSELECTED_COLOR);
         x += 2;
     }
 

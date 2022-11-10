@@ -45,7 +45,7 @@ public:
 	static void drawBlueGradientGraphics(COORD pos, const string& filename);
 
 	static void DrawGraphics(const vector<string>&, COORD, const Color&);
-	static void DrawGraphics(const vector<string>&, COORD, int, int, int, int, const Color&);
+	static void DrawGraphics(const vector<wstring>&, COORD, int, int, int, int, const Color&);
 };
 
 const Color UNSELECTED_COLOR = Graphics::GetColor(Color::brightwhite, Color::blue);

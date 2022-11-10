@@ -142,11 +142,11 @@ void Graphics::DrawGraphics(const vector<string>& sprite, COORD pos, const Color
 	}
 }
 
-void Graphics::DrawGraphics(const vector<string>& sprite, COORD pos, int x, int y, int width, int height, const Color& color) {
+void Graphics::DrawGraphics(const vector<wstring>& sprite, COORD pos, int x, int y, int width, int height, const Color& color) {
 	Console::SetColor(color);
 	for (int h = y; h < y + height; h++, pos.Y++) {
 		Console::GotoXY(pos);
-		cout << sprite[h].substr(x, width);
+		wcout << sprite[h].substr(x, width);
 	}
 	
 }

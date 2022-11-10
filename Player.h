@@ -8,13 +8,13 @@ class Player {
 	short x, y;
 	short state;
 	Color color;
-	vector<string> sprite;
+	vector<wstring> sprite;
 public:
 	Player(int, int);
 	void Draw();
 	int GetX() { return x; };
 	int GetY() { return y; };
-	vector<string> getSprite() { return sprite; };
+	vector<wstring> getSprite() { return sprite; };
 	void SetX(int);
 	void SetY(int);
 	void Move();

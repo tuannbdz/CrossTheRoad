@@ -1,12 +1,46 @@
-#include "GAME.h"
+﻿#include "GAME.h"
 #include "common.h"
+#include <fcntl.h>
+#include <io.h>
+#include <stdio.h>
 string g_board_dir = "graphics/Game/maps/map_lvl3.txt";
 GAME *g = new GAME;
-vector<string>g_board;
+vector<wstring>g_board;
 bool t_running = 1;
-
 void InitGraphics() {
-    g_board = Graphics::GetGraphics(g_board_dir);
+    
+    g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"                                                                                                                          ");
+    g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
+    //g_board = Graphics::GetGraphics(g_board_dir);
     //g_board.push_back("abc");
 }
 
@@ -82,6 +116,7 @@ void RunGame() {
 }
 
 int main() {
+    _setmode(_fileno(stdout), _O_U16TEXT);
     srand(time(NULL));
     Console* console = new Console(1312, 700, L"Cross The Road", false, Graphics::GetColor(Color::brightwhite, Color::black)); 
     RunGame();

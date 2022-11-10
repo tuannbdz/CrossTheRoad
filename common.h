@@ -1,3 +1,3 @@
 #pragma once
 #include "lib.h"
-extern vector<string>g_board;
+extern vector<wstring>g_board;
