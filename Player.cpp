@@ -2,6 +2,16 @@
 #include "GAME.h"
 #include "common.h"
 
+Player::Player() {
+    x = 0;
+    y = 0;
+    state = 1;
+    sprite.resize(3);
+    sprite[0] = L" 0 ";
+    sprite[1] = L"/|\\";
+    sprite[2] = L"/ \\";
+    color = Graphics::GetColor(Color::gray, Color::brightwhite);
+}
 Player::Player(int _x, int _y) {
     x = _x;
     y = _y;
@@ -16,11 +26,14 @@ Player::Player(int _x, int _y) {
 Player::~Player() {
 
 }
-void Player::SetX(int v) {
-    x = v;
+void Player::SetX(int a) {
+    x = a;
 }
-void Player::SetY(int v) {
-    y = v;
+void Player::SetY(int b) {
+    y = b;
+}
+void Player::SetXY(int a, int b) {
+    x = a, y = b;
 }
 
 void Player::Draw() {
