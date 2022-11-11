@@ -1,11 +1,11 @@
-﻿#include "GAME.h"
+﻿#include "Game.h"
 #include "common.h"
 #include <fcntl.h>
 #include <io.h>
 #include <stdio.h>
 vector<wstring>g_board;
 bool t_running;
-GAME *g = new GAME();
+Game *g = new Game();
 
 void ProcessGame() {
     this_thread::sleep_for(milliseconds(20));
@@ -47,6 +47,7 @@ int main() {
     Console* console = new Console(1312, 700, L"Cross The Road", false, Graphics::GetColor(Color::brightwhite, Color::black)); 
     RunGame();
     delete console; 
+    delete g;
     system("pause >nul"); 
     return 0;
 }

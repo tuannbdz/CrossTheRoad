@@ -142,7 +142,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="classes.cpp" />
     <ClCompile Include="Console.cpp" />
-    <ClCompile Include="GAME.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="learderboard.cpp" />
     <ClCompile Include="lib.cpp" />
@@ -156,7 +156,7 @@
     <ClInclude Include="classes.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Console.h" />
-    <ClInclude Include="GAME.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="leaderboard.h" />
     <ClInclude Include="lib.h" />

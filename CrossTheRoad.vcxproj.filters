@@ -28,7 +28,7 @@
     <ClCompile Include="classes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GAME.cpp">
+    <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
@@ -60,7 +60,7 @@
     <ClInclude Include="classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GAME.h">
+    <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
