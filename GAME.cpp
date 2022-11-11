@@ -1,10 +1,9 @@
-﻿#include "GAME.h"
+﻿#include "Game.h"
 
-void GAME::Init() {
+void Game::Init() {
 	t_running = 1;
 	g_running = 1;
 	//g_board = Graphics::GetGraphics("Map/frame.txt");
-	//pl = new Player(70, 33);
 	pl.SetXY(70, 33);
 
 	g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
@@ -41,11 +40,11 @@ void GAME::Init() {
 
 }
 
-GAME::GAME() {
+Game::Game() {
 	Init();
 }
-
-void GAME::DrawGame() {
+Game::~Game(){}
+void Game::DrawGame() {
 	Graphics::ClearScreen();
 	Graphics::DrawGraphics({ 10, 2}, "graphics/Game/levels/level1_frame.txt", Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawGraphics({ 10, 6 }, "graphics/Game/maps/map_lvl3.txt", Graphics::GetColor(Color::gray, Color::white)); 
@@ -55,31 +54,31 @@ void GAME::DrawGame() {
 }
 
 
-void GAME::ExitGame(thread& t) {
+void Game::ExitGame(thread& t) {
 	t_running = 0;
 	t.join();
 }
 
-void GAME::PauseGame(thread& t, void (*func)()) {
+void Game::PauseGame(thread& t, void (*func)()) {
 	if (t_running) {
 		t_running = 0;
 		t.join();
 	}
 	else {
 		t_running = 1;
-		//t = thread(&GAME::ProcessGame, this);
+		//t = thread(&Game::ProcessGame, this);
 		t = thread(func);
 	}
 	//t_running = !t_running;
 }
 
-void GAME::UpdatePlayer() {
+void Game::UpdatePlayer() {
 	pl.Move();
 }
 
 
-void GAME::StartGame() {
-	//thread t_game(&GAME::ProcessGame, this);
+void Game::StartGame() {
+	//thread t_game(&Game::ProcessGame, this);
 	//// a thread handles the in-game event
 	////Graphics::DrawGraphics({ 0, 0 }, "graphics/Map/frame.txt", UNSELECTED_COLOR);
 	//while (1) {

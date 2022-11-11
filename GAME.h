@@ -8,7 +8,7 @@
 //#include "Console.h" //not supposed to include them here so this is temporary
 //#include "Graphics.h"
 
-class GAME {
+class Game {
 private:
 	bool g_running;
 	//bool t_running;
@@ -16,8 +16,8 @@ private:
 	//string data; //this is the filename that the user entered to save game process
 	
 public:
-	GAME();
-	~GAME();
+	Game();
+	~Game();
 	void Init();
 
 	Player getPlayer();
@@ -29,3 +29,6 @@ public:
 
 	void UpdatePlayer();
 };
+
+const int boardX = 10;
+const int boardY = 6;
