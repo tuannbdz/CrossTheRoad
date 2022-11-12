@@ -5,6 +5,7 @@
 #include <stdio.h>
 vector<wstring>g_board;
 bool t_running;
+thread t_game;
 Game *g = new Game();
 
 void ProcessGame() {
@@ -19,8 +20,8 @@ void ProcessGame() {
 }
 
 void StartGame() {
-    thread t_game(ProcessGame);
-    while (1) {
+    t_game = thread(ProcessGame);
+    while (g->isRunning()) {
         int Inst_command = tolower(_getch());
         switch (Inst_command) {
             case VK_ESCAPE: {
@@ -33,16 +34,20 @@ void StartGame() {
             }
         }
     }
+    if (t_running) g->ExitGame(t_game);
 }
 
 void RunGame() {
     Menu menu;
+    BLOCK1:
     menu.Run();
-    //BLOCK1:
     if (menu.getGameStartedStatus() && !menu.getIsRunning()) {
         g->DrawGame();
         StartGame();
     }
+    g->ResetGame();
+    menu= Menu();
+    goto BLOCK1;
 }
 
 int main() {

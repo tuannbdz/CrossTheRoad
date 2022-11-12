@@ -31,6 +31,7 @@ public:
 
 	void DrawGame();
 	void StartGame();
+	void ResetGame();
 	void PauseGame(thread &, void (*func)());
 	void ExitGame(thread &);
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);

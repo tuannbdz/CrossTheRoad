@@ -66,10 +66,70 @@ void Game::Init() {
 
 }
 
+void Game::ResetGame() {
+	for (auto& i : car)
+		delete i;
+	for (auto& i : tr)
+		delete i;
+	for (auto& i : shark)
+		delete i;
+	for (auto& i : bike)
+		delete i;
+	car.clear();
+	tr.clear();
+	shark.clear();
+	bike.clear();
+
+	t_running = 1;
+	g_running = 1;
+	//g_board = Graphics::GetGraphics("Map/frame.txt");
+
+	tr.push_back(new Truck());
+	tr.push_back(new Truck(60, 28));
+	tr.push_back(new Truck(90, 28));
+	tr.push_back(new Truck(120, 28));
+	tr.push_back(new Truck(150, 28));
+
+	shark.push_back(new Shark(0, 23));
+	shark.push_back(new Shark(40, 23));
+	shark.push_back(new Shark(80, 23));
+	shark.push_back(new Shark(110, 23));
+
+	car.push_back(new Car());
+	car.push_back(new Car(55, 17));
+	car.push_back(new Car(80, 17));
+	car.push_back(new Car(105, 17));
+	car.push_back(new Car(130, 17));
+
+	bike.push_back(new Bike());
+	bike.push_back(new Bike(50, 12));
+	bike.push_back(new Bike(70, 12));
+	bike.push_back(new Bike(90, 12));
+	bike.push_back(new Bike(110, 12));
+	bike.push_back(new Bike(130, 12));
+	bike.push_back(new Bike(150, 12));
+
+	pl = Player(70, 33);
+}
+
 Game::Game() {
 	Init();
 }
-Game::~Game(){}
+Game::~Game(){
+	for (auto& i : car)
+		delete i;
+	for (auto& i : tr)
+		delete i;
+	for (auto& i : shark)
+		delete i;
+	for (auto& i : bike)
+		delete i;
+	g_board.clear();
+	car.clear();
+	tr.clear();
+	shark.clear();
+	bike.clear();
+}
 
 void Game::DrawGame() {
 	Graphics::ClearScreen();
