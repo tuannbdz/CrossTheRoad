@@ -4,6 +4,32 @@ void Game::Init() {
 	t_running = 1;
 	g_running = 1;
 	//g_board = Graphics::GetGraphics("Map/frame.txt");
+
+	tr.push_back(new Truck());
+	tr.push_back(new Truck(60, 28));
+	tr.push_back(new Truck(90, 28));
+	tr.push_back(new Truck(120, 28));
+	tr.push_back(new Truck(150, 28));
+
+	shark.push_back(new Shark(0, 23));
+	shark.push_back(new Shark(40, 23));
+	shark.push_back(new Shark(80, 23));
+	shark.push_back(new Shark(110, 23));
+
+	car.push_back(new Car());
+	car.push_back(new Car(55, 17));
+	car.push_back(new Car(80, 17));
+	car.push_back(new Car(105, 17));
+	car.push_back(new Car(130, 17));
+
+	bike.push_back(new Bike());
+	bike.push_back(new Bike(50, 12));
+	bike.push_back(new Bike(70, 12));
+	bike.push_back(new Bike(90, 12));
+	bike.push_back(new Bike(110, 12));
+	bike.push_back(new Bike(130, 12));
+	bike.push_back(new Bike(150, 12));
+
 	pl.SetXY(70, 33);
 
 	g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
@@ -44,6 +70,7 @@ Game::Game() {
 	Init();
 }
 Game::~Game(){}
+
 void Game::DrawGame() {
 	Graphics::ClearScreen();
 	Graphics::DrawGraphics({ 10, 2}, "graphics/Game/levels/level1_frame.txt", Graphics::GetColor(Color::lightblue, Color::brightwhite));
@@ -59,6 +86,15 @@ void Game::ExitGame(thread& t) {
 	t.join();
 }
 
+bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2, const int& x3, const int& y3, const int& x4, const int& y4) {
+	bool c1 = min(x2, x4) > max(x1, x3);
+	bool c2 = min(y2, y4) > max(y1, y3);
+	return c1 && c2;
+}
+
+bool Game::isRunning() {
+	return g_running;
+}
 void Game::PauseGame(thread& t, void (*func)()) {
 	if (t_running) {
 		t_running = 0;
@@ -66,36 +102,56 @@ void Game::PauseGame(thread& t, void (*func)()) {
 	}
 	else {
 		t_running = 1;
-		//t = thread(&Game::ProcessGame, this);
 		t = thread(func);
 	}
-	//t_running = !t_running;
 }
 
 void Game::UpdatePlayer() {
 	pl.Move();
+	for (auto& i : car) {
+		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 2, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			pl.SetState(0);
+			goto ed;
+		}
+	}
+	for (auto& i : tr) {
+		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 2, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			pl.SetState(0);
+			goto ed;
+		}
+	}
+	for (auto& i : shark) {
+		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 2, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			pl.SetState(0);
+			goto ed;
+		}
+	}
+	for (auto& i : bike) {
+		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 2, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			pl.SetState(0);
+			goto ed;
+		}
+	}
+ed:
+	if (pl.GetState() == 0) g_running = 0;
 }
 
+void Game::UpdateCar() {
+	for(auto &i : car)
+		i->Move();
+}
 
-void Game::StartGame() {
-	//thread t_game(&Game::ProcessGame, this);
-	//// a thread handles the in-game event
-	////Graphics::DrawGraphics({ 0, 0 }, "graphics/Map/frame.txt", UNSELECTED_COLOR);
-	//while (1) {
-	//	int Inst_command = tolower(_getch());
-	//	switch (Inst_command)
-	//	{
-	//		case VK_ESCAPE:
-	//		{
-	//			if (t_running) ExitGame(t_game);
-	//			break;
-	//		}
-	//		case 'r':
-	//		{
-	//			PauseGame(t_game);
-	//			break;
-	//		}
-	//	}
+void Game::UpdateTruck() {
+	for (auto& i : tr)
+		i->Move();
+}
 
-	//}
+void Game::UpdateBike() {
+	for (auto& i : bike)
+		i->Move();
+}
+
+void Game::UpdateShark() {
+	for (auto& i : shark)
+		i->Move();
 }

@@ -148,7 +148,16 @@ void Graphics::DrawGraphics(const vector<wstring>& sprite, COORD pos, int x, int
 		Console::GotoXY(pos);
 		wcout << sprite[h].substr(x, width);
 	}
-	
+}
+
+void Graphics::DrawGraphics(const vector<string>& sprite, COORD pos, int x, int y, int width, int height, const Color& color) {
+	Console::SetColor(color);
+	for (int h = y; h < y + height; h++, pos.Y++) {
+		Console::GotoXY(pos);
+		string t = sprite[h].substr(x, width);
+		wstring g(t.begin(), t.end());
+		wcout << g;
+	}
 }
 void Graphics::drawBlueGradientGraphics(COORD pos, const std::string& filename)
 {

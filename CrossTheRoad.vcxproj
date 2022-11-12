@@ -139,7 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bike.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Car.cpp" />
     <ClCompile Include="classes.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -148,11 +150,15 @@
     <ClCompile Include="lib.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="ui.cpp" />
+    <ClCompile Include="Shark.cpp" />
+    <ClCompile Include="Truck.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bike.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Car.h" />
     <ClInclude Include="classes.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Console.h" />
@@ -161,8 +167,10 @@
     <ClInclude Include="leaderboard.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="ui.h" />
+    <ClInclude Include="Shark.h" />
+    <ClInclude Include="Truck.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

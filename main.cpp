@@ -8,9 +8,13 @@ bool t_running;
 Game *g = new Game();
 
 void ProcessGame() {
-    this_thread::sleep_for(milliseconds(20));
-    while (t_running) {
+    this_thread::sleep_for(milliseconds(10));
+    while (g->isRunning() && t_running) {
         g->UpdatePlayer();
+        g->UpdateCar();
+        g->UpdateTruck();
+        g->UpdateBike();
+        g->UpdateShark();
     }
 }
 

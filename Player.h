@@ -15,9 +15,11 @@ public:
 	void Draw();
 	int GetX() { return x; };
 	int GetY() { return y; };
+	int GetState() { return state; };
 	vector<wstring> getSprite() { return sprite; };
 	void SetX(int);
 	void SetY(int);
+	void SetState(short);
 	void SetXY(int, int);
 	void Move();
 	//void isCollide(const OBSTACLE*&);

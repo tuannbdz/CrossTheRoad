@@ -12,6 +12,7 @@ Player::Player() {
     sprite[2] = L"/ \\";
     color = Graphics::GetColor(Color::gray, Color::brightwhite);
 }
+
 Player::Player(int _x, int _y) {
     x = _x;
     y = _y;
@@ -35,7 +36,9 @@ void Player::SetY(int b) {
 void Player::SetXY(int a, int b) {
     x = a, y = b;
 }
-
+void Player::SetState(short _s) {
+    state = _s;
+}
 void Player::Draw() {
     Console::SetColor(color);
     Console::gotoxy(x, y);
@@ -47,7 +50,8 @@ void Player::Draw() {
 }
 
 void Player::Move() {
-     Console::gotoxy(160, 33);
+    Console::gotoxy(160, 33);
+    wcout << x << " " << y << '\n';
     if (y-boardY-1 > 0 && (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))) {
         Graphics::DrawGraphics(g_board, {x,y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::white));
         y--;
@@ -66,7 +70,7 @@ void Player::Move() {
     }
 
     Player::Draw();
-    this_thread::sleep_for(milliseconds(61));
+    this_thread::sleep_for(milliseconds(2));
 }
 
 //void Player::isCollide(const OBSTACLE*& ob) {
