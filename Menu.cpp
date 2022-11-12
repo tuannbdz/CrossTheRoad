@@ -143,13 +143,13 @@ void Menu::ExecuteCommands(const Mode& mode)
 {
 	int n = buttons.size();
 
-	buttons[this->command].DrawEffect(SELECTED_COLOR);
 
 	if (mode == Mode::mainMenu)
 	{
 		switch (this->command)
 		{
 			case (int)MainMenuButtons::newGame:
+			buttons[this->command].DrawEffect(SELECTED_COLOR);
 			setMenuStatus(true, false); 
 			return; 
 		case (int)MainMenuButtons::loadGame:
