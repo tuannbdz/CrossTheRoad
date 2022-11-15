@@ -3,38 +3,52 @@
 void Game::Init() {
 	t_running = 1;
 	g_running = 1;
-
-	score = 0, level = 3; 
-	//g_board = Graphics::GetGraphics("Map/frame.txt");
-
-	tr.push_back(new Truck());
-	tr.push_back(new Truck(60, 28));
-	tr.push_back(new Truck(90, 28));
-	tr.push_back(new Truck(120, 28));
-	tr.push_back(new Truck(150, 28));
-
-	shark.push_back(new Shark(0, 23));
-	shark.push_back(new Shark(40, 23));
-	shark.push_back(new Shark(80, 23));
-	shark.push_back(new Shark(110, 23));
-
-	car.push_back(new Car());
-	car.push_back(new Car(55, 17));
-	car.push_back(new Car(80, 17));
-	car.push_back(new Car(105, 17));
-	car.push_back(new Car(130, 17));
-
-	bike.push_back(new Bike());
-	bike.push_back(new Bike(50, 12));
-	bike.push_back(new Bike(70, 12));
-	bike.push_back(new Bike(90, 12));
-	bike.push_back(new Bike(110, 12));
-	bike.push_back(new Bike(130, 12));
-	bike.push_back(new Bike(150, 12));
-
-
-
+	score = 0, level = 3;
+	InitLevel(level);
 	setMap(); 
+}
+
+void Game::InitLevel(int _l) {
+	t_running = 1;
+	g_running = 1;
+	score = 0;
+	level = _l;
+	setMap();
+	if (level == 1) {
+
+	}
+	if (level == 2) {
+
+	}
+	else
+	{
+		pl.SetXY(78, 33);
+
+		tr.push_back(new Truck());
+		tr.push_back(new Truck(60, 28));
+		tr.push_back(new Truck(90, 28));
+		tr.push_back(new Truck(120, 28));
+		tr.push_back(new Truck(150, 28));
+
+		shark.push_back(new Shark(0, 23));
+		shark.push_back(new Shark(40, 23));
+		shark.push_back(new Shark(80, 23));
+		shark.push_back(new Shark(110, 23));
+
+		car.push_back(new Car());
+		car.push_back(new Car(55, 17));
+		car.push_back(new Car(80, 17));
+		car.push_back(new Car(105, 17));
+		car.push_back(new Car(130, 17));
+
+		bike.push_back(new Bike());
+		bike.push_back(new Bike(50, 12));
+		bike.push_back(new Bike(70, 12));
+		bike.push_back(new Bike(90, 12));
+		bike.push_back(new Bike(110, 12));
+		bike.push_back(new Bike(130, 12));
+		bike.push_back(new Bike(150, 12));
+	}
 }
 
 void Game::setMap()
@@ -139,7 +153,6 @@ void Game::setMap()
 
 void Game::ResetGame() {
 	Graphics::ClearScreen(); 
-	//DrawGame(); 
 
 	for (auto& i : car)
 		delete i;
@@ -155,7 +168,7 @@ void Game::ResetGame() {
 	bike.clear();
 	g_board.clear();
 
-	Init(level);
+	InitLevel(level);
 }
 
 Game::Game() {
@@ -163,7 +176,7 @@ Game::Game() {
 }
 
 Game::Game(int _l) {
-	Init(_l);
+	InitLevel(_l);
 }
 
 Game::~Game(){
@@ -186,10 +199,9 @@ void Game::DrawGame() {
 	Graphics::ClearScreen();
 
 	Graphics::DrawGraphics({ 10, 2 }, "graphics/Game/levels/level1/level1_frame_start.txt", Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	//Graphics::DrawGraphics({ 10, 6 }, "graphics/Game/maps/map_lvl3.txt", Graphics::GetColor(Color::gray, Color::white));
 	Graphics::DrawGraphics(g_board, { 10, 6 }, 0, 0, g_board[0].size(), g_board.size(), Graphics::GetColor(Color::gray, Color::brightwhite));
 
-	Console::SetFont(L"Consolas Bold"); //but if Console::SetFont(L"Consolas"); is called, text is immediately changed to normal
+	Console::SetFont(L"Consolas Bold");
 	Graphics::DrawGraphics({ 138, 20 }, "graphics/Game/load_game_ingame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 	Graphics::DrawGraphics({ 138, 2 }, "graphics/Game/controls.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 }

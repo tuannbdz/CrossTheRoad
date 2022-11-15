@@ -61,19 +61,19 @@ void Player::Move() {
     //Console::gotoxy(160, 33);
     //wcout << x << " " << y << '\n';
     if (y-boardY-1 > 0 && (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))) {
-        Graphics::DrawGraphics(g_board, {x,y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::white));
+        Graphics::DrawGraphics(g_board, {x,y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::brightwhite));
         y--;
     }
     if (y-boardY+4 < g_board.size() && (GetAsyncKeyState(VK_DOWN) || GetAsyncKeyState('S'))) {
-        Graphics::DrawGraphics(g_board, {x, y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::white));
+        Graphics::DrawGraphics(g_board, {x, y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::brightwhite));
         ++y;
     }
     if (x-boardX-2 >= 0  && (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A'))) {
-        Graphics::DrawGraphics(g_board, {x, y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::white));
+        Graphics::DrawGraphics(g_board, {x, y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::brightwhite));
         x -= 2;
     }
     if (x-boardX+4 < g_board[0].size() && (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))) {
-        Graphics::DrawGraphics(g_board, {x, y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::white));
+        Graphics::DrawGraphics(g_board, {x, y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::brightwhite));
         x += 2;
     }
 
