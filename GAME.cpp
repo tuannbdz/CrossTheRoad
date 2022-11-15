@@ -3,6 +3,7 @@
 void Game::Init() {
 	t_running = 1;
 	g_running = 1;
+
 	score = 0, level = 3; 
 	//g_board = Graphics::GetGraphics("Map/frame.txt");
 
@@ -31,7 +32,7 @@ void Game::Init() {
 	bike.push_back(new Bike(130, 12));
 	bike.push_back(new Bike(150, 12));
 
-	pl.SetXY(70, 33);
+
 
 	setMap(); 
 }
@@ -152,42 +153,19 @@ void Game::ResetGame() {
 	tr.clear();
 	shark.clear();
 	bike.clear();
+	g_board.clear();
 
-	t_running = 1;
-	g_running = 1;
-	//g_board = Graphics::GetGraphics("Map/frame.txt");
-
-	tr.push_back(new Truck());
-	tr.push_back(new Truck(60, 28));
-	tr.push_back(new Truck(90, 28));
-	tr.push_back(new Truck(120, 28));
-	tr.push_back(new Truck(150, 28));
-
-	shark.push_back(new Shark(0, 23));
-	shark.push_back(new Shark(40, 23));
-	shark.push_back(new Shark(80, 23));
-	shark.push_back(new Shark(110, 23));
-
-	car.push_back(new Car());
-	car.push_back(new Car(55, 17));
-	car.push_back(new Car(80, 17));
-	car.push_back(new Car(105, 17));
-	car.push_back(new Car(130, 17));
-
-	bike.push_back(new Bike());
-	bike.push_back(new Bike(50, 12));
-	bike.push_back(new Bike(70, 12));
-	bike.push_back(new Bike(90, 12));
-	bike.push_back(new Bike(110, 12));
-	bike.push_back(new Bike(130, 12));
-	bike.push_back(new Bike(150, 12));
-
-	pl = Player(70, 33);
+	Init(level);
 }
 
 Game::Game() {
 	Init();
 }
+
+Game::Game(int _l) {
+	Init(_l);
+}
+
 Game::~Game(){
 	for (auto& i : car)
 		delete i;
@@ -206,9 +184,11 @@ Game::~Game(){
 
 void Game::DrawGame() {
 	Graphics::ClearScreen();
+
 	Graphics::DrawGraphics({ 10, 2 }, "graphics/Game/levels/level1/level1_frame_start.txt", Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	//Graphics::DrawGraphics({ 10, 6 }, "graphics/Game/maps/map_lvl3.txt", Graphics::GetColor(Color::gray, Color::white));
 	Graphics::DrawGraphics(g_board, { 10, 6 }, 0, 0, g_board[0].size(), g_board.size(), Graphics::GetColor(Color::gray, Color::brightwhite));
+
 	Console::SetFont(L"Consolas Bold"); //but if Console::SetFont(L"Consolas"); is called, text is immediately changed to normal
 	Graphics::DrawGraphics({ 138, 20 }, "graphics/Game/load_game_ingame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 	Graphics::DrawGraphics({ 138, 2 }, "graphics/Game/controls.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
@@ -347,32 +327,37 @@ void Game::GameOver(void (*func)(), Menu& menu)
 
 void Game::UpdatePlayer() {
 	pl.Move();
+	this_thread::sleep_for(milliseconds(speed));
 	for (auto& i : car) {
-		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 2, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
 			pl.SetState(0);
 			goto ed;
 		}
 	}
 	for (auto& i : tr) {
-		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 2, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
 			pl.SetState(0);
 			goto ed;
 		}
 	}
 	for (auto& i : shark) {
-		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 2, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
 			pl.SetState(0);
 			goto ed;
 		}
 	}
 	for (auto& i : bike) {
-		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 2, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
 			pl.SetState(0);
 			goto ed;
 		}
 	}
 ed:
-	if (pl.GetState() == 0) g_running = 0;
+	if (pl.GetState() == 0)
+	{
+		g_running = 0;
+		this_thread::sleep_for(milliseconds(10));
+	}
 }
 
 void Game::UpdateCar() {

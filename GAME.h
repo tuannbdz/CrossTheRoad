@@ -15,7 +15,6 @@ class Game {
 private:
 	bool g_running;
 	int score, level;
-
 	//bool t_running;
 	Player pl;
 	vector< Truck* > tr;
@@ -26,8 +25,13 @@ private:
 	
 public:
 	Game();
+	Game(int);
 	~Game();
+	void Init(int);
 	void Init();
+	void LoadMap1();
+	void LoadMap2();
+	void LoadMap3();
 
 	Player getPlayer();
 
