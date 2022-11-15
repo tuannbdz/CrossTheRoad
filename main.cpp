@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <io.h>
 #include <stdio.h>
+
 vector<wstring>g_board;
 bool t_running;
 thread t_game;
@@ -29,23 +30,22 @@ void StartGame(Menu& menu) {
     t_game = thread(ProcessGame);
 
     while (g != NULL && g->isRunning()) {
-        int Inst_command = tolower(_getch());
-        switch (Inst_command) {
-            case VK_ESCAPE: {
-                if (t_running) g->ExitGame(t_game, g, menu);
-                break;
-            }
-            case 'r': {
-                g->PauseGame(t_game, &ProcessGame);
-                break;
-            }
+        if(Console::KeyPress(KeyCode::ESC)){
+            if (t_running) g->ExitGame(t_game, g, menu);
         }
+        else
+        if (Console::KeyPress(KeyCode::R)){
+            g->PauseGame(t_game, &ProcessGame);
+        }
+        
     }
     if (g != NULL && t_running)
     {
+        t_running = 0;
+        t_game.join();
         g->GameOver(&ProcessGame, menu);
-        if (!menu.getGameStartedStatus())
-            g->ExitGame(t_game, g, menu);
+       // if (!menu.getGameStartedStatus())
+         //   g->ExitGame(t_game, g, menu);
     }
 }
 

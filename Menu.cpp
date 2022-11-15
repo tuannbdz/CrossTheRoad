@@ -126,34 +126,35 @@ void Menu::ChooseCommand(int cX, int cY, Mode mode)
 	
 	do
 	{
-		int n = buttons.size(); 
+		int n = buttons.size();
 		//reset color of previous command
-		Console::gotoxy(cX, pY);
-		buttons[pC].DrawGraphics(UNSELECTED_COLOR); 
+		if (pY != cY) {
+			Console::gotoxy(cX, pY);
+			buttons[pC].DrawGraphics(UNSELECTED_COLOR);
+		}
 
 		Console::gotoxy(cX, cY);
 		buttons[command].DrawGraphics(SELECTED_COLOR);
 
-		int c = toupper(_getch());
-		switch (c)
-		{
-		case 'W':case KEY_UP:
-			pY = cY;
-			pC = command;
-			command = (command - 1 + n) % n;
-			cY = command + 5;
-			break;
-		case 'S':case KEY_DOWN:
-			pY = cY;
-			pC = command;
-			command = (command + 1) % n;
-			cY = command + 5;
-			break;
-		case KEY_ENTER: case KEY_SPACE:
-			ExecuteCommands(mode); 
-			break;
+		//this_thread::sleep_for(milliseconds(50));
+		if (Console::KeyPress(KeyCode::ENTER)) {
+			this_thread::sleep_for(milliseconds(50));
+			ExecuteCommands(mode);
 		}
-
+		else
+			if (Console::KeyPress(KeyCode::UP) || Console::KeyPress(KeyCode::W)) {
+				pY = cY;
+				pC = command;
+				command = (command - 1 + n) % n;
+				cY = command + 5;
+			}
+			else
+				if (Console::KeyPress(KeyCode::DOWN) || Console::KeyPress(KeyCode::S)) {
+					pY = cY;
+					pC = command;
+					command = (command + 1) % n;
+					cY = command + 5;
+				}
 	} while (isRunning);
 }
 

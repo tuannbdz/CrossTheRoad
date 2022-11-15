@@ -242,9 +242,16 @@ void Game::PauseGame(thread& t, void (*func)()) {
 
 void Game::GameOver(void (*func)(), Menu& menu)
 {
-	pl.SetSprite({ L"\\0/", L" |", L"/ \\" });
-	pl.Draw(); 
-	Sleep(100); 
+	this_thread::sleep_for(milliseconds(20));
+	for (int i = 0; i < 3; i++)
+	{
+		pl.SetSprite({ L"\\0/", L" | ", L"/ \\" });
+		pl.Draw(); 
+		this_thread::sleep_for(milliseconds(100));
+		pl.SetSprite({ L" 0 ", L"/|\\", L"/ \\" });
+		pl.Draw(); 
+		this_thread::sleep_for(milliseconds(100));
+	}
 	Graphics::ClearScreen(); 
 
 	//--------------Draw animation
@@ -289,52 +296,55 @@ void Game::GameOver(void (*func)(), Menu& menu)
 	Graphics::DrawTexts("BACK TO MENU", { 83, 21 }, unselectedColor);
 
 	vector<Button>buttons = {b_replay, b_menu };
+
 	bool game_over_running = 1;
 
 	int cY = 20, command = 0;
 	int pY = cY, pC = command, cX = 56;
-
+	
 
 	do
 	{
 		int n = buttons.size();
 		//reset color of previous command
-		Console::gotoxy(cX, pY);
-		buttons[pC].Draw(unselectedColor);
+		if (pY != cY) {
+			Console::gotoxy(cX, pY);
+			buttons[pC].Draw(unselectedColor);
+		}
 
 		Console::gotoxy(cX, cY);
 		buttons[command].Draw(selectedColor);
 
-		int c = toupper(_getch());
-		switch (c)
-		{
-		case 'W':case KEY_UP:
-			pY = cY;
-			pC = command;
-			command = (command - 1 + n) % n;
-			cY = command + 5;
-			break;
-		case 'S':case KEY_DOWN:
-			pY = cY;
-			pC = command;
-			command = (command + 1) % n;
-			cY = command + 5;
-			break;
-		case KEY_ENTER: case KEY_SPACE:
+		if (Console::KeyPress(KeyCode::ENTER)) {
+			this_thread::sleep_for(milliseconds(50));
 			if (command == 0)
 			{
 				ResetGame();
-				menu.setMenuStatus(1, 0); 
+				menu.setMenuStatus(1, 0);
 			}
 			else
 			{
-				menu.setMenuStatus(0, 1); 
+				menu.setMenuStatus(0, 1);
 			}
 			game_over_running = false;
-			break;
 		}
+		else
+			if (Console::KeyPress(KeyCode::UP) || Console::KeyPress(KeyCode::W)){
+				pY = cY;
+				pC = command;
+				command = (command - 1 + n) % n;
+				cY = command + 5;
+			}
+		else
+			if (Console::KeyPress(KeyCode::DOWN) || Console::KeyPress(KeyCode::S)) {
+				pY = cY;
+				pC = command;
+				command = (command + 1) % n;
+				cY = command + 5;
+			}
 
 	} while (game_over_running);
+	fflush(stdin);
 }
 
 void Game::UpdatePlayer() {
