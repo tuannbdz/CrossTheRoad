@@ -135,9 +135,10 @@ void Graphics::DrawGraphics(COORD pos, const std::string& filename, const Color&
 
 void Graphics::DrawGraphics(const vector<string>& sprite, COORD pos, const Color& color) {
 	Console::SetColor(color);
+
 	for (auto& row : sprite) {
 		Console::GotoXY(pos);
-		cout << row;
+		cerr << row;
 		pos.Y++;
 	}
 }

@@ -27,6 +27,14 @@ Player::Player(int _x, int _y) {
 Player::~Player() {
 
 }
+
+void Player::SetSprite(vector<wstring>s)
+{
+    sprite.clear(); 
+    for (wstring line : s)
+        sprite.push_back(line); 
+}
+
 void Player::SetX(int a) {
     x = a;
 }

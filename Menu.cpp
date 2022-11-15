@@ -24,19 +24,19 @@ bool Menu::getIsRunning() const
 }
 void Menu::AddMainMenuButtons()
 {
-	this->buttons.push_back(Button("New Game", { 75, 14 },	UNSELECTED_COLOR, "graphics/Menu/buttons/new_game.txt"));
-	this->buttons.push_back(Button("Load Game",{ 75, 19 },	UNSELECTED_COLOR, "graphics/Menu/buttons/load_game.txt"));
-	this->buttons.push_back(Button("Settings", { 75, 24 },	UNSELECTED_COLOR, "graphics/Menu/buttons/Settings.txt"));
-	this->buttons.push_back(Button("About",	   { 75, 29 },	UNSELECTED_COLOR, "graphics/Menu/buttons/about.txt"));
-	this->buttons.push_back(Button("Exit",	   { 75, 34 },	UNSELECTED_COLOR, "graphics/Menu/buttons/Exit.txt"));
+	buttons.push_back(Button("New Game", { 75, 14 },	UNSELECTED_COLOR, "graphics/Menu/buttons/new_game.txt"));
+	buttons.push_back(Button("Load Game",{ 75, 19 },	UNSELECTED_COLOR, "graphics/Menu/buttons/load_game.txt"));
+	buttons.push_back(Button("Settings", { 75, 24 },	UNSELECTED_COLOR, "graphics/Menu/buttons/Settings.txt"));
+	buttons.push_back(Button("About",	   { 75, 29 },	UNSELECTED_COLOR, "graphics/Menu/buttons/about.txt"));
+	buttons.push_back(Button("Exit",	   { 75, 34 },	UNSELECTED_COLOR, "graphics/Menu/buttons/Exit.txt"));
 }
 
 void Menu::AddSettingButtons()
 {
-	this->buttons.push_back(Button("Background Music",	{ 75, 14 }, UNSELECTED_COLOR, "graphics/Menu/settings/bg_music.txt"));
-	this->buttons.push_back(Button("Sound effect",		{ 75, 19 }, UNSELECTED_COLOR, "graphics/Menu/settings/sound.txt"));
-	this->buttons.push_back(Button("Level",				{ 75, 24 }, UNSELECTED_COLOR, "graphics/Menu/settings/level.txt"));
-	this->buttons.push_back(Button("Return",			{ 75, 29 }, UNSELECTED_COLOR, "graphics/Menu/settings/return.txt"));
+	buttons.push_back(Button("Background Music",	{ 75, 14 }, UNSELECTED_COLOR, "graphics/Menu/settings/bg_music.txt"));
+	buttons.push_back(Button("Sound effect",		{ 75, 19 }, UNSELECTED_COLOR, "graphics/Menu/settings/sound.txt"));
+	buttons.push_back(Button("Level",				{ 75, 24 }, UNSELECTED_COLOR, "graphics/Menu/settings/level.txt"));
+	buttons.push_back(Button("Return",			{ 75, 29 }, UNSELECTED_COLOR, "graphics/Menu/settings/return.txt"));
 }
 
 void Menu::DrawMainMenu()
@@ -53,6 +53,8 @@ void Menu::DrawMainMenu()
 		buttons[i].DrawGraphics(); 
 
 }
+
+
 
 void Menu::DrawSettings()
 {
@@ -72,7 +74,7 @@ void Menu::DrawLoadGame()
 	Graphics::ClearScreen();
 	buttons.clear();
 	Graphics::drawBlueGradientGraphics({ 10, 0 }, "graphics/Menu/title.txt");
-	Graphics::DrawGraphics({ 58, 6 }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightaqua));
+	Graphics::DrawGraphics({ 58, 6 }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
 	Console::SetFont(L"Consolas Bold"); 
 	Graphics::DrawTexts("NAME", { 64, 8 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("LEVEl", { 96, 8 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
@@ -80,7 +82,22 @@ void Menu::DrawLoadGame()
 	Graphics::DrawTexts("BACK [B]", { 63, 36 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("RETURN [R]", { 85, 36 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("NEXT [N]", { 108, 36 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	system("pause >nul"); 
+}
+
+void Menu::HookLoadGame()
+{
+	int c; 
+	do
+	{
+		c = toupper(_getch());
+		//load game more stuffs here
+		if (c == 'R')
+		{
+			setMenuStatus(false, true);
+			DrawMainMenu();
+			return;
+		}
+	} while (c != 'R');
 }
 
 void Menu::DrawAbout()
@@ -89,13 +106,13 @@ void Menu::DrawAbout()
 	buttons.clear();
 	Console::SetFont(L"Consolas Bold"); 
 	Graphics::drawBlueGradientGraphics({ 10, 0 }, "graphics/Menu/title.txt");
-	Graphics::DrawGraphics({ 58, 15 }, "graphics/Menu/about_screen.txt", Graphics::GetColor(Color::lightblue, Color::lightaqua));
+	Graphics::DrawGraphics({ 58, 15 }, "graphics/Menu/about_screen.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
 
 }
 
 void Menu::Run()
 {
-	AddMainMenuButtons(); 
+	//AddMainMenuButtons(); 
 	DrawMainMenu(); 
 	ChooseCommand(75, 14, Mode::mainMenu); 
 
@@ -103,8 +120,9 @@ void Menu::Run()
 
 void Menu::ChooseCommand(int cX, int cY, Mode mode)
 {
+	//pY : previous Y, cY = current Y the command is at
 	int pY = cY;
-	int pC = this->command;
+	int pC = command;
 	
 	do
 	{
@@ -114,22 +132,22 @@ void Menu::ChooseCommand(int cX, int cY, Mode mode)
 		buttons[pC].DrawGraphics(UNSELECTED_COLOR); 
 
 		Console::gotoxy(cX, cY);
-		buttons[this->command].DrawGraphics(SELECTED_COLOR);
+		buttons[command].DrawGraphics(SELECTED_COLOR);
 
 		int c = toupper(_getch());
 		switch (c)
 		{
 		case 'W':case KEY_UP:
 			pY = cY;
-			pC = this->command;
-			this->command = (this->command - 1 + n) % n;
-			cY = this->command + 5;
+			pC = command;
+			command = (command - 1 + n) % n;
+			cY = command + 5;
 			break;
 		case 'S':case KEY_DOWN:
 			pY = cY;
-			pC = this->command;
-			this->command = (this->command + 1) % n;
-			cY = this->command + 5;
+			pC = command;
+			command = (command + 1) % n;
+			cY = command + 5;
 			break;
 		case KEY_ENTER: case KEY_SPACE:
 			ExecuteCommands(mode); 
@@ -142,21 +160,20 @@ void Menu::ChooseCommand(int cX, int cY, Mode mode)
 void Menu::ExecuteCommands(const Mode& mode)
 {
 	int n = buttons.size();
-
+	int c; 
 
 	if (mode == Mode::mainMenu)
 	{
-		switch (this->command)
+		switch (command)
 		{
 			case (int)MainMenuButtons::newGame:
-			buttons[this->command].DrawEffect(SELECTED_COLOR);
+			buttons[command].DrawEffect(SELECTED_COLOR);
 			setMenuStatus(true, false); 
 			return; 
 		case (int)MainMenuButtons::loadGame:
 			DrawLoadGame(); 
-			//hookloadgame() or sth
-			setMenuStatus(false, false); 
-			return; 
+			HookLoadGame(); 
+
 			break;
 		case (int)MainMenuButtons::settings:
 			//Graphics::RemoveArea({75, 14}, {125, 35}); 
@@ -166,8 +183,18 @@ void Menu::ExecuteCommands(const Mode& mode)
 		case (int)MainMenuButtons::about:
 			DrawAbout(); 
 			//hookabout() or sth
-			setMenuStatus(false, false);
-			return; 
+			do
+			{
+				c = toupper(_getch());
+
+				if (c == 'R')
+				{
+					setMenuStatus(false, true);
+					DrawMainMenu();
+					return;
+				}
+			} while (c != 'R');
+
 			break;
 		case (int)MainMenuButtons::exit:
 			exit(0);
@@ -176,7 +203,7 @@ void Menu::ExecuteCommands(const Mode& mode)
 	}
 	else if (mode == Mode::settings)
 	{
-		switch (this->command)
+		switch (command)
 		{
 		case (int)SettingButtons::bg_music: 
 			break; 
@@ -191,5 +218,14 @@ void Menu::ExecuteCommands(const Mode& mode)
 			break;
 		}
 
+	}
+}
+
+void Menu::setButtons(const vector<Button>& newButtons)
+{
+	buttons.clear(); 
+	for (Button button : newButtons)
+	{
+		buttons.push_back(button); 
 	}
 }
