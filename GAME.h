@@ -14,6 +14,8 @@
 class Game {
 private:
 	bool g_running;
+	int level;
+	int speed;
 	//bool t_running;
 	Player pl;
 	vector< Truck* > tr;
@@ -24,13 +26,17 @@ private:
 	
 public:
 	Game();
+	Game(int);
 	~Game();
+	void Init(int);
 	void Init();
+	void LoadMap1();
+	void LoadMap2();
+	void LoadMap3();
 
 	Player getPlayer();
 
 	void DrawGame();
-	void StartGame();
 	void ResetGame();
 	void PauseGame(thread &, void (*func)());
 	void ExitGame(thread &);

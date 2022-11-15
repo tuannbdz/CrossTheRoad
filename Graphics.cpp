@@ -142,6 +142,15 @@ void Graphics::DrawGraphics(const vector<string>& sprite, COORD pos, const Color
 	}
 }
 
+void Graphics::DrawGraphics(const vector<wstring>& sprite, COORD pos, const Color& color) {
+	Console::SetColor(color);
+	for (auto& row : sprite) {
+		Console::GotoXY(pos);
+		wcout << row;
+		pos.Y++;
+	}
+}
+
 void Graphics::DrawGraphics(const vector<wstring>& sprite, COORD pos, int x, int y, int width, int height, const Color& color) {
 	Console::SetColor(color);
 	for (int h = y; h < y + height; h++, pos.Y++) {
