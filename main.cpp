@@ -8,6 +8,7 @@ bool t_running;
 thread t_game;
 Game *g = new Game();
 
+
 void ProcessGame() {
     this_thread::sleep_for(milliseconds(10));
     while (g->isRunning() && t_running) {
@@ -19,13 +20,19 @@ void ProcessGame() {
     }
 }
 
-void StartGame() {
+void StartGame(Menu& menu) {
+    g->DrawGame(); 
+
+    //checks before assigning thread or else abort() will be called
+    if (t_game.joinable())
+        t_game.join(); 
     t_game = thread(ProcessGame);
-    while (g->isRunning()) {
+
+    while (g != NULL && g->isRunning()) {
         int Inst_command = tolower(_getch());
         switch (Inst_command) {
             case VK_ESCAPE: {
-                if (t_running) g->ExitGame(t_game);
+                if (t_running) g->ExitGame(t_game, g, menu);
                 break;
             }
             case 'r': {
@@ -34,19 +41,33 @@ void StartGame() {
             }
         }
     }
-    if (t_running) g->ExitGame(t_game);
+    if (g != NULL && t_running)
+    {
+        g->GameOver(&ProcessGame, menu);
+        if (!menu.getGameStartedStatus())
+            g->ExitGame(t_game, g, menu);
+    }
 }
 
 void RunGame() {
     Menu menu;
-    BLOCK1:
-    menu.Run();
-    if (menu.getGameStartedStatus() && !menu.getIsRunning()) {
-        g->DrawGame();
-        StartGame();
+    
+BLOCK1:
+    g = new Game(); 
+    
+    if (menu.getIsRunning() && !menu.getGameStartedStatus())
+    {
+        menu.Run();
     }
-    g->ResetGame();
-    menu= Menu();
+    
+    if (menu.getGameStartedStatus() && !menu.getIsRunning())
+    {
+        StartGame(menu);
+    }
+    //t_game = thread(ProcessGame);
+    //menu= Menu();
+
+    
     goto BLOCK1;
 }
 

@@ -14,8 +14,7 @@
 class Game {
 private:
 	bool g_running;
-	int level;
-	int speed;
+	int score, level;
 	//bool t_running;
 	Player pl;
 	vector< Truck* > tr;
@@ -37,9 +36,11 @@ public:
 	Player getPlayer();
 
 	void DrawGame();
+	void StartGame(Menu& menu);
 	void ResetGame();
 	void PauseGame(thread &, void (*func)());
-	void ExitGame(thread &);
+	void GameOver(void (*func)(), Menu& menu);
+	void ExitGame(thread &, Game* & g, Menu& menu);
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
 
@@ -48,6 +49,7 @@ public:
 	void UpdateBike();
 	void UpdateCar();
 	void UpdateShark();
+	void setMap(); 
 };
 
 const int boardX = 10;

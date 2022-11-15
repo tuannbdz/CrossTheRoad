@@ -74,7 +74,7 @@ void Button::DrawEffect(const Color& color)
 		DrawGraphics(color);
 		Sleep(100);
 	}
-	Draw(color);
+	//Draw(color);
 }
 
 void Button::SetText(const string& text)

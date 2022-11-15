@@ -20,6 +20,7 @@ public:
 	void SetX(int);
 	void SetY(int);
 	void SetState(short);
+	void SetSprite(vector<wstring>s); 
 	void SetXY(int, int);
 	void Move();
 	//void isCollide(const OBSTACLE*&);
