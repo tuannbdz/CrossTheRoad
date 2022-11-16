@@ -217,7 +217,7 @@ void Game::ExitGame(thread& t, Game* & g, Menu& menu) {
 }
 
 bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2, const int& x3, const int& y3, const int& x4, const int& y4) {
-	bool c1 = min(x2, x4) > max(x1, x3);
+	bool c1 = min(x2, x4) >= max(x1, x3);
 	bool c2 = min(y2, y4) > max(y1, y3);
 	return c1 && c2;
 }
@@ -229,7 +229,7 @@ void Game::PauseGame(thread& t, void (*func)()) {
 	if (t_running) {
 		t_running = 0;
 		t.join();
-		Graphics::DrawGraphics({ 48, 15 }, "graphics/Game/pause_frame.txt", Graphics::GetColor(Color::gray, Color::lightblue));
+		Graphics::DrawGraphics({ 48, 15 }, "graphics/Game/pause_frame.txt", Graphics::GetColor(Color::white, Color::black));
 		Graphics::DrawTexts("GAME IS PAUSED.", { 60, 19 }, Graphics::GetColor(Color::gray, Color::brightwhite));
 		Graphics::DrawTexts("PRESS R TO RESUME.", { 60, 20 }, Graphics::GetColor(Color::gray, Color::brightwhite));
 	}

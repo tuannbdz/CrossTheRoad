@@ -78,7 +78,7 @@ void Player::Move() {
     }
 
     Player::Draw();
-    this_thread::sleep_for(milliseconds(2));
+    this_thread::sleep_for(milliseconds(10));
 }
 
 //void Player::isCollide(const OBSTACLE*& ob) {
