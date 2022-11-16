@@ -258,7 +258,6 @@ void Game::GameOver(void (*func)(), Menu& menu)
 
 	//--------------Draw animation
 	DrawGame();
-
 	vector<string> firework = Graphics::GetGraphics("graphics/Game/game_over/firework_flying.txt");
 	vector<string>effect1 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect.txt"); 
 	vector<string>effect2 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect2.txt");
@@ -278,17 +277,6 @@ void Game::GameOver(void (*func)(), Menu& menu)
 		Sleep(200); 
 		//Graphics::RemoveArea({ x_pos, y_pos }, {short( x_pos + firework[0].size() + 1), (short)(y_pos + firework.size() - 1)});
 		Graphics::DrawGraphics(g_board, { x_pos, y_pos }, curCol, row - fw_row - 1, fw_col + 3, fw_row, Graphics::GetColor(Color::gray, Color::brightwhite));
-		/*for (auto& i : car)
-			i->Draw();
-
-		for (auto& i : tr)
-			i->Draw();
-
-		for (auto& i : bike)
-			i->Draw();
-
-		for (auto& i : shark)
-			i->Draw();*/
 		x_pos += 10, y_pos -= 4; 
 		curCol += fw_col + 2;
 		row -= 4;
