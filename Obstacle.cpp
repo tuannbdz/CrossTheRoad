@@ -2,22 +2,6 @@
 #include "console.h"
 #include "Game.h"
 
-int Obstacle::GetX() {
-    return x;
-}
-
-int Obstacle::GetY() {
-    return y;
-}
-
-int Obstacle::GetBX() {
-    return x + sprite[0].size();
-}
-
-int Obstacle::GetBY() {
-    return y + sprite.size();
-}
-
 void Obstacle::SetX(int _x) {
     x = _x;
 }
@@ -28,6 +12,42 @@ void Obstacle::SetXY(int _x, int _y) {
     x = _x;
     y = _y;
 }
+void Obstacle::SetSpeed(int s) {
+    speed = s;
+}
+void Obstacle::SetDir(int d) {
+    dir = d;
+}
+void Obstacle::SetData(int _x, int _y, int _speed, int _dir) {
+    x = _x;
+    y = _y;
+    speed = _speed;
+    dir = _dir;
+}
+
+int Obstacle::GetX() {
+    return x;
+}
+
+int Obstacle::GetY() {
+    return y;
+}
+int Obstacle::GetSpeed() {
+    return speed;
+}
+
+int Obstacle::GetDir() {
+    return dir;
+}
+
+int Obstacle::GetBX() {
+    return x + sprite[0].size();
+}
+
+int Obstacle::GetBY() {
+    return y + sprite.size();
+}
+
 void Obstacle::Draw() {
     Console::SetColor(color);
     for (int i = 0; i < sprite.size(); i++)

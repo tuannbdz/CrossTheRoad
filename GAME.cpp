@@ -48,6 +48,12 @@ void Game::InitLevel(int _l) {
 		bike.push_back(new Bike(110, 12));
 		bike.push_back(new Bike(130, 12));
 		bike.push_back(new Bike(150, 12));
+
+		tl.resize(4);
+		tl[0].SetXY(0, 28);
+		tl[1].SetXY(0, 23);
+		tl[2].SetXY(0, 17);
+		tl[3].SetXY(0, 12);
 	}
 }
 
@@ -195,6 +201,10 @@ Game::~Game(){
 	bike.clear();
 }
 
+vector<TLight>& Game::GetTLight() {
+	return tl;
+}
+
 void Game::DrawGame() {
 	Graphics::ClearScreen();
 
@@ -225,6 +235,97 @@ bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2,
 bool Game::isRunning() {
 	return g_running;
 }
+
+void writeBin(ostream& out, int& data) {
+	out.write(reinterpret_cast<char*>(&data), sizeof(data));
+}
+
+void readBin(istream& in, int& data) {
+	in.read(reinterpret_cast<char*>(&data), sizeof(data));
+}
+
+template <class T> void writeVector(vector<T*>& obj, ostream& out) {
+	int vecSize = obj.size();
+	writeBin(out, vecSize);
+	for (auto& o : obj) {
+		int oX = o->GetX(), oY = o->GetY(), oSp = o->GetSpeed(), oDir = o->GetDir();
+		writeBin(out, oX);
+		writeBin(out, oY);
+		writeBin(out, oSp);
+		writeBin(out, oDir);
+	}
+}
+
+template <class T> void readVector(vector<T*>& obj, istream& in) {
+	int vecSize;
+	readBin(in, vecSize);
+	obj.clear();
+	obj.resize(vecSize);
+	for (auto& o : obj) {
+		o = new T();
+		int oX, oY, oSp, oDir;
+		readBin(in, oX);
+		readBin(in, oY);
+		readBin(in, oSp);
+		readBin(in, oDir);
+		o->SetData(oX, oY, oSp, oDir);
+	}
+}
+void Game::writeFile() {
+	ofstream out("saveGame.txt", ios::binary);
+	// write player
+	int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
+	writeBin(out, pX);
+	writeBin(out, pY);
+	writeBin(out, state);
+	// write obstacles
+	writeVector<Truck>(tr, out);
+	writeVector<Car>(car, out);
+	writeVector<Bike>(bike, out);
+	writeVector<Shark>(shark, out);
+	out.close();
+}
+void Game::readFile(Game*& g) {
+	ifstream in("saveGame.txt", ios::binary);
+	int x, y, state;
+	readBin(in, x);
+	readBin(in, y);
+	readBin(in, state);
+	g->pl.SetData(x, y, state);
+	readVector<Truck>(tr, in);
+	readVector<Car>(car, in);
+	readVector<Bike>(bike, in);
+	readVector<Shark>(shark, in);
+	in.close();
+}
+
+void Game::SaveGame(thread& t, void (*func)()) {
+	if (t_running) {
+		t_running = 0;
+		t.join();
+		writeFile();
+	}
+	else {
+		DrawGame();
+		t_running = 1;
+		t = thread(func);
+	}
+}
+
+void Game::LoadGame(thread& t, void (*func)(), Game*& loadGame) {
+	if (t_running) {
+		t_running = 0;
+		t.join();
+	}
+	else {
+		readFile(loadGame);
+		t_running = 1;
+		DrawGame();
+		t = thread(func);
+
+	}
+}
+
 void Game::PauseGame(thread& t, void (*func)()) {
 	if (t_running) {
 		t_running = 0;

@@ -8,6 +8,7 @@
 #include "Car.h"
 #include "Bike.h"
 #include "Shark.h"
+#include "TLight.h"
 //#include "Console.h" //not supposed to include them here so this is temporary
 //#include "Graphics.h"
 
@@ -18,6 +19,7 @@ private:
 	int speed;
 	//bool t_running;
 	Player pl;
+	vector<TLight> tl;
 	vector< Truck* > tr;
 	vector< Car* > car;
 	vector< Bike* > bike;
@@ -31,7 +33,10 @@ public:
 	void Init();
 	void InitLevel(int);
 
+	void setMap(); 
+
 	Player getPlayer();
+	vector<TLight>& GetTLight();
 
 	void DrawGame();
 	void StartGame(Menu& menu);
@@ -39,6 +44,8 @@ public:
 	void PauseGame(thread &, void (*func)());
 	void GameOver(void (*func)(), Menu& menu);
 	void ExitGame(thread &, Game* & g, Menu& menu);
+	void SaveGame(thread&, void (*func)());
+	void LoadGame(thread&, void (*func)(), Game*&);
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
 
@@ -47,7 +54,10 @@ public:
 	void UpdateBike();
 	void UpdateCar();
 	void UpdateShark();
-	void setMap(); 
+	void UpdateTLight();
+
+	void writeFile();
+	void readFile(Game*&);
 };
 
 const int boardX = 10;

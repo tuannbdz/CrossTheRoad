@@ -19,9 +19,10 @@ public:
 	vector<wstring> getSprite() { return sprite; };
 	void SetX(int);
 	void SetY(int);
+	void SetXY(int, int);
 	void SetState(short);
 	void SetSprite(vector<wstring>s); 
-	void SetXY(int, int);
+	void SetData(int, int, int);
 	void Move();
 	~Player();
 };
