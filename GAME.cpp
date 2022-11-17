@@ -220,7 +220,6 @@ void Game::DrawGame() {
 	Graphics::DrawGraphics({ 138, 2 }, "graphics/Game/controls.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 }
 
-
 void Game::ExitGame(thread& t, Game* & g, Menu& menu) {
 	t_running = 0;
 	if (t.joinable())
@@ -231,7 +230,7 @@ void Game::ExitGame(thread& t, Game* & g, Menu& menu) {
 }
 
 bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2, const int& x3, const int& y3, const int& x4, const int& y4) {
-	bool c1 = min(x2, x4) > max(x1, x3);
+	bool c1 = min(x2, x4) >= max(x1, x3);
 	bool c2 = min(y2, y4) > max(y1, y3);
 	return c1 && c2;
 }
@@ -276,21 +275,40 @@ template <class T> void readVector(vector<T*>& obj, istream& in) {
 	}
 }
 
+void Game::writeFile() {
+	ofstream out("saveGame.txt", ios::binary);
+	// write player
+	int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
+	writeBin(out, pX);
+	writeBin(out, pY);
+	writeBin(out, state);
+	// write obstacles
+	writeVector<Truck>(tr, out);
+	writeVector<Car>(car, out);
+	writeVector<Bike>(bike, out);
+	writeVector<Shark>(shark, out);
+	out.close();
+}
+
+void Game::readFile(Game*& g) {
+	ifstream in("saveGame.txt", ios::binary);
+	int x, y, state;
+	readBin(in, x);
+	readBin(in, y);
+	readBin(in, state);
+	g->pl.SetData(x, y, state);
+	readVector<Truck>(tr, in);
+	readVector<Car>(car, in);
+	readVector<Bike>(bike, in);
+	readVector<Shark>(shark, in);
+	in.close();
+}
+
 void Game::SaveGame(thread& t, void (*func)()) {
 	if (t_running) {
 		t_running = 0;
-		ofstream out("saveGame.txt", ios::binary);
-		// write player
-		int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
-		writeBin(out, pX);
-		writeBin(out, pY);
-		writeBin(out, state);
-		// write obstacles
-		writeVector<Truck>(tr, out);
-		writeVector<Car>(car, out);
-		writeVector<Bike>(bike, out);
-		writeVector<Shark>(shark, out);
-		out.close();
+		t.join();
+		writeFile();
 	}
 	else {
 		t_running = 1;
@@ -353,6 +371,7 @@ void Game::GameOver(void (*func)(), Menu& menu)
 	//Graphics::ClearScreen(); 
 
 	//--------------Draw animation
+	DrawGame();
 	vector<string> firework = Graphics::GetGraphics("graphics/Game/game_over/firework_flying.txt");
 	vector<string>effect1 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect.txt"); 
 	vector<string>effect2 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect2.txt");
