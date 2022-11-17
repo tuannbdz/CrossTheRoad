@@ -13,12 +13,19 @@ protected:
 	int dir;
 public:
 	void SetX(int);
-	int GetX();
-	int GetY();
-	int GetBX();
-	int GetBY();
 	void SetY(int);
 	void SetXY(int, int);
+	void SetSpeed(int);
+	void SetDir(int);
+	void SetData(int, int, int, int);
+
+	int GetX();
+	int GetY();
+	int GetSpeed();
+	int GetDir();
+	int GetBX();
+	int GetBY();
+
 	void Draw();
 	void Draw(int, int, int, int);
 	void Move();

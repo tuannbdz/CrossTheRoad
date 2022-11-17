@@ -9,15 +9,36 @@ bool t_running;
 thread t_game;
 Game *g = new Game();
 
+void ProcessTLight() {
+    int i = 0;
+    while (1) {
+        this_thread::sleep_for(milliseconds(500));
+        i = (i + 1) % 50;
+        if (i % 2 == 0)
+            g->GetTLight()[0].SetState(g->GetTLight()[0].IsGreen() ^ 1);
+        if (i % 7 == 0)
+            g->GetTLight()[1].SetState(g->GetTLight()[1].IsGreen() ^ 1);
+        if (i % 12 == 0)
+            g->GetTLight()[2].SetState(g->GetTLight()[2].IsGreen() ^ 1);
+        if (i % 16 == 0)
+            g->GetTLight()[3].SetState(g->GetTLight()[3].IsGreen() ^ 1);
+    }
+}
 
 void ProcessGame() {
     this_thread::sleep_for(milliseconds(10));
     while (g->isRunning() && t_running) {
         g->UpdatePlayer();
-        g->UpdateCar();
-        g->UpdateTruck();
-        g->UpdateBike();
-        g->UpdateShark();
+        for (auto& t : g->GetTLight())
+            t.DrawSelf();
+        if (g->GetTLight()[3].IsGreen())
+            g->UpdateBike();
+        if (g->GetTLight()[2].IsGreen())
+            g->UpdateCar();
+        if (g->GetTLight()[1].IsGreen())
+            g->UpdateShark();
+        if (g->GetTLight()[0].IsGreen())
+            g->UpdateTruck();
     }
 }
 
@@ -28,6 +49,7 @@ void StartGame(Menu& menu) {
     if (t_game.joinable())
         t_game.join(); 
     t_game = thread(ProcessGame);
+    thread t_tlight(ProcessTLight);
 
     while (g != NULL && g->isRunning()) {
         if(Console::KeyPress(KeyCode::ESC)){
@@ -37,7 +59,14 @@ void StartGame(Menu& menu) {
         if (Console::KeyPress(KeyCode::R)){
             g->PauseGame(t_game, &ProcessGame);
         }
-        
+        else
+        if (Console::KeyPress(KeyCode::L)) {
+            g->SaveGame(t_game, &ProcessGame);
+        }
+        else
+        if (Console::KeyPress(KeyCode::T)) {
+            g->LoadGame(t_game, &ProcessGame, g);
+        }
     }
     if (g != NULL && t_running)
     {

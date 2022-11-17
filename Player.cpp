@@ -47,6 +47,11 @@ void Player::SetXY(int a, int b) {
 void Player::SetState(short _s) {
     state = _s;
 }
+void Player::SetData(int _x, int _y, int _state) {
+    x = _x;
+    y = _y;
+    state = _state;
+}
 void Player::Draw() {
     Console::SetColor(color);
     Console::gotoxy(x, y);
