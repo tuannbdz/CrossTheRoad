@@ -216,7 +216,6 @@ void Game::DrawGame() {
 	Graphics::DrawGraphics({ 138, 2 }, "graphics/Game/controls.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 }
 
-
 void Game::ExitGame(thread& t, Game* & g, Menu& menu) {
 	t_running = 0;
 	if (t.joinable())
@@ -271,6 +270,7 @@ template <class T> void readVector(vector<T*>& obj, istream& in) {
 		o->SetData(oX, oY, oSp, oDir);
 	}
 }
+
 void Game::writeFile() {
 	ofstream out("saveGame.txt", ios::binary);
 	// write player
@@ -285,6 +285,7 @@ void Game::writeFile() {
 	writeVector<Shark>(shark, out);
 	out.close();
 }
+
 void Game::readFile(Game*& g) {
 	ifstream in("saveGame.txt", ios::binary);
 	int x, y, state;

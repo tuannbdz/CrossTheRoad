@@ -7,11 +7,12 @@
 vector<wstring>g_board;
 bool t_running;
 thread t_game;
+thread t_tlight;
 Game *g = new Game();
 
 void ProcessTLight() {
     int i = 0;
-    while (1) {
+    while (t_running) {
         this_thread::sleep_for(milliseconds(500));
         i = (i + 1) % 50;
         if (i % 2 == 0)
@@ -49,11 +50,15 @@ void StartGame(Menu& menu) {
     if (t_game.joinable())
         t_game.join(); 
     t_game = thread(ProcessGame);
-    thread t_tlight(ProcessTLight);
+    t_tlight = thread(ProcessTLight);
 
     while (g != NULL && g->isRunning()) {
         if(Console::KeyPress(KeyCode::ESC)){
-            if (t_running) g->ExitGame(t_game, g, menu);
+            if (t_running)
+            {
+                if (t_tlight.joinable()) t_tlight.join();
+                g->ExitGame(t_game, g, menu);
+            }
         }
         else
         if (Console::KeyPress(KeyCode::R)){
@@ -72,6 +77,7 @@ void StartGame(Menu& menu) {
     {
         t_running = 0;
         t_game.join();
+        if(t_tlight.joinable()) t_tlight.join();
         g->GameOver(&ProcessGame, menu);
        // if (!menu.getGameStartedStatus())
          //   g->ExitGame(t_game, g, menu);
