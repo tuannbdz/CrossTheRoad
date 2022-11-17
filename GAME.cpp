@@ -358,6 +358,7 @@ void Game::GameOver(void (*func)(), Menu& menu)
 	//Graphics::ClearScreen(); 
 
 	//--------------Draw animation
+	DrawGame();
 	vector<string> firework = Graphics::GetGraphics("graphics/Game/game_over/firework_flying.txt");
 	vector<string>effect1 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect.txt"); 
 	vector<string>effect2 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect2.txt");
