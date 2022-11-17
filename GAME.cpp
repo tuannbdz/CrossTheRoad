@@ -225,10 +225,11 @@ template <class T> void drawVector(vector<T*>& obj) {
 		o->UpdateSprite();
 }
 
-void Game::ExitGame(thread& t, Game* & g, Menu& menu) {
+void Game::ExitGame(thread& t, thread& tl, Game* & g, Menu& menu) {
 	t_running = 0;
-	if (t.joinable())
-		t.join();
+	t.join();
+	tl.join();
+	g->g_running = 0;
 	menu.setMenuStatus(0, 1); 
 	delete g; 
 	g = NULL; 

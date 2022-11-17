@@ -65,8 +65,7 @@ void StartGame(Menu& menu) {
         if(Console::KeyPress(KeyCode::ESC)){
             if (t_running)
             {
-                if (t_tlight.joinable()) t_tlight.join();
-                g->ExitGame(t_game, g, menu);
+                g->ExitGame(t_game, t_tlight, g, menu);
             }
         }
         else
@@ -88,8 +87,6 @@ void StartGame(Menu& menu) {
         t_game.join();
         if(t_tlight.joinable()) t_tlight.join();
         g->GameOver(&ProcessGame, menu);
-       // if (!menu.getGameStartedStatus())
-         //   g->ExitGame(t_game, g, menu);
     }
 }
 
@@ -108,9 +105,6 @@ BLOCK1:
     {
         StartGame(menu);
     }
-    //t_game = thread(ProcessGame);
-    //menu= Menu();
-
     
     goto BLOCK1;
 }
