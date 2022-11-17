@@ -73,7 +73,7 @@ void StartGame(Menu& menu) {
         if (Console::KeyPress(KeyCode::R)){
             g->PauseGame(t_game, t_tlight, &ProcessGame, &ProcessTLight);
         }
-        /*else
+       else
         if (Console::KeyPress(KeyCode::L)) {
             g->SaveGame(t_game, t_tlight, &ProcessGame, &ProcessTLight);
         }

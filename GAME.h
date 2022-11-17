@@ -52,6 +52,7 @@ public:
 	void UpdateBike();
 	void UpdateCar();
 	void UpdateShark();
+	void UpdateTLight();
 
 	void DrawTruck();
 	void DrawBike();
