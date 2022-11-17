@@ -280,19 +280,26 @@ template <class T> void readVector(vector<T*>& obj, istream& in) {
 	}
 }
 
-void Game::writeFile() {
-	ofstream out("saveGame.txt", ios::binary);
-	// write player
-	int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
-	writeBin(out, pX);
-	writeBin(out, pY);
-	writeBin(out, state);
-	// write obstacles
-	writeVector<Truck>(tr, out);
-	writeVector<Car>(car, out);
-	writeVector<Bike>(bike, out);
-	writeVector<Shark>(shark, out);
-	out.close();
+void Game::SaveGame(thread& t, void (*func)()) {
+	if (t_running) {
+		t_running = 0;
+		t.join();
+		ofstream out("saveGame.txt", ios::binary);
+		// write player
+		int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
+		writeBin(out, pX);
+		writeBin(out, pY);
+		writeBin(out, state);
+		// write obstacles
+		writeVector<Truck>(tr, out);
+		writeVector<Car>(car, out);
+		writeVector<Bike>(bike, out);
+		writeVector<Shark>(shark, out);
+		out.close();
+	}
+	else {
+		t_running = 1;
+	}
 }
 
 void Game::readFile(Game*& g) {

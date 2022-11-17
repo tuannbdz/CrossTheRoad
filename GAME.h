@@ -17,7 +17,6 @@ private:
 	bool g_running;
 	int score, level;
 	int speed;
-	//bool t_running;
 	Player pl;
 	vector<TLight> tl;
 	vector< Bike* > bike;
@@ -53,7 +52,6 @@ public:
 	void UpdateBike();
 	void UpdateCar();
 	void UpdateShark();
-	void UpdateTLight();
 
 	void DrawTruck();
 	void DrawBike();
