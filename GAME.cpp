@@ -201,6 +201,10 @@ Game::~Game(){
 	bike.clear();
 }
 
+Player Game::getPlayer() {
+	return pl;
+}
+
 vector<TLight>& Game::GetTLight() {
 	return tl;
 }
@@ -271,44 +275,25 @@ template <class T> void readVector(vector<T*>& obj, istream& in) {
 		o->SetData(oX, oY, oSp, oDir);
 	}
 }
-void Game::writeFile() {
-	ofstream out("saveGame.txt", ios::binary);
-	// write player
-	int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
-	writeBin(out, pX);
-	writeBin(out, pY);
-	writeBin(out, state);
-	// write obstacles
-	writeVector<Truck>(tr, out);
-	writeVector<Car>(car, out);
-	writeVector<Bike>(bike, out);
-	writeVector<Shark>(shark, out);
-	out.close();
-}
-void Game::readFile(Game*& g) {
-	ifstream in("saveGame.txt", ios::binary);
-	int x, y, state;
-	readBin(in, x);
-	readBin(in, y);
-	readBin(in, state);
-	g->pl.SetData(x, y, state);
-	readVector<Truck>(tr, in);
-	readVector<Car>(car, in);
-	readVector<Bike>(bike, in);
-	readVector<Shark>(shark, in);
-	in.close();
-}
 
 void Game::SaveGame(thread& t, void (*func)()) {
 	if (t_running) {
 		t_running = 0;
-		t.join();
-		writeFile();
+		ofstream out("saveGame.txt", ios::binary);
+		// write player
+		int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
+		writeBin(out, pX);
+		writeBin(out, pY);
+		writeBin(out, state);
+		// write obstacles
+		writeVector<Truck>(tr, out);
+		writeVector<Car>(car, out);
+		writeVector<Bike>(bike, out);
+		writeVector<Shark>(shark, out);
+		out.close();
 	}
 	else {
-		DrawGame();
 		t_running = 1;
-		t = thread(func);
 	}
 }
 
@@ -318,7 +303,17 @@ void Game::LoadGame(thread& t, void (*func)(), Game*& loadGame) {
 		t.join();
 	}
 	else {
-		readFile(loadGame);
+		ifstream in("saveGame.txt", ios::binary);
+		int x, y, state;
+		readBin(in, x);
+		readBin(in, y);
+		readBin(in, state);
+		loadGame->pl.SetData(x, y, state);
+		readVector<Truck>(tr, in);
+		readVector<Car>(car, in);
+		readVector<Bike>(bike, in);
+		readVector<Shark>(shark, in);
+		in.close();
 		t_running = 1;
 		DrawGame();
 		t = thread(func);

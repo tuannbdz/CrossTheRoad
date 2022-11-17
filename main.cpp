@@ -27,6 +27,7 @@ void ProcessTLight() {
 
 void ProcessGame() {
     this_thread::sleep_for(milliseconds(10));
+    //PLAY:
     while (g->isRunning() && t_running) {
         g->UpdatePlayer();
         for (auto& t : g->GetTLight())
@@ -40,6 +41,7 @@ void ProcessGame() {
         if (g->GetTLight()[0].IsGreen())
             g->UpdateTruck();
     }
+    //goto PLAY;
 }
 
 void StartGame(Menu& menu) {
@@ -49,7 +51,7 @@ void StartGame(Menu& menu) {
     if (t_game.joinable())
         t_game.join(); 
     t_game = thread(ProcessGame);
-    thread t_tlight(ProcessTLight);
+    //thread t_tlight(ProcessTLight);
 
     while (g != NULL && g->isRunning()) {
         if(Console::KeyPress(KeyCode::ESC)){
@@ -59,14 +61,14 @@ void StartGame(Menu& menu) {
         if (Console::KeyPress(KeyCode::R)){
             g->PauseGame(t_game, &ProcessGame);
         }
-        else
+        /*else
         if (Console::KeyPress(KeyCode::L)) {
             g->SaveGame(t_game, &ProcessGame);
         }
         else
         if (Console::KeyPress(KeyCode::T)) {
             g->LoadGame(t_game, &ProcessGame, g);
-        }
+        }*/
     }
     if (g != NULL && t_running)
     {

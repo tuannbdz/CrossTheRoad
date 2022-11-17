@@ -17,7 +17,6 @@ private:
 	bool g_running;
 	int score, level;
 	int speed;
-	//bool t_running;
 	Player pl;
 	vector<TLight> tl;
 	vector< Truck* > tr;
@@ -54,10 +53,7 @@ public:
 	void UpdateBike();
 	void UpdateCar();
 	void UpdateShark();
-	void UpdateTLight();
 
-	void writeFile();
-	void readFile(Game*&);
 };
 
 const int boardX = 10;
