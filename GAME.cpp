@@ -201,6 +201,10 @@ Game::~Game(){
 	bike.clear();
 }
 
+Player& Game::GetPlayer() {
+	return pl;
+}
+
 vector<TLight>& Game::GetTLight() {
 	return tl;
 }
@@ -216,6 +220,11 @@ void Game::DrawGame() {
 	Graphics::DrawGraphics({ 138, 2 }, "graphics/Game/controls.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 }
 
+template <class T> void drawVector(vector<T*>& obj) {
+	for (auto& o : obj)
+		o->UpdateSprite();
+}
+
 void Game::ExitGame(thread& t, Game* & g, Menu& menu) {
 	t_running = 0;
 	if (t.joinable())
@@ -226,7 +235,7 @@ void Game::ExitGame(thread& t, Game* & g, Menu& menu) {
 }
 
 bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2, const int& x3, const int& y3, const int& x4, const int& y4) {
-	bool c1 = min(x2, x4) >= max(x1, x3);
+	bool c1 = min(x2, x4) > max(x1, x3);
 	bool c2 = min(y2, y4) > max(y1, y3);
 	return c1 && c2;
 }
@@ -300,9 +309,10 @@ void Game::readFile(Game*& g) {
 	in.close();
 }
 
-void Game::SaveGame(thread& t, void (*func)()) {
+void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	if (t_running) {
 		t_running = 0;
+		tl.join();
 		t.join();
 		writeFile();
 	}
@@ -310,12 +320,14 @@ void Game::SaveGame(thread& t, void (*func)()) {
 		DrawGame();
 		t_running = 1;
 		t = thread(func);
+		tl = thread(func2);
 	}
 }
 
-void Game::LoadGame(thread& t, void (*func)(), Game*& loadGame) {
+void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game*& loadGame) {
 	if (t_running) {
 		t_running = 0;
+		tl.join();
 		t.join();
 	}
 	else {
@@ -323,14 +335,16 @@ void Game::LoadGame(thread& t, void (*func)(), Game*& loadGame) {
 		t_running = 1;
 		DrawGame();
 		t = thread(func);
+		tl = thread(func2);
 
 	}
 }
 
-void Game::PauseGame(thread& t, void (*func)()) {
+void Game::PauseGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	if (t_running) {
 		t_running = 0;
-		t.join();
+		if(t.joinable()) t.join();
+		if(tl.joinable()) tl.join();
 		Graphics::DrawGraphics({ 48, 16 }, "graphics/Game/pause_frame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 		Graphics::DrawGraphics({ 55, 15 }, "graphics/Game/pause_text.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 		
@@ -341,6 +355,7 @@ void Game::PauseGame(thread& t, void (*func)()) {
 		Graphics::DrawGraphics(g_board, { 48, 15 }, 39, 9, 42, 11, Graphics::GetColor(Color::gray, Color::brightwhite));
 		t_running = 1;
 		t = thread(func);
+		tl = thread(func2);
 	}
 }
 
@@ -491,7 +506,7 @@ ed:
 	if (pl.GetState() == 0)
 	{
 		g_running = 0;
-		this_thread::sleep_for(milliseconds(10));
+		this_thread::sleep_for(milliseconds(5));
 	}
 }
 
@@ -513,4 +528,25 @@ void Game::UpdateBike() {
 void Game::UpdateShark() {
 	for (auto& i : shark)
 		i->Move();
+}
+
+void Game::UpdateTLight() {
+	for (auto& t : tl)
+		t.DrawSelf();
+}
+
+void Game::DrawBike() {
+	drawVector(bike);
+}
+
+void Game::DrawTruck() {
+	drawVector(tr);
+}
+
+void Game::DrawCar() {
+	drawVector(car);
+}
+
+void Game::DrawShark() {
+	drawVector(shark);
 }

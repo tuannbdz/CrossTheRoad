@@ -30,16 +30,23 @@ void ProcessGame() {
     this_thread::sleep_for(milliseconds(10));
     while (g->isRunning() && t_running) {
         g->UpdatePlayer();
-        for (auto& t : g->GetTLight())
-            t.DrawSelf();
+        g->UpdateTLight();
+
         if (g->GetTLight()[3].IsGreen())
             g->UpdateBike();
+        else g->DrawBike();
+
         if (g->GetTLight()[2].IsGreen())
             g->UpdateCar();
+        else g->DrawCar();
+
         if (g->GetTLight()[1].IsGreen())
             g->UpdateShark();
+        else g->DrawShark();
+
         if (g->GetTLight()[0].IsGreen())
             g->UpdateTruck();
+        else g->DrawTruck();
     }
 }
 
@@ -62,15 +69,15 @@ void StartGame(Menu& menu) {
         }
         else
         if (Console::KeyPress(KeyCode::R)){
-            g->PauseGame(t_game, &ProcessGame);
+            g->PauseGame(t_game, t_tlight, &ProcessGame, &ProcessTLight);
         }
         else
         if (Console::KeyPress(KeyCode::L)) {
-            g->SaveGame(t_game, &ProcessGame);
+            g->SaveGame(t_game, t_tlight, &ProcessGame, &ProcessTLight);
         }
         else
         if (Console::KeyPress(KeyCode::T)) {
-            g->LoadGame(t_game, &ProcessGame, g);
+            g->LoadGame(t_game, t_tlight, &ProcessGame, &ProcessTLight, g);
         }
     }
     if (g != NULL && t_running)

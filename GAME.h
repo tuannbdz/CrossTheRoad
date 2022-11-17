@@ -20,10 +20,10 @@ private:
 	//bool t_running;
 	Player pl;
 	vector<TLight> tl;
-	vector< Truck* > tr;
-	vector< Car* > car;
 	vector< Bike* > bike;
+	vector< Car* > car;
 	vector< Shark* > shark;
+	vector< Truck* > tr;
 	//string data; //this is the filename that the user entered to save game process
 	
 public:
@@ -35,17 +35,16 @@ public:
 
 	void setMap(); 
 
-	Player getPlayer();
+	Player& GetPlayer();
 	vector<TLight>& GetTLight();
 
 	void DrawGame();
-	void StartGame(Menu& menu);
 	void ResetGame();
-	void PauseGame(thread &, void (*func)());
+	void PauseGame(thread &, thread& ,void (*func)(), void (*func2)());
 	void GameOver(void (*func)(), Menu& menu);
 	void ExitGame(thread &, Game* & g, Menu& menu);
-	void SaveGame(thread&, void (*func)());
-	void LoadGame(thread&, void (*func)(), Game*&);
+	void SaveGame(thread&, thread&, void (*func)(), void (*func2)());
+	void LoadGame(thread&, thread&, void (*func)(), void (*func2)(), Game*&);
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
 
@@ -55,6 +54,11 @@ public:
 	void UpdateCar();
 	void UpdateShark();
 	void UpdateTLight();
+
+	void DrawTruck();
+	void DrawBike();
+	void DrawCar();
+	void DrawShark();
 
 	void writeFile();
 	void readFile(Game*&);
