@@ -297,10 +297,10 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		writeVector<Car>(car, out);
 		writeVector<Bike>(bike, out);
 		writeVector<Shark>(shark, out);
+		// write traffic lights
 		out.close();
 	}
 	else {
-		DrawGame();
 		t_running = 1;
 		t = thread(func);
 		tl = thread(func2);
