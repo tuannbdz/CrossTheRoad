@@ -30,5 +30,6 @@ public:
 	void Draw(int, int, int, int);
 	void UpdateSprite();
 	void Move();
+
 };
 
