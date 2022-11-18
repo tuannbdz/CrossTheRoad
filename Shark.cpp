@@ -6,7 +6,7 @@ Shark::Shark() {
     dir = 1;
     speed = 1;
     sprite = Graphics::GetGraphics("graphics/Game/obstacles/shark.txt");
-    color = Graphics::GetColor(Color::gray, Color::brightwhite);
+    color = Graphics::GetColor(Color::gray, Color::lightaqua);
 }
 
 Shark::Shark(int _x, int _y) {
@@ -15,7 +15,7 @@ Shark::Shark(int _x, int _y) {
     dir = 1;
     speed = 1;
     sprite = Graphics::GetGraphics("graphics/Game/obstacles/shark.txt");
-    color = Graphics::GetColor(Color::gray, Color::brightwhite);
+    color = Graphics::GetColor(Color::gray, Color::lightaqua);
 }
 
 Shark::~Shark() {

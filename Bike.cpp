@@ -6,7 +6,7 @@ Bike::Bike() {
     dir = 0;
     speed = 1;
     sprite = Graphics::GetGraphicsR("graphics/Game/obstacles/bike.txt");
-    color = Graphics::GetColor(Color::gray, Color::brightwhite);
+    color = Graphics::GetColor(Color::gray, Color::lightyellow);
 }
 
 Bike::Bike(int _x, int _y) {
@@ -15,7 +15,7 @@ Bike::Bike(int _x, int _y) {
     dir = 0;
     speed = 1;
     sprite = Graphics::GetGraphicsR("graphics/Game/obstacles/bike.txt");
-    color = Graphics::GetColor(Color::gray, Color::brightwhite);
+    color = Graphics::GetColor(Color::gray, Color::lightyellow);
 }
 
 Bike::~Bike() {
