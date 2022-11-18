@@ -237,7 +237,6 @@ void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(),
 	Graphics::DrawGraphics({ 48, 16 }, "graphics/Game/game_over/game_over_frame.txt", Graphics::GetColor(Color::brightwhite, Color::lightblue));
 	Color unselectedColor = Graphics::GetColor(Color::brightwhite, Color::blue),
 		selectedColor = Graphics::GetColor(Color::brightwhite, Color::yellow);
-
 	Graphics::DrawTexts("EXIT GAME ?", { 60, 18 }, unselectedColor);
 
 	Button b_yes("YES", { 60, 19 });
@@ -301,7 +300,6 @@ void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(),
 
 	} while (game_over_running);
 	fflush(stdin);
-
 
 }
 
