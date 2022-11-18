@@ -286,6 +286,15 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		t_running = 0;
 		tl.join();
 		t.join();
+
+		// save game
+		// draw input board
+		Graphics::DrawGraphics({ 50, 15 }, "graphics/game/save_game_input_board.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
+		Console::GotoXY({ 71, 18 });
+		cerr << "123456789123456789";
+		//string fileName = "1234567891234567891";
+		//while (fileName.size() > 18 || fileName.size() < 1)
+		//	getline(cin, fileName);
 		ofstream out("saveGame.txt", ios::binary);
 		// write player
 		int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
@@ -301,6 +310,7 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		out.close();
 	}
 	else {
+		Graphics::DrawGraphics(g_board, { 50, 15 }, 40, 9, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
 		t_running = 1;
 		t = thread(func);
 		tl = thread(func2);

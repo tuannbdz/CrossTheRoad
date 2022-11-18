@@ -28,7 +28,6 @@ void ProcessTLight() {
 
 void ProcessGame() {
     this_thread::sleep_for(milliseconds(10));
-    //PLAY:
     while (g->isRunning() && t_running) {
         g->UpdatePlayer();
         g->UpdateTLight();
@@ -49,7 +48,6 @@ void ProcessGame() {
             g->UpdateTruck();
         else g->DrawTruck();
     }
-    //goto PLAY;
 }
 
 void StartGame(Menu& menu) {
@@ -95,13 +93,11 @@ void RunGame() {
 BLOCK1:
     g = new Game(); 
     
-    if (menu.getIsRunning() && !menu.getGameStartedStatus())
-    {
+    if (menu.getIsRunning() && !menu.getGameStartedStatus()) {
         menu.Run();
     }
     
-    if (menu.getGameStartedStatus() && !menu.getIsRunning())
-    {
+    if (menu.getGameStartedStatus() && !menu.getIsRunning()) {
         StartGame(menu);
     }
     
