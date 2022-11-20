@@ -116,6 +116,6 @@ int main() {
     RunGame();
     delete console; 
     delete g;
-    system("pause >nul"); 
+    //system("pause >nul"); 
     return 0;
 }
