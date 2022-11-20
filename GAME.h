@@ -58,9 +58,6 @@ public:
 	void DrawBike();
 	void DrawCar();
 	void DrawShark();
-
-	void writeFile();
-	void readFile(Game*&);
 };
 
 const int boardX = 10;

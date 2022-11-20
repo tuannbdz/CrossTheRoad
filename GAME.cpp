@@ -281,44 +281,36 @@ template <class T> void readVector(vector<T*>& obj, istream& in) {
 	}
 }
 
-void Game::writeFile() {
-	ofstream out("saveGame.txt", ios::binary);
-	// write player
-	int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
-	writeBin(out, pX);
-	writeBin(out, pY);
-	writeBin(out, state);
-	// write obstacles
-	writeVector<Truck>(tr, out);
-	writeVector<Car>(car, out);
-	writeVector<Bike>(bike, out);
-	writeVector<Shark>(shark, out);
-	out.close();
-}
-
-void Game::readFile(Game*& g) {
-	ifstream in("saveGame.txt", ios::binary);
-	int x, y, state;
-	readBin(in, x);
-	readBin(in, y);
-	readBin(in, state);
-	g->pl.SetData(x, y, state);
-	readVector<Truck>(tr, in);
-	readVector<Car>(car, in);
-	readVector<Bike>(bike, in);
-	readVector<Shark>(shark, in);
-	in.close();
-}
-
 void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	if (t_running) {
 		t_running = 0;
 		tl.join();
 		t.join();
-		writeFile();
+
+		// save game
+		// draw input board
+		Graphics::DrawGraphics({ 50, 15 }, "graphics/game/save_game_input_board.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
+		Console::GotoXY({ 71, 18 });
+		cerr << "123456789123456789";
+		//string fileName = "1234567891234567891";
+		//while (fileName.size() > 18 || fileName.size() < 1)
+		//	getline(cin, fileName);
+		ofstream out("saveGame.txt", ios::binary);
+		// write player
+		int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
+		writeBin(out, pX);
+		writeBin(out, pY);
+		writeBin(out, state);
+		// write obstacles
+		writeVector<Truck>(tr, out);
+		writeVector<Car>(car, out);
+		writeVector<Bike>(bike, out);
+		writeVector<Shark>(shark, out);
+		// write traffic lights
+		out.close();
 	}
 	else {
-		DrawGame();
+		Graphics::DrawGraphics(g_board, { 50, 15 }, 40, 9, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
 		t_running = 1;
 		t = thread(func);
 		tl = thread(func2);
@@ -332,7 +324,17 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game
 		t.join();
 	}
 	else {
-		readFile(loadGame);
+		ifstream in("saveGame.txt", ios::binary);
+		int x, y, state;
+		readBin(in, x);
+		readBin(in, y);
+		readBin(in, state);
+		loadGame ->pl.SetData(x, y, state);
+		readVector<Truck>(tr, in);
+		readVector<Car>(car, in);
+		readVector<Bike>(bike, in);
+		readVector<Shark>(shark, in);
+		in.close();
 		t_running = 1;
 		DrawGame();
 		t = thread(func);
