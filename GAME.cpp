@@ -276,7 +276,7 @@ void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(),
 			}
 			else
 			{
-				Graphics::DrawGraphics(g_board, { 48, 16 }, 39, 9, 44, 11, Graphics::GetColor(Color::gray, Color::brightwhite));
+				Graphics::DrawGraphics(g_board, { 48, 16 }, 39, 10, 44, 11, Graphics::GetColor(Color::gray, Color::brightwhite));
 				t_running = 1;
 				t = thread(func);
 				tl = thread(func2);
