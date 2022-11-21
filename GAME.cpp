@@ -291,11 +291,13 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		// draw input board
 		Graphics::DrawGraphics({ 50, 15 }, "graphics/game/save_game_input_board.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 		Console::GotoXY({ 71, 18 });
-		cerr << "123456789123456789";
-		//string fileName = "1234567891234567891";
-		//while (fileName.size() > 18 || fileName.size() < 1)
-		//	getline(cin, fileName);
-		ofstream out("saveGame.txt", ios::binary);
+		string fileName;
+		::FlushConsoleInputBuffer(Console::inputHandle());
+		Console::setCursor(1);
+		while (fileName.size() > 18 || fileName.size() < 1)
+			getline(cin, fileName);
+
+		ofstream out(fileName + ".txt", ios::binary);
 		// write player
 		int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
 		writeBin(out, pX);
