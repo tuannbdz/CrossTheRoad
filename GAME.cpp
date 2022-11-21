@@ -361,11 +361,16 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		// draw input board
 		Graphics::DrawGraphics({ 50, 15 }, "graphics/game/save_game_input_board.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 		Console::GotoXY({ 71, 18 });
-		string fileName;
 		::FlushConsoleInputBuffer(Console::inputHandle());
 		Console::setCursor(1);
-		while (fileName.size() > 18 || fileName.size() < 1)
-			getline(cin, fileName);
+		//while (fileName.size() > 18 || fileName.size() < 1)
+		//	getline(cin, fileName);
+		const int inputSize = 18;
+		char buffer[inputSize+1];
+		cin.getline(buffer, inputSize+1);
+		string fileName(buffer);
+
+		//Graphics::DrawGraphics({ "                  " }, { 71, 18 }, Graphics::GetColor(Color::brightwhite, Color::brightwhite));
 
 		ofstream out(fileName + ".txt", ios::binary);
 		// write player
