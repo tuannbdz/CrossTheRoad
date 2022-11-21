@@ -225,15 +225,85 @@ template <class T> void drawVector(vector<T*>& obj) {
 		o->UpdateSprite();
 }
 
-void Game::ExitGame(thread& t, thread& tl, Game* & g, Menu& menu) {
-	t_running = 0;
-	t.join();
-	tl.join();
-	g->g_running = 0;
-	menu.setMenuStatus(0, 1); 
-	delete g; 
-	g = NULL; 
+void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(), void (*func2)()) {
+	//pause game for pop up
+	if (t_running) {
+		t_running = 0;
+		if (t.joinable()) t.join();
+		if (tl.joinable()) tl.join();
+	}
+
+	Graphics::DrawGraphics({ 48, 16 }, "graphics/Game/game_over/game_over_frame.txt", Graphics::GetColor(Color::brightwhite, Color::lightblue));
+	Color unselectedColor = Graphics::GetColor(Color::brightwhite, Color::blue),
+		selectedColor = Graphics::GetColor(Color::brightwhite, Color::yellow);
+
+	Graphics::DrawTexts("EXIT GAME ?", { 60, 18 }, unselectedColor);
+
+	Button b_yes("YES", { 60, 19 });
+	Graphics::DrawTexts("YES", { 60, 19 }, unselectedColor);
+
+	Button b_no("NO", { 60, 20 });
+	Graphics::DrawTexts("NO", { 60, 20 }, unselectedColor);
+
+	vector<Button>buttons = { b_yes, b_no };
+
+	bool game_over_running = 1;
+
+	int cY = 20, command = 0;
+	int pY = cY, pC = command, cX = 56;
+
+
+	do
+	{
+		int n = buttons.size();
+		//reset color of previous command
+		if (pY != cY) {
+			Console::gotoxy(cX, pY);
+			buttons[pC].Draw(unselectedColor);
+		}
+
+		Console::gotoxy(cX, cY);
+		buttons[command].Draw(selectedColor);
+
+		if (Console::KeyPress(KeyCode::ENTER)) {
+			this_thread::sleep_for(milliseconds(50));
+			if (command == 0)
+			{
+				g->g_running = 0;
+				menu.setMenuStatus(0, 1);
+				delete g;
+				g = NULL;
+			}
+			else
+			{
+				Graphics::DrawGraphics(g_board, { 48, 16 }, 39, 10, 44, 11, Graphics::GetColor(Color::gray, Color::brightwhite));
+				t_running = 1;
+				t = thread(func);
+				tl = thread(func2);
+			}
+			game_over_running = false;
+		}
+		else
+			if (Console::KeyPress(KeyCode::UP) || Console::KeyPress(KeyCode::W)) {
+				pY = cY;
+				pC = command;
+				command = (command - 1 + n) % n;
+				cY = command + 5;
+			}
+			else
+				if (Console::KeyPress(KeyCode::DOWN) || Console::KeyPress(KeyCode::S)) {
+					pY = cY;
+					pC = command;
+					command = (command + 1) % n;
+					cY = command + 5;
+				}
+
+	} while (game_over_running);
+	fflush(stdin);
+
+
 }
+
 
 bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2, const int& x3, const int& y3, const int& x4, const int& y4) {
 	bool c1 = min(x2, x4) > max(x1, x3);

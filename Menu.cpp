@@ -86,18 +86,14 @@ void Menu::DrawLoadGame()
 
 void Menu::HookLoadGame()
 {
-	int c; 
-	do
+	while (1)
 	{
-		c = toupper(_getch());
-		//load game more stuffs here
-		if (c == 'R')
-		{
+		if (Console::KeyPress(KeyCode::R)) {
 			setMenuStatus(false, true);
 			DrawMainMenu();
 			return;
 		}
-	} while (c != 'R');
+	}
 }
 
 void Menu::DrawAbout()
@@ -182,20 +178,15 @@ void Menu::ExecuteCommands(const Mode& mode)
 			ChooseCommand(75, 14, Mode::settings); 
 			break;
 		case (int)MainMenuButtons::about:
-			DrawAbout(); 
-			//hookabout() or sth
-			do
+			DrawAbout();
+			while (1)
 			{
-				c = toupper(_getch());
-
-				if (c == 'R')
-				{
+				if (Console::KeyPress(KeyCode::R)) {
 					setMenuStatus(false, true);
 					DrawMainMenu();
 					return;
 				}
-			} while (c != 'R');
-
+			}
 			break;
 		case (int)MainMenuButtons::exit:
 			exit(0);

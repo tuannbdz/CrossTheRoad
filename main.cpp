@@ -62,7 +62,7 @@ void StartGame(Menu& menu) {
     while (g != NULL && g->isRunning()) {
         if(Console::KeyPress(KeyCode::ESC)){
             if (t_running) {
-                g->ExitGame(t_game, t_tlight, g, menu);
+                g->ExitGame(t_game, t_tlight, g, menu, &ProcessGame, &ProcessTLight);
             }
         }
         else
@@ -111,6 +111,6 @@ int main() {
     RunGame();
     delete console; 
     delete g;
-    system("pause >nul"); 
+    //system("pause >nul"); 
     return 0;
 }

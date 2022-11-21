@@ -6,7 +6,7 @@ Car::Car() {
     dir = 1;
     speed = 2;
     sprite = Graphics::GetGraphicsR("graphics/Game/obstacles/car.txt");
-    color = Graphics::GetColor(Color::gray, Color::brightwhite);
+    color = Graphics::GetColor(Color::gray, Color::lightgreen);
 }
 
 Car::Car(int _x, int _y) {
@@ -15,7 +15,7 @@ Car::Car(int _x, int _y) {
     dir = 1;
     speed = 2;
     sprite = Graphics::GetGraphicsR("graphics/Game/obstacles/car.txt");
-    color = Graphics::GetColor(Color::gray, Color::brightwhite);
+    color = Graphics::GetColor(Color::gray, Color::lightgreen);
 }
 
 Car::~Car() {
