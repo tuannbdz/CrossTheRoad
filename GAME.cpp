@@ -370,9 +370,7 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		cin.getline(buffer, inputSize+1);
 		string fileName(buffer);
 
-		//Graphics::DrawGraphics({ "                  " }, { 71, 18 }, Graphics::GetColor(Color::brightwhite, Color::brightwhite));
-
-		ofstream out(fileName + ".txt", ios::binary);
+		ofstream out("save_game_files/" + fileName + ".txt", ios::binary);
 		// write player
 		int pX = pl.GetX(), pY = pl.GetY(), state = pl.GetState();
 		writeBin(out, pX);
