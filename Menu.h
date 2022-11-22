@@ -29,6 +29,7 @@ class Menu
 	vector<Button>buttons; 
 	//vector<string> title;
 
+public: 
 	void DrawMainMenu(); 
 	void DrawSettings(); 
 	void DrawLoadGame(); 
@@ -37,7 +38,7 @@ class Menu
 	void LoadGame();
 	void AddMainMenuButtons(); 
 	void AddSettingButtons(); 
-public: 
+
 	Menu(); 
 	void Run();
 

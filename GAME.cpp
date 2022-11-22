@@ -368,6 +368,7 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	char buffer[inputSize+1];
 	cin.getline(buffer, inputSize+1);
 	string fileName(buffer);
+	Console::setCursor(0);
 
 	ofstream out("save_game_files/" + fileName + ".bin", ios::binary);
 	// write player
