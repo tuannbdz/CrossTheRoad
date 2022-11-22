@@ -88,6 +88,7 @@
     <ClInclude Include="Shark.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TLight.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

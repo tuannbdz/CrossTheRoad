@@ -20,6 +20,9 @@ public:
 	Button(const string& text, const COORD& pos, const Color& color);
 	Button(const string& text, const COORD& pos, const Color& color, const string& filename);
 
+	COORD GetPos();
+	string GetText();
+
 	void Draw();
 	void Draw(const Color& color);
 	void DrawGraphics();

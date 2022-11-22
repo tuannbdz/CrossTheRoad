@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Button.h"
+#include "common.h"
 
 const enum class MainMenuButtons {
 	newGame, 
@@ -33,6 +34,7 @@ class Menu
 	void DrawLoadGame(); 
 	void DrawAbout(); 
 	void HookLoadGame();
+	void LoadGame();
 	void AddMainMenuButtons(); 
 	void AddSettingButtons(); 
 public: 
@@ -45,4 +47,5 @@ public:
 	bool getIsRunning() const; 
 	void ChooseCommand(int, int, Mode); 
 	void ExecuteCommands(const Mode&); 
+
 };

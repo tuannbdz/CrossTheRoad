@@ -47,12 +47,16 @@ public:
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
 
+	string LoadFile(short, short);
+
 	void UpdatePlayer();
 	void UpdateTruck();
 	void UpdateBike();
 	void UpdateCar();
 	void UpdateShark();
 	void UpdateTLight();
+
+	
 
 	void DrawTruck();
 	void DrawBike();

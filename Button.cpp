@@ -45,6 +45,14 @@ Button::Button(const string& text, const COORD& pos, const Color& color, const s
 	this->filename = filename; 
 }
 
+COORD Button::GetPos() {
+	return b_pos;
+}
+
+string Button::GetText() {
+	return b_text;
+}
+
 void Button::Draw()
 {
 	Graphics::DrawTexts(b_text, b_pos, b_color);

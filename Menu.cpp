@@ -71,29 +71,25 @@ void Menu::DrawSettings()
 
 void Menu::DrawLoadGame()
 {
-	Graphics::ClearScreen();
-	buttons.clear();
-	Graphics::drawBlueGradientGraphics({ 10, 0 }, "graphics/Menu/title.txt");
+	//Graphics::ClearScreen();
+	//buttons.clear();
+	//Graphics::drawBlueGradientGraphics({ 10, 0 }, "graphics/Menu/title.txt");
 	Graphics::DrawGraphics({ 58, 6 }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
 	Console::SetFont(L"Consolas Bold"); 
 	Graphics::DrawTexts("NAME", { 64, 8 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("LEVEl", { 96, 8 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("SCORE", { 110, 8 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("BACK [B]", { 63, 36 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("RETURN [R]", { 85, 36 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("NEXT [N]", { 108, 36 }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("BACK [B]", { 63, 36 - 4}, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("RETURN [R]", { 85, 36 - 4}, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("NEXT [N]", { 108, 36 - 4}, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 }
 
-void Menu::HookLoadGame()
-{
-	while (1)
-	{
-		if (Console::KeyPress(KeyCode::R)) {
-			setMenuStatus(false, true);
-			DrawMainMenu();
-			return;
-		}
-	}
+void Menu::HookLoadGame() {
+	
+}
+
+void Menu::LoadGame() {
+	//g->LoadFile();
 }
 
 void Menu::DrawAbout()
@@ -168,8 +164,9 @@ void Menu::ExecuteCommands(const Mode& mode)
 			setMenuStatus(true, false); 
 			return; 
 		case (int)MainMenuButtons::loadGame:
-			DrawLoadGame(); 
-			HookLoadGame(); 
+			//DrawLoadGame(); 
+			//HookLoadGame(); 
+			LoadGame();
 
 			break;
 		case (int)MainMenuButtons::settings:
