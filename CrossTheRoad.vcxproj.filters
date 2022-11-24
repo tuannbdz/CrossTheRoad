@@ -43,7 +43,9 @@
     <ClCompile Include="Shark.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TLight.cpp" />
+    <ClCompile Include="TLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h">
@@ -88,7 +90,12 @@
     <ClInclude Include="Shark.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TLight.h" />
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

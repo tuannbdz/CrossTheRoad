@@ -166,6 +166,7 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="leaderboard.h" />
     <ClInclude Include="lib.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player.h" />

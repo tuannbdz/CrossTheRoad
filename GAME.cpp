@@ -396,9 +396,9 @@ string Game::LoadFile(short x, short y) {
 	Graphics::DrawTexts("NAME", { short(x + 6), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("LEVEl", { short(x + 38), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("SCORE", { short(x + 52), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("BACK [B]", { short(x + 5), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("PREVIOUS PAGE [A]", { short(x + 5), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("RETURN [R]", { short(x + 27), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("NEXT [N]", { short(x + 50), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("NEXT PAGE [D]", { short(x + 45), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 
 	// get file names	
 	WIN32_FIND_DATAA data;
@@ -412,42 +412,63 @@ string Game::LoadFile(short x, short y) {
 
 		FindClose(hFind);
 	}
+
 	Color unselectedColor = Graphics::GetColor(Color::lightblue, Color::brightwhite),
 		selectedColor = Graphics::GetColor(Color::brightwhite, Color::lightblue);
 
-	int maxLines = 25;
+	int maxLines = 19;
 	// get file names and draw them on the frame
+	vector<vector<Button>> buttonsOfPage;
 	vector<Button> buttons;
 	short buttonPosY = y+5, buttonPosX = x+7;
 	int buttonDist = 1;
 	for (auto& fileName : files) {
-		if (buttonPosY > 11 + maxLines)
-			break;
+		if (buttonPosY > y + 5 + maxLines - 1) {
+			buttonsOfPage.push_back(buttons);
+			buttons.clear();
+			buttonPosY = y + 5;
+		}
 		Button b(fileName, { buttonPosX, buttonPosY });
 		buttons.push_back(b);
 		buttonPosY += buttonDist;
-		b.Draw(unselectedColor);
+		//b.Draw(unselectedColor);
+	}
+	if (buttons.size() <= maxLines && buttons.size())
+		buttonsOfPage.push_back(buttons);
+	while (buttonsOfPage.size() == 0) {
+		if (Console::KeyPress(KeyCode::R)) {
+			return "";
+		}
 	}
 	// make the first file name selected by default
-	buttons[0].Draw(selectedColor);
+	//buttons[0].Draw(selectedColor);
+	// now draw the buttons for the first page
 
-	int lines = buttons.size();
+	int currPage = 0;
 
 	int currButton = 0, prevButton = 0;
 
 	bool moveCursor = false;
 
+DRAW:
+	int lines = buttonsOfPage[currPage].size();
+
+	for (auto& b : buttonsOfPage[currPage]) {
+		b.Draw(unselectedColor);
+	}
+	buttonsOfPage[currPage][0].Draw(selectedColor);
+
 	while (1) {
 		if (moveCursor) {
 			// draw the previous button unselected
-			COORD prevPos = buttons[prevButton].GetPos();
+			COORD prevPos = buttonsOfPage[currPage][prevButton].GetPos();
 			Console::gotoxy(prevPos.X, prevPos.Y);
-			buttons[prevButton].Draw(unselectedColor);
+			buttonsOfPage[currPage][prevButton].Draw(unselectedColor);
 
 			// draw current button selected
-			COORD curPos = buttons[currButton].GetPos();
+			COORD curPos = buttonsOfPage[currPage][currButton].GetPos();
 			Console::gotoxy(curPos.X, curPos.Y);
-			buttons[currButton].Draw(selectedColor);
+			buttonsOfPage[currPage][currButton].Draw(selectedColor);
 			moveCursor = false;
 		}
 
@@ -460,6 +481,16 @@ string Game::LoadFile(short x, short y) {
 			prevButton = currButton;
 			currButton = (currButton + 1) % lines;
 			moveCursor = 1;
+		}
+		if (Console::KeyPress(KeyCode::LEFT) || Console::KeyPress(KeyCode::A)) {
+			if (currPage)
+				currPage--;
+			goto DRAW;
+		}
+		if (Console::KeyPress(KeyCode::RIGHT) || Console::KeyPress(KeyCode::D)) {
+			if (currPage < buttonsOfPage.size()-1)
+				currPage++;
+			goto DRAW;
 		}
 		if (Console::KeyPress(KeyCode::R)) {
 			return "";

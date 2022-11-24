@@ -87,13 +87,6 @@ void StartGame(Menu& menu) {
     }
 }
 
-void RunLobby() {
-    Graphics::ClearScreen();
-    Graphics::drawBlueGradientGraphics({ 10, 0 }, "graphics/Menu/title.txt");
-    Menu menu;
-    menu.DrawMainMenu();
-    menu.ChooseCommand(75, 14, Mode::mainMenu);
-}
 
 void RunGame() {
     Menu menu;
@@ -110,6 +103,22 @@ BLOCK1:
     }
     
     goto BLOCK1;
+}
+void runLobby(){
+    Graphics::ClearScreen();
+    Graphics::drawBlueGradientGraphics({ 10, 0 }, "graphics/Menu/title.txt");
+    Menu menu;
+    menu.DrawMainMenu();
+    menu.ChooseCommand(75, 14, Mode::mainMenu);
+}
+void runGame(){}
+
+void run() {
+START:
+    g = new Game();
+    runLobby();
+    runGame();
+    goto START;
 }
 
 int main() {
