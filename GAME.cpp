@@ -226,6 +226,7 @@ template <class T> void drawVector(vector<T*>& obj) {
 }
 
 void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(), void (*func2)()) {
+	if (t_running == 0) return;
 	//pause game for pop up
 	if (t_running) {
 		t_running = 0;
@@ -352,6 +353,7 @@ template <class T> void readVector(istream& in, vector<T*>& obj) {
 }
 
 void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
+	if (t_running == 0) return;
 	t_running = 0;
 	tl.join();
 	t.join();
@@ -362,13 +364,45 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	Console::GotoXY({ 71, 18 });
 	::FlushConsoleInputBuffer(Console::inputHandle());
 	Console::setCursor(1);
+	int curX = 71;
+	string fileName;
+	while (1) {
+		char c = _getch();
+		if (c == 13) // Enter
+			break;
+		if (c == 8) { // Backspace
+			if (curX == 71)
+				continue;
+			Console::gotoxy(--curX, 18);
+			Graphics::DrawTexts(" ", Graphics::GetColor(Color::brightwhite, Color::blue));
+			Console::gotoxy(curX, 18);
+			fileName.pop_back();
+			continue;
+		}
+		//if (c == 27) { // Escape to return
+		//	//fflush(stdin);
+		//	cin.clear();
+		//	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
+		//	Console::setCursor(0);
+		//	t_running = 1;
+		//	t = thread(func);
+		//	tl = thread(func2);
+		//	return;
+		//}
+		if (fileName.size() < 17) {
+			string cc;
+			cc += c;
+			Console::gotoxy(curX++, 18);
+			Graphics::DrawTexts(cc, Graphics::GetColor(Color::brightwhite, Color::blue));
+			fileName += c;
+		}
+	}
 	//while (fileName.size() > 18 || fileName.size() < 1)
 	//	getline(cin, fileName);
-	const int inputSize = 18;
-	char buffer[inputSize+1];
-	cin.getline(buffer, inputSize+1);
-	string fileName(buffer);
-	Console::setCursor(0);
+	//const int inputSize = 18;
+	//char buffer[inputSize+1];
+	//cin.getline(buffer, inputSize+1);
+	//string fileName(buffer);
 
 	ofstream out("save_game_files/" + fileName + ".bin", ios::binary);
 	// write player
@@ -389,6 +423,8 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 
 	out.close();
 	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
+
+	Console::setCursor(0);
 	t_running = 1;
 	t = thread(func);
 	tl = thread(func2);
@@ -508,9 +544,10 @@ DRAWPAGE:
 }
 
 void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game*& loadGame) {
+	if (t_running == 0) return;
 	t_running = 0;
-	tl.join();
-	t.join();
+	if (t.joinable()) t.join();
+	if (tl.joinable()) tl.join();
 	string fileName = HookLoadGame(50, 6);
 	if (fileName.size()) {
 		ifstream in("save_game_files/" + fileName, ios::binary);
