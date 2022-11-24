@@ -49,11 +49,11 @@ void Game::InitLevel(int _l) {
 		bike.push_back(new Bike(130, 12));
 		bike.push_back(new Bike(150, 12));
 
-		tl.resize(4);
-		tl[0].SetXY(0, 28);
-		tl[1].SetXY(0, 23);
-		tl[2].SetXY(0, 17);
-		tl[3].SetXY(0, 12);
+		tlight.resize(4);
+		tlight[0].SetXY(0, 28);
+		tlight[1].SetXY(0, 23);
+		tlight[2].SetXY(0, 17);
+		tlight[3].SetXY(0, 12);
 	}
 }
 
@@ -206,7 +206,7 @@ Player& Game::GetPlayer() {
 }
 
 vector<TLight>& Game::GetTLight() {
-	return tl;
+	return tlight;
 }
 
 void Game::DrawGame() {
@@ -315,15 +315,15 @@ bool Game::isRunning() {
 	return g_running;
 }
 
-void writeBin(ostream& out, int& data) {
+template <class T> void writeBin(ostream& out, T& data) {
 	out.write(reinterpret_cast<char*>(&data), sizeof(data));
 }
 
-void readBin(istream& in, int& data) {
+template <class T> void readBin(istream& in, T& data) {
 	in.read(reinterpret_cast<char*>(&data), sizeof(data));
 }
 
-template <class T> void writeVector(vector<T*>& obj, ostream& out) {
+template <class T> void writeVector(ostream& out, vector<T*>& obj) {
 	int vecSize = obj.size();
 	writeBin(out, vecSize);
 	for (auto& o : obj) {
@@ -335,7 +335,7 @@ template <class T> void writeVector(vector<T*>& obj, ostream& out) {
 	}
 }
 
-template <class T> void readVector(vector<T*>& obj, istream& in) {
+template <class T> void readVector(istream& in, vector<T*>& obj) {
 	int vecSize;
 	readBin(in, vecSize);
 	obj.clear();
@@ -377,11 +377,16 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	writeBin(out, pY);
 	writeBin(out, state);
 	// write obstacles
-	writeVector<Truck>(tr, out);
-	writeVector<Car>(car, out);
-	writeVector<Bike>(bike, out);
-	writeVector<Shark>(shark, out);
+	writeVector<Truck>(out, tr);
+	writeVector<Car>(out, car);
+	writeVector<Bike>(out, bike);
+	writeVector<Shark>(out, shark);
 	// write traffic lights
+	for (auto &l : tlight) {
+		bool state = l.IsGreen();
+		writeBin(out, state);
+	}
+
 	out.close();
 	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
 	t_running = 1;
@@ -509,15 +514,23 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game
 	string fileName = LoadFile(50, 6);
 	if (fileName.size()) {
 		ifstream in("save_game_files/" + fileName, ios::binary);
+		// read player
 		int x, y, state;
 		readBin(in, x);
 		readBin(in, y);
 		readBin(in, state);
 		loadGame->pl.SetData(x, y, state);
-		readVector<Truck>(tr, in);
-		readVector<Car>(car, in);
-		readVector<Bike>(bike, in);
-		readVector<Shark>(shark, in);
+		// read obstacles
+		readVector<Truck>(in, tr);
+		readVector<Car>(in, car);
+		readVector<Bike>(in, bike);
+		readVector<Shark>(in, shark);
+		// read traffic lights
+		for (auto& l : tlight) {
+			bool state = l.IsGreen();
+			readBin(in, state);
+			l.SetState(state);
+		}
 		in.close();
 		DrawGame();
 	} else
@@ -720,7 +733,7 @@ void Game::UpdateShark() {
 }
 
 void Game::UpdateTLight() {
-	for (auto& t : tl)
+	for (auto& t : tlight)
 		t.DrawSelf();
 }
 

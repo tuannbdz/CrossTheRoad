@@ -18,7 +18,7 @@ private:
 	int score, level;
 	int speed;
 	Player pl;
-	vector<TLight> tl;
+	vector<TLight> tlight;
 	vector< Bike* > bike;
 	vector< Car* > car;
 	vector< Shark* > shark;
