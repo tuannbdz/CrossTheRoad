@@ -455,7 +455,7 @@ string Game::HookLoadGame(short x, short y) {
 
 	bool moveCursor = false;
 
-DRAW:
+DRAWPAGE:
 	int lines = buttonsOfPage[currPage].size();
 
 	for (auto& b : buttonsOfPage[currPage]) {
@@ -491,12 +491,12 @@ DRAW:
 		if (Console::KeyPress(KeyCode::LEFT) || Console::KeyPress(KeyCode::A)) {
 			if (currPage)
 				currPage--;
-			goto DRAW;
+			goto DRAWPAGE;
 		}
 		if (Console::KeyPress(KeyCode::RIGHT) || Console::KeyPress(KeyCode::D)) {
 			if (currPage < buttonsOfPage.size()-1)
 				currPage++;
-			goto DRAW;
+			goto DRAWPAGE;
 		}
 		if (Console::KeyPress(KeyCode::R)) {
 			return "";
