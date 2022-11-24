@@ -394,7 +394,7 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	tl = thread(func2);
 }
 
-string Game::LoadFile(short x, short y) {
+string Game::HookLoadGame(short x, short y) {
 	// Draw frame
 	Graphics::DrawGraphics({ x, y }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
 	Console::SetFont(L"Consolas Bold");
@@ -511,7 +511,7 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game
 	t_running = 0;
 	tl.join();
 	t.join();
-	string fileName = LoadFile(50, 6);
+	string fileName = HookLoadGame(50, 6);
 	if (fileName.size()) {
 		ifstream in("save_game_files/" + fileName, ios::binary);
 		// read player

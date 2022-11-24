@@ -47,7 +47,7 @@ public:
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
 
-	string LoadFile(short, short);
+	string HookLoadGame(short, short);
 
 	void UpdatePlayer();
 	void UpdateTruck();
