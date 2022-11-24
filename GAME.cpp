@@ -417,7 +417,7 @@ string Game::LoadFile(short x, short y) {
 		selectedColor = Graphics::GetColor(Color::brightwhite, Color::lightblue);
 
 	int maxLines = 19;
-	// get file names and draw them on the frame
+	// turn file names into buttons to display on the screen
 	vector<vector<Button>> buttonsOfPage;
 	vector<Button> buttons;
 	short buttonPosY = y+5, buttonPosX = x+7;
@@ -431,17 +431,17 @@ string Game::LoadFile(short x, short y) {
 		Button b(fileName, { buttonPosX, buttonPosY });
 		buttons.push_back(b);
 		buttonPosY += buttonDist;
-		//b.Draw(unselectedColor);
 	}
 	if (buttons.size() <= maxLines && buttons.size())
 		buttonsOfPage.push_back(buttons);
+
+	// if there's no file to load
 	while (buttonsOfPage.size() == 0) {
 		if (Console::KeyPress(KeyCode::R)) {
 			return "";
 		}
 	}
-	// make the first file name selected by default
-	//buttons[0].Draw(selectedColor);
+	
 	// now draw the buttons for the first page
 
 	int currPage = 0;
@@ -456,6 +456,7 @@ DRAW:
 	for (auto& b : buttonsOfPage[currPage]) {
 		b.Draw(unselectedColor);
 	}
+	// make the first file name selected by default
 	buttonsOfPage[currPage][0].Draw(selectedColor);
 
 	while (1) {
