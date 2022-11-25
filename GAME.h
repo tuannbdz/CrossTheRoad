@@ -17,12 +17,14 @@ private:
 	bool g_running;
 	int score, level;
 	int speed;
+	int numIdlePl;
 	Player pl;
 	vector<TLight> tlight;
 	vector< Bike* > bike;
 	vector< Car* > car;
 	vector< Shark* > shark;
 	vector< Truck* > tr;
+	vector<int> idlePl;
 	//string data; //this is the filename that the user entered to save game process
 	
 public:
@@ -36,6 +38,7 @@ public:
 
 	Player& GetPlayer();
 	vector<TLight>& GetTLight();
+	int GetLevel();
 
 	void DrawGame();
 	void ResetGame();
@@ -46,9 +49,11 @@ public:
 	void LoadGame(thread&, thread&, void (*func)(), void (*func2)(), Game*&);
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
+	bool isWinning();
 
 	string HookLoadGame(short, short);
 
+	void UpdateGameStatus();
 	void UpdatePlayer();
 	void UpdateTruck();
 	void UpdateBike();
@@ -56,12 +61,11 @@ public:
 	void UpdateShark();
 	void UpdateTLight();
 
-	
-
 	void DrawTruck();
 	void DrawBike();
 	void DrawCar();
 	void DrawShark();
+	void DrawIdlePl();
 };
 
 const int boardX = 10;

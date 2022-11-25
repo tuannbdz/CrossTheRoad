@@ -63,8 +63,8 @@ void Player::Draw() {
 }
 
 void Player::Move() {
-    //Console::gotoxy(160, 33);
-    //wcout << x << " " << y << '\n';
+    Console::gotoxy(160, 33);
+    wcout << x << " " << y << '\n';
     if (y-boardY-1 > 0 && (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))) {
         Graphics::DrawGraphics(g_board, {x,y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::brightwhite));
         y--;
