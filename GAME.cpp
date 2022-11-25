@@ -225,12 +225,8 @@ template <class T> void drawVector(vector<T*>& obj) {
 		o->UpdateSprite();
 }
 
-<<<<<<< HEAD
 void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(), void (*func2)()) {
 	if (t_running == 0) return;
-=======
-void Game::ExitGame(thread& t, thread& tl, Game* & g, Menu& menu, void (*func)(), void (*func2)()) {
->>>>>>> 39e1c0814813d05c2dfce5e6abfee7451e5384b5
 	//pause game for pop up
 	if (t_running) {
 		t_running = 0;
@@ -241,10 +237,6 @@ void Game::ExitGame(thread& t, thread& tl, Game* & g, Menu& menu, void (*func)()
 	Graphics::DrawGraphics({ 48, 16 }, "graphics/Game/game_over/game_over_frame.txt", Graphics::GetColor(Color::brightwhite, Color::lightblue));
 	Color unselectedColor = Graphics::GetColor(Color::brightwhite, Color::blue),
 		selectedColor = Graphics::GetColor(Color::brightwhite, Color::yellow);
-<<<<<<< HEAD
-=======
-	
->>>>>>> 39e1c0814813d05c2dfce5e6abfee7451e5384b5
 	Graphics::DrawTexts("EXIT GAME ?", { 60, 18 }, unselectedColor);
 
 	Button b_yes("YES", { 60, 19 });
@@ -284,11 +276,7 @@ void Game::ExitGame(thread& t, thread& tl, Game* & g, Menu& menu, void (*func)()
 			}
 			else
 			{
-<<<<<<< HEAD
 				Graphics::DrawGraphics(g_board, { 48, 16 }, 39, 10, 44, 11, Graphics::GetColor(Color::gray, Color::brightwhite));
-=======
-				Graphics::DrawGraphics(g_board, { 48, 16 }, 39, 9, 44, 11, Graphics::GetColor(Color::gray, Color::brightwhite));
->>>>>>> 39e1c0814813d05c2dfce5e6abfee7451e5384b5
 				t_running = 1;
 				t = thread(func);
 				tl = thread(func2);
@@ -313,10 +301,6 @@ void Game::ExitGame(thread& t, thread& tl, Game* & g, Menu& menu, void (*func)()
 	} while (game_over_running);
 	fflush(stdin);
 
-<<<<<<< HEAD
-=======
-	
->>>>>>> 39e1c0814813d05c2dfce5e6abfee7451e5384b5
 }
 
 

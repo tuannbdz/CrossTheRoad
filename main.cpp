@@ -61,12 +61,7 @@ void StartGame(Menu& menu) {
 
     while (g != NULL && g->isRunning()) {
         if(Console::KeyPress(KeyCode::ESC)){
-<<<<<<< HEAD
             if (t_running) {
-=======
-            if (t_running)
-            {
->>>>>>> 39e1c0814813d05c2dfce5e6abfee7451e5384b5
                 g->ExitGame(t_game, t_tlight, g, menu, &ProcessGame, &ProcessTLight);
             }
         }

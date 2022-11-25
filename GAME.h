@@ -41,11 +41,7 @@ public:
 	void ResetGame();
 	void PauseGame(thread &, thread& ,void (*func)(), void (*func2)());
 	void GameOver(void (*func)(), Menu& menu);
-<<<<<<< HEAD
 	void ExitGame(thread&, thread&, Game*& g, Menu& menu, void (*func)(), void (*func2)());
-=======
-	void ExitGame(thread &, thread&, Game* & g, Menu& menu, void (*func)(), void (*func2)());
->>>>>>> 39e1c0814813d05c2dfce5e6abfee7451e5384b5
 	void SaveGame(thread&, thread&, void (*func)(), void (*func2)());
 	void LoadGame(thread&, thread&, void (*func)(), void (*func2)(), Game*&);
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
