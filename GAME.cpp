@@ -461,17 +461,16 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	int curX = 71;
 	string fileName;
 	while (1) {
-		if (Console::KeyPress(KeyCode::DOWN)) { // Down to return
+		char c = _getch();
+		if (c == KEY_DOWN) { // Down to return
 			Graphics::DrawGraphics(g_board, { 50, 15 }, 41, 9, 48, 10, Graphics::GetColor(Color::gray, Color::brightwhite));
 			//DrawEmptyBoard();
 			Console::setCursor(0);
 			t_running = 1;
 			t = thread(func);
 			tl = thread(func2);
-			
 			return;
 		}
-		char c = _getch();
 		if (c == KEY_ENTER) break;
 		if (c == KEY_BACKSPACE){
 
@@ -509,7 +508,18 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		bool state = l.IsGreen();
 		writeBin(out, state);
 	}
-
+	// write score
+	writeBin(out, score);
+	// write level
+	writeBin(out, level);
+	// write idlePl needed to pass current level
+	writeBin(out, numIdlePl);
+	// write current idle on this level
+	int idlePlSize = idlePl.size();
+	writeBin(out, idlePlSize);
+	for (auto& i : idlePl)
+		writeBin(out,i);
+	//
 	out.close();
 	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX + 1, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
 
@@ -526,9 +536,9 @@ string Game::HookLoadGame(short x, short y) {
 	Graphics::DrawTexts("NAME", { short(x + 6), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("LEVEl", { short(x + 38), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("SCORE", { short(x + 52), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("PREVIOUS PAGE [A]", { short(x + 5), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("RETURN [R]", { short(x + 27), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("NEXT PAGE [D]", { short(x + 45), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("PREVIOUS PAGE [A]", { short(x + 5), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("RETURN [R]", { short(x + 27), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("NEXT PAGE [D]", { short(x + 45), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 
 	// get file names	
 	WIN32_FIND_DATAA data;
@@ -632,7 +642,7 @@ DRAWPAGE:
 	}
 }
 
-void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game*& loadGame) {
+void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	if (t_running == 0) return;
 	t_running = 0;
 	if (t.joinable()) t.join();
@@ -645,7 +655,7 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game
 		readBin(in, x);
 		readBin(in, y);
 		readBin(in, state);
-		loadGame->pl.SetData(x, y, state);
+		pl.SetData(x, y, state);
 		// read obstacles
 		readVector<Truck>(in, tr);
 		readVector<Car>(in, car);
@@ -657,11 +667,23 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game
 			readBin(in, state);
 			l.SetState(state);
 		}
+		// read score
+		readBin(in, score);
+		// read level
+		readBin(in, level);
+		// read idlePl needed to pass current level
+		readBin(in, numIdlePl);
+		// read current idle player on this level
+		int idlePlSize;
+		readBin(in, idlePlSize);
+		idlePl.resize(idlePlSize);
+		for (auto& i : idlePl)
+			readBin(in, i);
 		in.close();
 		DrawGame();
 	} else
-	DrawGame();
-	//	Graphics::DrawGraphics(g_board, { 50, 6 }, 50 - boardX, 6 - boardY, 63, 30, Graphics::GetColor(Color::gray, Color::brightwhite));
+	//DrawGame();
+		Graphics::DrawGraphics(g_board, { 50, 6 }, 50 - boardX, 6 - boardY, 63, 24, Graphics::GetColor(Color::gray, Color::brightwhite));
 	//Graphics::DrawGraphics({ 58, 6 }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
 	t_running = 1;
 	t = thread(func);

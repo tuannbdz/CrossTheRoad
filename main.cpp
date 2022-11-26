@@ -100,7 +100,7 @@ void StartGame(Menu& menu) {
         }
         else
         if (Console::KeyPress(KeyCode::T)) {
-            g->LoadGame(t_game, t_tlight, &ProcessGame, &ProcessTLight, g);
+            g->LoadGame(t_game, t_tlight, &ProcessGame, &ProcessTLight);
         }
     }
     if (g != NULL && t_running)
