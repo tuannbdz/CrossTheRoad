@@ -48,6 +48,71 @@ public:
 	static void DrawGraphics(const vector<string>&, COORD, const Color&);
 	static void DrawGraphics(const vector<wstring>&, COORD, int, int, int, int, const Color&);
 	static void DrawGraphics(const vector<string>&, COORD, int, int, int, int, const Color&);
+
+	const vector<vector<wstring>>numberGraphics = {
+		zero, one, two, three, four, five, six, seven, eight, nine
+	};
+	
+	const vector<wstring> zero =
+	{
+		L"█▀█",
+		L"█▄█"
+	};
+
+	const vector<wstring> one =
+	{
+		L"▄█",
+		L" █"
+	};
+
+	const vector<wstring> two =
+	{
+		L"▀█",
+		L"█▄"
+
+	};
+
+	const vector<wstring> three =
+	{
+		L"▀██",
+		L"▄▄█"
+	};
+	const vector<wstring> four =
+	{
+		L"█ █",
+		L"▀▀█"
+
+	};
+	const vector<wstring> five =
+	{
+		L"█▀",
+		L"▄█"
+
+	};
+	const vector<wstring> six =
+	{
+		L"█▄▄",
+		L"█▄█"
+
+	};
+	const vector<wstring> seven =
+	{
+		L"▀▀█",
+		L"  █"
+
+	};
+	const vector<wstring> eight =
+	{
+		L"▄▀▀▄",
+		L"▄▀▀▄"
+		L"▀▄▄▀"
+	};
+
+	const vector<wstring> nine =
+	{
+		L"█▀█",
+		L"▀▀█"
+	};
 };
 
 const Color UNSELECTED_COLOR = Graphics::GetColor(Color::brightwhite, Color::blue);
