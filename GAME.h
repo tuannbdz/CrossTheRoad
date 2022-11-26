@@ -41,12 +41,14 @@ public:
 	int GetLevel();
 
 	void DrawGame();
+	void DrawEmptyBoard();
 	void ResetGame();
 	void PauseGame(thread &, thread& ,void (*func)(), void (*func2)());
 	void GameOver(void (*func)(), Menu& menu);
 	void ExitGame(thread&, thread&, Game*& g, Menu& menu, void (*func)(), void (*func2)());
 	void SaveGame(thread&, thread&, void (*func)(), void (*func2)());
 	void LoadGame(thread&, thread&, void (*func)(), void (*func2)(), Game*&);
+	void ClearData();
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
 	bool isWinning();

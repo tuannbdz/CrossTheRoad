@@ -20,14 +20,6 @@ void ProcessTLight() {
                 x.SetState(x.IsGreen() ^ 1);
             }
         }
-        /*if (i % 2 == 0)
-            g->GetTLight()[0].SetState(g->GetTLight()[0].IsGreen() ^ 1);
-        if (i % 7 == 0)
-            g->GetTLight()[1].SetState(g->GetTLight()[1].IsGreen() ^ 1);
-        if (i % 12 == 0)
-            g->GetTLight()[2].SetState(g->GetTLight()[2].IsGreen() ^ 1);
-        if (i % 16 == 0)
-            g->GetTLight()[3].SetState(g->GetTLight()[3].IsGreen() ^ 1);*/
     }
 }
 
@@ -36,9 +28,9 @@ void ProcessGame() {
     while (g->isRunning() && t_running) {
         g->UpdatePlayer(); //update player's status
         g->UpdateGameStatus();
+        g->UpdateTLight();
         if (g->GetLevel() == 1)
         {
-            g->UpdateTLight();
             if (g->GetTLight()[0].IsGreen())
                 g->UpdateBike();
             else g->DrawBike();
@@ -49,12 +41,21 @@ void ProcessGame() {
         }
         else
         if (g->GetLevel() == 2) {
+            if (g->GetTLight()[0].IsGreen())
+                g->UpdateCar();
+            else g->DrawCar();
 
+            if (g->GetTLight()[1].IsGreen())
+                g->UpdateTruck();
+            else g->DrawTruck();
+
+            if (g->GetTLight()[2].IsGreen())
+                g->UpdateBike();
+            else g->DrawBike();
         }
         else
         if (g->GetLevel() == 3)
         {
-            g->UpdateTLight();
             if (g->GetTLight()[3].IsGreen())
                 g->UpdateBike();
             else g->DrawBike();
