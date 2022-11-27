@@ -285,7 +285,13 @@ void Game::DrawGame() {
 	Graphics::DrawGraphics(g_board, { 10, 6 }, 0, 0, g_board[0].size(), g_board.size(), Graphics::GetColor(Color::gray, Color::brightwhite));
 
 	Console::SetFont(L"Consolas Bold");
-	Graphics::DrawGraphics({ 138, 20 }, "graphics/Game/load_game_ingame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
+	//Draw instructions
+	Console::SetColor(Graphics::GetColor(Color::brightwhite, Color::blue)); 
+	Graphics::DrawTexts("There are 4 levels. Each level.", { 138, 20 }); 
+	Graphics::DrawTexts("rewarded you 300 score.", { 138, 21 }); 
+	Graphics::DrawTexts("Obstacle speed is increased", { 138, 22 }); 
+	Graphics::DrawTexts("after each level.", { 138, 23 }); 
+	Graphics::DrawTexts("Traffic lights are helpful.", { 138, 24 }); 
 	Graphics::DrawGraphics({ 138, 2 }, "graphics/Game/controls.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 
 	DrawIdlePl();
@@ -312,7 +318,6 @@ void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(),
 	Graphics::DrawGraphics({ 48, 16 }, "graphics/Game/game_over/game_over_frame.txt", Graphics::GetColor(Color::brightwhite, Color::lightblue));
 	Color unselectedColor = Graphics::GetColor(Color::brightwhite, Color::blue),
 		selectedColor = Graphics::GetColor(Color::brightwhite, Color::yellow);
-
 	Graphics::DrawTexts("EXIT GAME ?", { 60, 18 }, unselectedColor);
 
 	Button b_yes("YES", { 60, 19 });
@@ -376,7 +381,6 @@ void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(),
 
 	} while (game_over_running);
 	fflush(stdin);
-
 
 }
 
