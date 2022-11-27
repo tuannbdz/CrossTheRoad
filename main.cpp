@@ -15,38 +15,63 @@ void ProcessTLight() {
     while (t_running) {
         this_thread::sleep_for(milliseconds(500));
         i = (i + 1) % 50;
-        if (i % 2 == 0)
-            g->GetTLight()[0].SetState(g->GetTLight()[0].IsGreen() ^ 1);
-        if (i % 7 == 0)
-            g->GetTLight()[1].SetState(g->GetTLight()[1].IsGreen() ^ 1);
-        if (i % 12 == 0)
-            g->GetTLight()[2].SetState(g->GetTLight()[2].IsGreen() ^ 1);
-        if (i % 16 == 0)
-            g->GetTLight()[3].SetState(g->GetTLight()[3].IsGreen() ^ 1);
+        for (auto& x : g->GetTLight()) {
+            if (i % x.GetTimeOut() == 0) {
+                x.SetState(x.IsGreen() ^ 1);
+            }
+        }
     }
 }
 
 void ProcessGame() {
     this_thread::sleep_for(milliseconds(10));
     while (g->isRunning() && t_running) {
-        g->UpdatePlayer();
+        g->UpdatePlayer(); //update player's status
+        g->UpdateGameStatus();
         g->UpdateTLight();
+        if (g->GetLevel() == 1)
+        {
+            if (g->GetTLight()[0].IsGreen())
+                g->UpdateBike();
+            else g->DrawBike();
 
-        if (g->GetTLight()[3].IsGreen())
-            g->UpdateBike();
-        else g->DrawBike();
+            if (g->GetTLight()[1].IsGreen())
+                g->UpdateCar();
+            else g->DrawCar();
+        }
+        else
+        if (g->GetLevel() == 2) {
+            if (g->GetTLight()[0].IsGreen())
+                g->UpdateCar();
+            else g->DrawCar();
 
-        if (g->GetTLight()[2].IsGreen())
-            g->UpdateCar();
-        else g->DrawCar();
+            if (g->GetTLight()[1].IsGreen())
+                g->UpdateTruck();
+            else g->DrawTruck();
 
-        if (g->GetTLight()[1].IsGreen())
-            g->UpdateShark();
-        else g->DrawShark();
+            if (g->GetTLight()[2].IsGreen())
+                g->UpdateBike();
+            else g->DrawBike();
+        }
+        else
+        if (g->GetLevel() == 3)
+        {
+            if (g->GetTLight()[3].IsGreen())
+                g->UpdateBike();
+            else g->DrawBike();
 
-        if (g->GetTLight()[0].IsGreen())
-            g->UpdateTruck();
-        else g->DrawTruck();
+            if (g->GetTLight()[2].IsGreen())
+                g->UpdateCar();
+            else g->DrawCar();
+
+            if (g->GetTLight()[1].IsGreen())
+                g->UpdateShark();
+            else g->DrawShark();
+
+            if (g->GetTLight()[0].IsGreen())
+                g->UpdateTruck();
+            else g->DrawTruck();
+        }
     }
 }
 
@@ -75,7 +100,7 @@ void StartGame(Menu& menu) {
         }
         else
         if (Console::KeyPress(KeyCode::T)) {
-            g->LoadGame(t_game, t_tlight, &ProcessGame, &ProcessTLight, g);
+            g->LoadGame(t_game, t_tlight, &ProcessGame, &ProcessTLight);
         }
     }
     if (g != NULL && t_running)
@@ -86,7 +111,6 @@ void StartGame(Menu& menu) {
         g->GameOver(&ProcessGame, menu);
     }
 }
-
 
 void RunGame() {
     Menu menu;

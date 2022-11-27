@@ -3,6 +3,7 @@
 class TLight {
 	short x, y;
 	bool isGreen;
+	int timeout;
 	vector<string> sprite;
 public:
 	TLight();
@@ -12,6 +13,7 @@ public:
 	int GetY();
 	bool IsGreen();
 	vector<string>& GetSprite();
+	int GetTimeOut();
 
 	void SetX(int);
 	void SetY(int);
@@ -19,6 +21,7 @@ public:
 	void SetState(bool);
 	void SetSprite(vector<string>&);
 	void SetData(int, int, bool);
+	void SetTimeOut(int);
 
 	void DrawSelf();
 

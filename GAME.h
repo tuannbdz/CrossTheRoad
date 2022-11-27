@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "lib.h"
 #include "Menu.h"
@@ -17,12 +17,14 @@ private:
 	bool g_running;
 	int score, level;
 	int speed;
+	int numIdlePl;
 	Player pl;
 	vector<TLight> tlight;
 	vector< Bike* > bike;
 	vector< Car* > car;
 	vector< Shark* > shark;
 	vector< Truck* > tr;
+
 	const vector<vector<wstring>>numberGraphics = {
 		zero, one, two, three, four, five, six, seven, eight, nine
 	};
@@ -87,7 +89,8 @@ private:
 		L"█▀█",
 		L"▀▀█"
 	};
-	//string data; //this is the filename that the user entered to save game process
+
+	vector<int> idlePl;
 	
 public:
 	Game();
@@ -100,19 +103,24 @@ public:
 
 	Player& GetPlayer();
 	vector<TLight>& GetTLight();
+	int GetLevel();
 
 	void DrawGame();
+	void DrawEmptyBoard();
 	void ResetGame();
 	void PauseGame(thread &, thread& ,void (*func)(), void (*func2)());
 	void GameOver(void (*func)(), Menu& menu);
 	void ExitGame(thread&, thread&, Game*& g, Menu& menu, void (*func)(), void (*func2)());
 	void SaveGame(thread&, thread&, void (*func)(), void (*func2)());
-	void LoadGame(thread&, thread&, void (*func)(), void (*func2)(), Game*&);
+	void LoadGame(thread&, thread&, void (*func)(), void (*func2)());
+	void ClearData();
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
+	bool isWinning();
 
 	string HookLoadGame(short, short);
 
+	void UpdateGameStatus();
 	void UpdatePlayer();
 	void UpdateTruck();
 	void UpdateBike();
@@ -120,12 +128,11 @@ public:
 	void UpdateShark();
 	void UpdateTLight();
 
-	
-
 	void DrawTruck();
 	void DrawBike();
 	void DrawCar();
 	void DrawShark();
+	void DrawIdlePl();
 };
 
 const int boardX = 10;

@@ -3,7 +3,8 @@
 void Game::Init() {
 	t_running = 1;
 	g_running = 1;
-	score = 0, level = 3;
+	score = 0, level = 1;
+
 	InitLevel(level);
 	setMap(); 
 }
@@ -13,16 +14,84 @@ void Game::InitLevel(int _l) {
 	g_running = 1;
 	score = 0;
 	level = _l;
+
 	setMap();
+
 	if (level == 1) {
+		numIdlePl = 1;
+		pl.SetXY(78, 28);
 
+		tlight.resize(2);
+		tlight[0].SetXY(3, 11);
+		tlight[1].SetXY(3, 22);
+		tlight[0].SetTimeOut(2);
+		tlight[1].SetTimeOut(3);
+
+		bike.push_back(new Bike());
+		bike.push_back(new Bike(50, 12));
+		bike.push_back(new Bike(70, 12));
+		bike.push_back(new Bike(90, 12));
+		bike.push_back(new Bike(110, 12));
+		bike.push_back(new Bike(130, 12));
+		bike.push_back(new Bike(150, 12));
+
+		car.push_back(new Car(35, 23));
+		car.push_back(new Car(55, 23));
+		car.push_back(new Car(80, 23));
+		car.push_back(new Car(105, 23));
+		car.push_back(new Car(130, 23));
+
+		speed = 30;
 	}
+	else
 	if (level == 2) {
+		numIdlePl = 2;
+		pl.SetXY(78, 30);
 
+		tlight.resize(3);
+		tlight[0].SetXY(3, 11);
+		tlight[1].SetXY(3, 18);
+		tlight[2].SetXY(3, 24);
+		tlight[0].SetTimeOut(2);
+		tlight[1].SetTimeOut(2);
+		tlight[2].SetTimeOut(3);
+
+		bike.push_back(new Bike(30, 25));
+		bike.push_back(new Bike(50, 25));
+		bike.push_back(new Bike(70, 25));
+		bike.push_back(new Bike(90, 25));
+		bike.push_back(new Bike(110, 25));
+		bike.push_back(new Bike(130, 25));
+		bike.push_back(new Bike(150, 25));
+
+		car.push_back(new Car(35, 12));
+		car.push_back(new Car(55, 12));
+		car.push_back(new Car(80, 12));
+		car.push_back(new Car(105, 12));
+		car.push_back(new Car(130, 12));
+
+		tr.push_back(new Truck(60, 18));
+		tr.push_back(new Truck(90, 18));
+		tr.push_back(new Truck(120, 18));
+		tr.push_back(new Truck(150, 18));
+
+		speed = 10;
 	}
 	else
 	{
+		numIdlePl = 3;
 		pl.SetXY(78, 33);
+
+		tlight.resize(4);
+		tlight[0].SetXY(3, 28);
+		tlight[1].SetXY(3, 23);
+		tlight[2].SetXY(3, 17);
+		tlight[3].SetXY(3, 12);
+
+		tlight[0].SetTimeOut(2);
+		tlight[1].SetTimeOut(3);
+		tlight[2].SetTimeOut(3);
+		tlight[3].SetTimeOut(3);
 
 		tr.push_back(new Truck());
 		tr.push_back(new Truck(60, 28));
@@ -49,11 +118,7 @@ void Game::InitLevel(int _l) {
 		bike.push_back(new Bike(130, 12));
 		bike.push_back(new Bike(150, 12));
 
-		tlight.resize(4);
-		tlight[0].SetXY(0, 28);
-		tlight[1].SetXY(0, 23);
-		tlight[2].SetXY(0, 17);
-		tlight[3].SetXY(0, 12);
+		
 	}
 }
 
@@ -209,6 +274,10 @@ vector<TLight>& Game::GetTLight() {
 	return tlight;
 }
 
+int Game::GetLevel() {
+	return level;
+}
+
 void Game::DrawGame() {
 	Graphics::ClearScreen();
 
@@ -224,6 +293,12 @@ void Game::DrawGame() {
 	Graphics::DrawTexts("after each level.", { 138, 23 }); 
 	Graphics::DrawTexts("Traffic lights are helpful.", { 138, 24 }); 
 	Graphics::DrawGraphics({ 138, 2 }, "graphics/Game/controls.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
+
+	DrawIdlePl();
+}
+
+void Game::DrawEmptyBoard() {
+	Graphics::DrawGraphics(g_board, { 10, 6 }, 0, 0, g_board[0].size(), g_board.size(), Graphics::GetColor(Color::gray, Color::brightwhite));
 }
 
 template <class T> void drawVector(vector<T*>& obj) {
@@ -309,7 +384,6 @@ void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(),
 
 }
 
-
 bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2, const int& x3, const int& y3, const int& x4, const int& y4) {
 	bool c1 = min(x2, x4) > max(x1, x3);
 	bool c2 = min(y2, y4) > max(y1, y3);
@@ -318,6 +392,26 @@ bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2,
 
 bool Game::isRunning() {
 	return g_running;
+}
+
+bool Game::isWinning() {
+	return numIdlePl == 0;
+}
+
+void Game::ClearData() {
+	for (auto& i : car)
+		delete i;
+	for (auto& i : tr)
+		delete i;
+	for (auto& i : shark)
+		delete i;
+	for (auto& i : bike)
+		delete i;
+	car.clear();
+	tr.clear();
+	shark.clear();
+	bike.clear();
+	idlePl.clear();
 }
 
 template <class T> void writeBin(ostream& out, T& data) {
@@ -359,8 +453,8 @@ template <class T> void readVector(istream& in, vector<T*>& obj) {
 void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	if (t_running == 0) return;
 	t_running = 0;
-	tl.join();
-	t.join();
+	if(tl.joinable()) tl.join();
+	if(t.joinable()) t.join();
 
 	// save game
 	// draw input board
@@ -372,27 +466,27 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	string fileName;
 	while (1) {
 		char c = _getch();
-		if (c == 13) // Enter
-			break;
-		if (c == 8) { // Backspace
+		if (c == KEY_DOWN) { // Down to return
+			Graphics::DrawGraphics(g_board, { 50, 15 }, 41, 9, 48, 10, Graphics::GetColor(Color::gray, Color::brightwhite));
+			//DrawEmptyBoard();
+			Console::setCursor(0);
+			t_running = 1;
+			t = thread(func);
+			tl = thread(func2);
+			return;
+		}
+		if (c == KEY_ENTER) break;
+		if (c == KEY_BACKSPACE){
+
 			if (curX == 71)
 				continue;
+			::FlushConsoleInputBuffer(Console::inputHandle());
 			Console::gotoxy(--curX, 18);
 			Graphics::DrawTexts(" ", Graphics::GetColor(Color::brightwhite, Color::blue));
 			Console::gotoxy(curX, 18);
 			fileName.pop_back();
 			continue;
 		}
-		//if (c == 27) { // Escape to return
-		//	//fflush(stdin);
-		//	cin.clear();
-		//	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
-		//	Console::setCursor(0);
-		//	t_running = 1;
-		//	t = thread(func);
-		//	tl = thread(func2);
-		//	return;
-		//}
 		if (fileName.size() < 17) {
 			string cc;
 			cc += c;
@@ -401,12 +495,6 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 			fileName += c;
 		}
 	}
-	//while (fileName.size() > 18 || fileName.size() < 1)
-	//	getline(cin, fileName);
-	//const int inputSize = 18;
-	//char buffer[inputSize+1];
-	//cin.getline(buffer, inputSize+1);
-	//string fileName(buffer);
 
 	ofstream out("save_game_files/" + fileName + ".bin", ios::binary);
 	// write player
@@ -424,9 +512,20 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		bool state = l.IsGreen();
 		writeBin(out, state);
 	}
-
+	// write score
+	writeBin(out, score);
+	// write level
+	writeBin(out, level);
+	// write idlePl needed to pass current level
+	writeBin(out, numIdlePl);
+	// write current idle on this level
+	int idlePlSize = idlePl.size();
+	writeBin(out, idlePlSize);
+	for (auto& i : idlePl)
+		writeBin(out,i);
+	//
 	out.close();
-	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
+	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX + 1, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
 
 	Console::setCursor(0);
 	t_running = 1;
@@ -441,9 +540,9 @@ string Game::HookLoadGame(short x, short y) {
 	Graphics::DrawTexts("NAME", { short(x + 6), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("LEVEl", { short(x + 38), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawTexts("SCORE", { short(x + 52), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("PREVIOUS PAGE [A]", { short(x + 5), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("RETURN [R]", { short(x + 27), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("NEXT PAGE [D]", { short(x + 45), short(y + 30 - 4) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("PREVIOUS PAGE [A]", { short(x + 5), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("RETURN [R]", { short(x + 27), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawTexts("NEXT PAGE [D]", { short(x + 45), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 
 	// get file names	
 	WIN32_FIND_DATAA data;
@@ -547,7 +646,7 @@ DRAWPAGE:
 	}
 }
 
-void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game*& loadGame) {
+void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	if (t_running == 0) return;
 	t_running = 0;
 	if (t.joinable()) t.join();
@@ -560,7 +659,7 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game
 		readBin(in, x);
 		readBin(in, y);
 		readBin(in, state);
-		loadGame->pl.SetData(x, y, state);
+		pl.SetData(x, y, state);
 		// read obstacles
 		readVector<Truck>(in, tr);
 		readVector<Car>(in, car);
@@ -572,10 +671,23 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)(), Game
 			readBin(in, state);
 			l.SetState(state);
 		}
+		// read score
+		readBin(in, score);
+		// read level
+		readBin(in, level);
+		// read idlePl needed to pass current level
+		readBin(in, numIdlePl);
+		// read current idle player on this level
+		int idlePlSize;
+		readBin(in, idlePlSize);
+		idlePl.resize(idlePlSize);
+		for (auto& i : idlePl)
+			readBin(in, i);
 		in.close();
 		DrawGame();
 	} else
-		Graphics::DrawGraphics(g_board, { 50, 6 }, 50 - boardX, 6 - boardY, 63, 30, Graphics::GetColor(Color::gray, Color::brightwhite));
+	//DrawGame();
+		Graphics::DrawGraphics(g_board, { 50, 6 }, 50 - boardX, 6 - boardY, 63, 24, Graphics::GetColor(Color::gray, Color::brightwhite));
 	//Graphics::DrawGraphics({ 58, 6 }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
 	t_running = 1;
 	t = thread(func);
@@ -593,6 +705,7 @@ void Game::PauseGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		
 		Graphics::DrawTexts("GAME IS PAUSED.", { 60, 19 }, Graphics::GetColor(Color::brightwhite, Color::yellow));
 		Graphics::DrawTexts("PRESS R TO RESUME.", { 60, 20 }, Graphics::GetColor(Color::brightwhite, Color::yellow));
+
 	}
 	else {
 		Graphics::DrawGraphics(g_board, { 48, 15 }, 39, 9, 42, 11, Graphics::GetColor(Color::gray, Color::brightwhite));
@@ -604,6 +717,7 @@ void Game::PauseGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 
 void Game::GameOver(void (*func)(), Menu& menu)
 {
+	ClearData();
 	this_thread::sleep_for(milliseconds(20));
 	for (int i = 0; i < 3; i++)
 	{
@@ -617,7 +731,7 @@ void Game::GameOver(void (*func)(), Menu& menu)
 	//Graphics::ClearScreen(); 
 
 	//--------------Draw animation
-	DrawGame();
+	DrawEmptyBoard();
 	vector<string> firework = Graphics::GetGraphics("graphics/Game/game_over/firework_flying.txt");
 	vector<string>effect1 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect.txt"); 
 	vector<string>effect2 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect2.txt");
@@ -634,9 +748,13 @@ void Game::GameOver(void (*func)(), Menu& menu)
 	while (x_pos < 100 && y_pos >= 18)
 	{
 		Graphics::DrawGraphics(firework, { x_pos, y_pos }, color);
+
 		Sleep(200); 
 		//Graphics::RemoveArea({ x_pos, y_pos }, {short( x_pos + firework[0].size() + 1), (short)(y_pos + firework.size() - 1)});
-		Graphics::DrawGraphics(g_board, { x_pos, y_pos }, curCol, row - fw_row - 1, fw_col + 3, fw_row, Graphics::GetColor(Color::gray, Color::brightwhite));
+		int d = y_pos - boardY + fw_row  - 1;
+		Graphics::DrawGraphics(g_board, { x_pos, y_pos }, x_pos - boardX, y_pos - boardY, fw_col + 2, (d > g_board.size() ? g_board.size() - (y_pos - boardY) : fw_row), Graphics::GetColor(Color::gray, Color::brightwhite));
+		//Graphics::DrawGraphics(g_board, { 10, 6 }, 0, 0, g_board[0].size(), g_board.size(), Graphics::GetColor(Color::gray, Color::brightwhite));
+
 		x_pos += 10, y_pos -= 4; 
 		curCol += fw_col + 2;
 		row -= 4;
@@ -718,38 +836,68 @@ void Game::GameOver(void (*func)(), Menu& menu)
 	fflush(stdin);
 }
 
+void Game::UpdateGameStatus() {
+	if (pl.GetState() == 0) {
+		g_running = 0;
+	}
+	else if (pl.GetState() == 2) {
+		if (numIdlePl > 1)
+		{
+			idlePl.push_back(pl.GetX());
+			numIdlePl--;
+		}
+		else
+		{
+			if(level ==  3) g_running = 0;
+			else
+			{
+				ClearData();
+				InitLevel(level + 1);
+				DrawGame();
+			}
+		}
+		pl = Player(78, (level == 3 ? 33 : level == 2 ? 30 : 28));
+	}
+}
+
 void Game::UpdatePlayer() {
 	pl.Move();
 	this_thread::sleep_for(milliseconds(speed));
+
+	if (pl.GetY() == 7) {
+		pl.SetState(2);
+		return;
+	}
 	for (auto& i : car) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
 			pl.SetState(0);
-			goto ed;
+			return;
 		}
 	}
 	for (auto& i : tr) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
 			pl.SetState(0);
-			goto ed;
+			return;
 		}
 	}
 	for (auto& i : shark) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
 			pl.SetState(0);
-			goto ed;
+			return;
 		}
 	}
 	for (auto& i : bike) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
 			pl.SetState(0);
-			goto ed;
+			return;
 		}
 	}
-ed:
-	if (pl.GetState() == 0)
-	{
-		g_running = 0;
-		this_thread::sleep_for(milliseconds(5));
+
+	for (auto& i : idlePl) {
+		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 2, i - 1, 7, i + 3, 10)) {
+			pl.SetState(0);
+			return;
+		}
 	}
 }
 
@@ -792,4 +940,16 @@ void Game::DrawCar() {
 
 void Game::DrawShark() {
 	drawVector(shark);
+}
+
+void Game::DrawIdlePl() {
+	Console::SetColor(Graphics::GetColor(Color::gray, Color::brightwhite));
+	for (auto& x : idlePl) {
+		Console::gotoxy(x, 7);
+		cerr << " O ";
+		Console::gotoxy(x, 8);
+		cerr << "/|\\";
+		Console::gotoxy(x, 9);
+		cerr << "/ \\";
+	}
 }
