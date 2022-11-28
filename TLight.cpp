@@ -24,7 +24,7 @@ void TLight::SetY(int _y) { y = _y; }
 void TLight::SetXY(int _x, int _y) { x = _x, y = _y; }
 void TLight::SetState(bool b) { isGreen = b; }
 void TLight::SetSprite(vector<string>& s) { sprite = s; }
-void TLight::SetData(int _x, int _y, bool b) { x = _x, y = _y, isGreen = b; }
+void TLight::SetData(int _x, int _y, bool b, int _to) { x = _x, y = _y, isGreen = b; timeout = _to; }
 void TLight::SetTimeOut(int _t) {
 	timeout = _t;
 }

@@ -3,7 +3,7 @@
 void Game::Init() {
 	t_running = 1;
 	g_running = 1;
-	score = 256, level = 1;
+	score = 0, level = 1;
 
 	InitLevel(level);
 	setMap(); 
@@ -412,7 +412,6 @@ bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2,
 	return c1 && c2;
 }
 
-
 bool Game::isRunning() {
 	return g_running;
 }
@@ -525,28 +524,40 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	writeBin(out, pX);
 	writeBin(out, pY);
 	writeBin(out, state);
+	writeBin(out, score);
+	writeBin(out, level);
+
+	// write idlePl needed to pass current level
+	writeBin(out, numIdlePl);
+	// write current idle on this level
+
+	int idlePlSize = idlePl.size();
+	writeBin(out, idlePlSize);
+	for (auto& i : idlePl)
+		writeBin(out, i);
+
+	// write traffic lights
+	int tlsize = tlight.size();
+	writeBin(out, tlsize);
+	for (auto& l : tlight) {
+		bool state = l.IsGreen();
+		int lx = l.GetX();
+		int ly = l.GetY();
+		int timeOut = l.GetTimeOut();
+		writeBin(out, lx);
+		writeBin(out, ly);
+		writeBin(out, timeOut);
+		writeBin(out, state);
+	}
+
 	// write obstacles
 	writeVector<Truck>(out, tr);
 	writeVector<Car>(out, car);
 	writeVector<Bike>(out, bike);
 	writeVector<Shark>(out, shark);
-	// write traffic lights
-	for (auto &l : tlight) {
-		bool state = l.IsGreen();
-		writeBin(out, state);
-	}
-	// write score
-	writeBin(out, score);
-	// write level
-	writeBin(out, level);
-	// write idlePl needed to pass current level
-	writeBin(out, numIdlePl);
-	// write current idle on this level
-	int idlePlSize = idlePl.size();
-	writeBin(out, idlePlSize);
-	for (auto& i : idlePl)
-		writeBin(out,i);
-	//
+	
+	
+	
 	out.close();
 	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX + 1, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
 
@@ -683,30 +694,43 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		readBin(in, y);
 		readBin(in, state);
 		pl.SetData(x, y, state);
+
+		readBin(in, score);
+		readBin(in, level);
+
+		readBin(in, numIdlePl);
+		int idlePlSize;
+		readBin(in, idlePlSize);
+		idlePl.resize(idlePlSize);
+		for (auto& i : idlePl)
+			readBin(in, i);
+		
+		int tlightSize;
+		readBin(in, tlightSize);
+		tlight.resize(tlightSize);
+		for (auto& l : tlight) {
+			bool state = l.IsGreen();
+			int lx = l.GetX();
+			int ly = l.GetY();
+			int timeOut = l.GetTimeOut();
+			readBin(in, lx);
+			readBin(in, ly);
+			readBin(in, timeOut);
+			readBin(in, state);
+			l.SetData(lx, ly, state, timeOut);
+		}
+
 		// read obstacles
 		readVector<Truck>(in, tr);
 		readVector<Car>(in, car);
 		readVector<Bike>(in, bike);
 		readVector<Shark>(in, shark);
 		// read traffic lights
-		for (auto& l : tlight) {
-			bool state = l.IsGreen();
-			readBin(in, state);
-			l.SetState(state);
-		}
-		// read score
-		readBin(in, score);
-		// read level
-		readBin(in, level);
-		// read idlePl needed to pass current level
-		readBin(in, numIdlePl);
-		// read current idle player on this level
-		int idlePlSize;
-		readBin(in, idlePlSize);
-		idlePl.resize(idlePlSize);
-		for (auto& i : idlePl)
-			readBin(in, i);
+		
+
 		in.close();
+
+		setMap();
 		DrawGame();
 	} else
 	//DrawGame();
@@ -759,7 +783,7 @@ void Game::GameOver(void (*func)(), Menu& menu)
 	vector<string>effect1 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect.txt"); 
 	vector<string>effect2 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect2.txt");
 
-	short x_pos = 28, y_pos = 26;
+	short x_pos = 28, y_pos = 26 - (level == 1 ? 5 : level == 2 ? 3 : 0);
 	Color color = Graphics::GetColor(Color::gray, Color::lightyellow),
 		colorON = Graphics::GetColor(Color::gray, Color::lightyellow),
 		colorOFF = Graphics::GetColor(Color::gray, Color::lightred); 
@@ -991,10 +1015,10 @@ void Game::DrawIdlePl() {
 void Game::DrawScore() {
 	int t = score;
 	vector <int> tmp;
-	while (t) {
+	do {
 		tmp.push_back(t % 10);
 		t /= 10;
-	}
+	} while (t);
 	reverse(tmp.begin(), tmp.end());
 	int preX = 10 + 110 - 1;
 	int preY = 3;
