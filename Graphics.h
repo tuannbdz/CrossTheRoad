@@ -36,6 +36,9 @@ public:
 	static void DrawTexts(const string& text);
 
 	static void RemoveArea(const COORD& s_pos, const COORD& e_pos);
+	static void RemoveArea(const COORD& s_pos, const COORD& e_pos, const Color&);
+
+
 	static void ClearScreen(); 
 	static vector<string> GetGraphics(const string& filename);
 	static vector<string> GetGraphicsR(const string& filename);
@@ -53,3 +56,49 @@ public:
 const Color UNSELECTED_COLOR = Graphics::GetColor(Color::brightwhite, Color::blue);
 const Color SELECTED_COLOR = Graphics::GetColor(Color::brightwhite, Color::yellow);
 const Color DEFAULT_COLOR = Graphics::GetColor(Color::brightwhite, Color::black);
+
+const vector<vector<wstring>> numberGraphics{
+{
+	L"█▀█",
+	L"█▄█"
+},
+{
+	L"▄█",
+	L" █"
+},
+{
+	L"▀█",
+	L"█▄"
+},
+{
+	L"▀██",
+	L"▄▄█"
+},
+{
+	L"█ █",
+	L"▀▀█"
+},
+{
+	L"█▀",
+	L"▄█"
+},
+{
+	L"█▄▄",
+	L"█▄█"
+
+},
+{
+	L"▀▀█",
+	L"  █"
+
+},
+{
+	L"▄▀▀▄",
+	L"▄▀▀▄"
+	L"▀▄▄▀"
+},
+{
+	L"█▀█",
+	L"▀▀█"
+}
+};

@@ -55,6 +55,7 @@ void Graphics::ClearScreen()
 	Console::SetColor(DEFAULT_COLOR); 
 	system("cls"); 
 }
+
 void Graphics::RemoveArea(const COORD& s_point, const COORD& e_point)
 {
 	Console::SetColor(DEFAULT_COLOR); 
@@ -66,6 +67,20 @@ void Graphics::RemoveArea(const COORD& s_point, const COORD& e_point)
 			std::cerr << " ";
 		}
 		std::cerr << "\n";
+	}
+}
+
+void Graphics::RemoveArea(const COORD& s_point, const COORD& e_point, const Color& color)
+{
+	Console::SetColor(color);
+	for (SHORT x = s_point.X; x <= e_point.X; ++x)
+	{
+		for (SHORT y = s_point.Y; y <= e_point.Y; ++y)
+		{
+			Console::GotoXY({ x, y });
+			std::cerr << " ";
+		}
+		//std::cerr << "\n";
 	}
 }
 

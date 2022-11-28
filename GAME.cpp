@@ -3,7 +3,7 @@
 void Game::Init() {
 	t_running = 1;
 	g_running = 1;
-	score = 0, level = 1;
+	score = 256, level = 1;
 
 	InitLevel(level);
 	setMap(); 
@@ -12,7 +12,6 @@ void Game::Init() {
 void Game::InitLevel(int _l) {
 	t_running = 1;
 	g_running = 1;
-	score = 0;
 	level = _l;
 
 	setMap();
@@ -281,13 +280,15 @@ int Game::GetLevel() {
 void Game::DrawGame() {
 	Graphics::ClearScreen();
 
-	Graphics::DrawGraphics({ 10, 2 }, "graphics/Game/levels/level1/level1_frame_start.txt", Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawGraphics({ 10, 2 }, "graphics/Game/levels/level_frame_start.txt", Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawGraphics(g_board, { 10, 6 }, 0, 0, g_board[0].size(), g_board.size(), Graphics::GetColor(Color::gray, Color::brightwhite));
+	DrawLevel();
+	DrawScore();
 
 	Console::SetFont(L"Consolas Bold");
 	//Draw instructions
 	Console::SetColor(Graphics::GetColor(Color::brightwhite, Color::blue)); 
-	Graphics::DrawTexts("There are 4 levels. Each level.", { 138, 20 }); 
+	Graphics::DrawTexts("There are 3 levels. Each level.", { 138, 20 }); 
 	Graphics::DrawTexts("rewarded you 300 score.", { 138, 21 }); 
 	Graphics::DrawTexts("Obstacle speed is increased", { 138, 22 }); 
 	Graphics::DrawTexts("after each level.", { 138, 23 }); 
@@ -845,6 +846,8 @@ void Game::UpdateGameStatus() {
 		{
 			idlePl.push_back(pl.GetX());
 			numIdlePl--;
+			score += 100;
+			DrawScore();
 		}
 		else
 		{
@@ -853,6 +856,7 @@ void Game::UpdateGameStatus() {
 			{
 				ClearData();
 				InitLevel(level + 1);
+				score += 300;
 				DrawGame();
 			}
 		}
@@ -952,4 +956,31 @@ void Game::DrawIdlePl() {
 		Console::gotoxy(x, 9);
 		cerr << "/ \\";
 	}
+}
+
+void Game::DrawScore() {
+	int t = score;
+	vector <int> tmp;
+	while (t) {
+		tmp.push_back(t % 10);
+		t /= 10;
+	}
+	reverse(tmp.begin(), tmp.end());
+	int preX = 10 + 110 - 1;
+	int preY = 3;
+	Graphics::RemoveArea({ short(preX), short(preY) }, { short(preX + 10), short(preY + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	for (auto& x : tmp)
+	{
+		Graphics::DrawGraphics(numberGraphics[x], {short(preX), short(preY)}, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+		preX += numberGraphics[x][0].size() + 1;
+	}
+}
+
+void Game::DrawLevel() {
+	int preX = 10 + 24;
+	int preY = 3;
+	//Graphics::DrawGraphics()
+	Graphics::RemoveArea({ short(preX), short(preY) }, { short(preX + 3), short(preY + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawGraphics(numberGraphics[level], { short(preX), short(preY) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+
 }

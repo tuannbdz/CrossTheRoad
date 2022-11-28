@@ -128,6 +128,7 @@ BLOCK1:
     
     goto BLOCK1;
 }
+
 void runLobby(){
     Graphics::ClearScreen();
     Graphics::drawBlueGradientGraphics({ 10, 0 }, "graphics/Menu/title.txt");
