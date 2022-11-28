@@ -15,6 +15,7 @@
 class Game {
 private:
 	bool g_running;
+	bool bg_music, g_music;
 	int score, level;
 	int speed;
 	int numIdlePl;
@@ -33,12 +34,17 @@ public:
 	~Game();
 	void Init();
 	void InitLevel(int);
+	void Sound();
 
-	void setMap(); 
+	void setMap();
+	void setg_music(Menu& menu);
+	void setbg_music(Menu& menu);
 
 	Player& GetPlayer();
 	vector<TLight>& GetTLight();
 	int GetLevel();
+	bool Getg_mucsic();
+	bool Getbg_mucsic();
 
 	void DrawGame();
 	void DrawEmptyBoard();
@@ -54,6 +60,9 @@ public:
 	bool isWinning();
 
 	string HookLoadGame(short, short);
+
+	template<class T>
+	void Sound(std::vector<T*>& l_obj);
 
 	void UpdateGameStatus();
 	void UpdatePlayer();

@@ -23,6 +23,7 @@ public:
 	void SetState(short);
 	void SetSprite(vector<wstring>s); 
 	void SetData(int, int, int);
+	void Sound();
 	void Move();
 	~Player();
 };

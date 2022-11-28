@@ -24,6 +24,11 @@ Player::Player(int _x, int _y) {
     color = Graphics::GetColor(Color::gray, Color::brightwhite);
 }
 
+void Player::Sound()
+{
+    PlaySound(L"music/move.wav", NULL, SND_FILENAME | SND_ASYNC);
+}
+
 Player::~Player() {
 
 }
@@ -68,18 +73,22 @@ void Player::Move() {
     if (y-boardY-1 > 0 && (GetAsyncKeyState(VK_UP) || GetAsyncKeyState('W'))) {
         Graphics::DrawGraphics(g_board, {x,y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::brightwhite));
         y--;
+        //Sound();
     }
     if (y-boardY+4 < g_board.size() && (GetAsyncKeyState(VK_DOWN) || GetAsyncKeyState('S'))) {
         Graphics::DrawGraphics(g_board, {x, y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::brightwhite));
         ++y;
+        //Sound();
     }
     if (x-boardX-2 >= 0  && (GetAsyncKeyState(VK_LEFT) || GetAsyncKeyState('A'))) {
         Graphics::DrawGraphics(g_board, {x, y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::brightwhite));
         x -= 2;
+        //Sound();
     }
     if (x-boardX+4 < g_board[0].size() && (GetAsyncKeyState(VK_RIGHT) || GetAsyncKeyState('D'))) {
         Graphics::DrawGraphics(g_board, {x, y}, x - boardX, y - boardY, 3, 3, Graphics::GetColor(Color::gray, Color::brightwhite));
         x += 2;
+        //Sound();
     }
 
     Player::Draw();

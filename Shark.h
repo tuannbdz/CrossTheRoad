@@ -7,4 +7,5 @@ public:
 	Shark();
 	Shark(int, int);
 	~Shark();
+	void Sound();
 };

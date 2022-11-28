@@ -222,6 +222,14 @@ void Game::setMap()
 	}
 }
 
+void Game::setg_music(Menu& menu) {
+	this->g_music = menu.getgMusic();
+}
+
+void Game::setbg_music(Menu& menu) {
+	this->bg_music = menu.getbgMusic();
+}
+
 void Game::ResetGame() {
 	Graphics::ClearScreen(); 
 
@@ -276,6 +284,19 @@ vector<TLight>& Game::GetTLight() {
 
 int Game::GetLevel() {
 	return level;
+}
+
+bool Game::Getg_mucsic() {
+	return g_music;
+}
+
+bool Game::Getbg_mucsic() {
+	return bg_music;
+}
+
+void Game::Sound()
+{
+	PlaySound(L"music/bgmusic.wav", NULL, SND_FILENAME | SND_ASYNC);
 }
 
 void Game::DrawGame() {
@@ -385,6 +406,7 @@ bool Game::isCollide(const int& x1, const int& y1, const int& x2, const int& y2,
 	bool c2 = min(y2, y4) > max(y1, y3);
 	return c1 && c2;
 }
+
 
 bool Game::isRunning() {
 	return g_running;
@@ -866,24 +888,32 @@ void Game::UpdatePlayer() {
 	}
 	for (auto& i : car) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			if(Getg_mucsic())
+				i->Sound();
 			pl.SetState(0);
 			return;
 		}
 	}
 	for (auto& i : tr) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			if (Getg_mucsic())
+				i->Sound();
 			pl.SetState(0);
 			return;
 		}
 	}
 	for (auto& i : shark) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			if (Getg_mucsic())
+				i->Sound();
 			pl.SetState(0);
 			return;
 		}
 	}
 	for (auto& i : bike) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			if (Getg_mucsic())
+				i->Sound();
 			pl.SetState(0);
 			return;
 		}
