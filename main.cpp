@@ -76,8 +76,8 @@ void ProcessGame() {
 }
 
 void StartGame(Menu& menu) {
+    g->setg_music(menu);
     g->DrawGame(); 
-
     //checks before assigning thread or else abort() will be called
     if (t_game.joinable())
         t_game.join(); 
@@ -123,6 +123,9 @@ BLOCK1:
     }
     
     if (menu.getGameStartedStatus() && !menu.getIsRunning()) {
+        g->setbg_music(menu);
+        if (g->Getbg_mucsic())
+            g->Sound();
         StartGame(menu);
     }
     

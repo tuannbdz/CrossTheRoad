@@ -19,6 +19,8 @@ public:
 	void SetDir(int);
 	void SetData(int, int, int, int);
 
+	virtual void Sound() = 0;
+
 	int GetX();
 	int GetY();
 	int GetSpeed();

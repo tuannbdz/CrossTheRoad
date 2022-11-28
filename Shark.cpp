@@ -18,6 +18,11 @@ Shark::Shark(int _x, int _y) {
     color = Graphics::GetColor(Color::gray, Color::lightaqua);
 }
 
+void Shark::Sound()
+{
+    PlaySound(L"music/dinosour.wav", NULL, SND_FILENAME | SND_ASYNC);
+}
+
 Shark::~Shark() {
 
 }

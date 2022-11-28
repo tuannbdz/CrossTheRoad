@@ -7,5 +7,6 @@ public:
 	Truck();
 	Truck(int, int);
 	~Truck();
+	void Sound();
 };
 

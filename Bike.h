@@ -7,4 +7,5 @@ public:
 	Bike();
 	Bike(int, int);
 	~Bike();
+	void Sound();
 };

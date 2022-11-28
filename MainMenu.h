@@ -28,7 +28,13 @@ void HookLoadGame();
 void LoadGame();
 void AddMainMenuButtons();
 void AddSettingButtons();
+void Music();
+void Sound_on();
+void Sound_off();
+void Sound();
 
+bool getgMusic();
+bool getbgMusic();
 void setButtons(const vector<Button>& newButtons);
 void setMenuStatus(bool gameStarted, bool isRunning);
 bool getGameStartedStatus();
