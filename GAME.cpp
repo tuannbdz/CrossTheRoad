@@ -851,7 +851,7 @@ void Game::LoadGame() {
 	string fileName = HookLoadGame(50, 6);
 	if (fileName.size()) {
 		ReadGame(fileName);
-		//DrawGame();
+		DrawGame();
 	} else
 	//DrawGame();
 		Graphics::DrawGraphics(g_board, { 50, 6 }, 50 - boardX, 6 - boardY, 63, 24, Graphics::GetColor(Color::gray, Color::brightwhite));
