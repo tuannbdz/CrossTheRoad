@@ -80,10 +80,12 @@ void Game::StartGame() {
 	//checks before assigning thread or else abort() will be called
 	if (t_game.joinable())
 		t_game.join();
+	if (t_tlight.joinable())
+		t_tlight.join();
 	t_game = thread(&Game::ProcessGame, this);
 	t_tlight = thread(&Game::ProcessTLight, this);
 
-	while (this != NULL && isRunning()) {
+	while (isRunning()) {
 		if (Console::KeyPress(KeyCode::ESC)) {
 			if (t_running) {
 				ExitGame();
@@ -102,7 +104,7 @@ void Game::StartGame() {
 			LoadGame();
 		}
 	}
-	if (this != NULL && t_running)
+	if (t_running)
 	{
 		t_running = 0;
 		t_game.join();
@@ -113,7 +115,8 @@ void Game::StartGame() {
 
 void Game::Run() {
 BLOCK1:
-
+	ClearData();
+	Init();
 	if (menu.getIsRunning() && !menu.getGameStartedStatus()) {
 		menu.Run();
 	}
@@ -121,6 +124,11 @@ BLOCK1:
 		setbg_music();
 		if (Getbg_mucsic())
 			Sound();
+		string fileName = menu.Load();
+		if (fileName.size()) {
+			ReadGame(fileName);
+			menu.SetLoad("");
+		}
 		StartGame();
 	}
 
@@ -683,118 +691,6 @@ void Game::SaveGame() {
 	t_tlight = thread(&Game::ProcessTLight, this);
 }
 
-string Game::HookLoadGame(short x, short y) {
-	// Draw frame
-	Graphics::DrawGraphics({ x, y }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
-	Console::SetFont(L"Consolas Bold");
-	Graphics::DrawTexts("NAME", { short(x + 6), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("LEVEl", { short(x + 38), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("SCORE", { short(x + 52), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("PREVIOUS PAGE [A]", { short(x + 5), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("RETURN [R]", { short(x + 27), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("NEXT PAGE [D]", { short(x + 45), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-
-	// get file names	
-	WIN32_FIND_DATAA data;
-	//HANDLE hFind = FindFirstFileA("./save_game_files/*.bin", &data);
-	HANDLE hFind = FindFirstFileA("./save_game_files/*.bin", &data);
-	vector<string> files;
-	if (hFind != INVALID_HANDLE_VALUE) {
-		do {
-			files.push_back(data.cFileName);
-		} while (FindNextFileA(hFind, &data));
-
-		FindClose(hFind);
-	}
-
-	Color unselectedColor = Graphics::GetColor(Color::lightblue, Color::brightwhite),
-		selectedColor = Graphics::GetColor(Color::brightwhite, Color::lightblue);
-
-	int maxLines = 19;
-	// turn file names into buttons to display on the screen
-	vector<vector<Button>> buttonsOfPage;
-	vector<Button> buttons;
-	short buttonPosY = y+5, buttonPosX = x+7;
-	int buttonDist = 1;
-	for (auto& fileName : files) {
-		if (buttonPosY > y + 5 + maxLines - 1) {
-			buttonsOfPage.push_back(buttons);
-			buttons.clear();
-			buttonPosY = y + 5;
-		}
-		Button b(fileName, { buttonPosX, buttonPosY });
-		buttons.push_back(b);
-		buttonPosY += buttonDist;
-	}
-	if (buttons.size() <= maxLines && buttons.size())
-		buttonsOfPage.push_back(buttons);
-
-	// if there's no file to load
-	while (buttonsOfPage.size() == 0) {
-		if (Console::KeyPress(KeyCode::R)) {
-			return "";
-		}
-	}
-	
-	// now draw the buttons for the first page
-
-	int currPage = 0;
-
-	int currButton = 0, prevButton = 0;
-
-	bool moveCursor = false;
-
-DRAWPAGE:
-	int lines = buttonsOfPage[currPage].size();
-
-	for (auto& b : buttonsOfPage[currPage]) {
-		b.Draw(unselectedColor);
-	}
-	// make the first file name selected by default
-	buttonsOfPage[currPage][0].Draw(selectedColor);
-
-	while (1) {
-		if (moveCursor) {
-			// draw the previous button unselected
-			COORD prevPos = buttonsOfPage[currPage][prevButton].GetPos();
-			Console::gotoxy(prevPos.X, prevPos.Y);
-			buttonsOfPage[currPage][prevButton].Draw(unselectedColor);
-
-			// draw current button selected
-			COORD curPos = buttonsOfPage[currPage][currButton].GetPos();
-			Console::gotoxy(curPos.X, curPos.Y);
-			buttonsOfPage[currPage][currButton].Draw(selectedColor);
-			moveCursor = false;
-		}
-
-		if (Console::KeyPress(KeyCode::UP) || Console::KeyPress(KeyCode::W)) {
-			prevButton = currButton;
-			currButton = (currButton + lines - 1) % lines;
-			moveCursor = 1;
-		}
-		if (Console::KeyPress(KeyCode::DOWN) || Console::KeyPress(KeyCode::S)) {
-			prevButton = currButton;
-			currButton = (currButton + 1) % lines;
-			moveCursor = 1;
-		}
-		if (Console::KeyPress(KeyCode::LEFT) || Console::KeyPress(KeyCode::A)) {
-			if (currPage)
-				currPage--;
-			goto DRAWPAGE;
-		}
-		if (Console::KeyPress(KeyCode::RIGHT) || Console::KeyPress(KeyCode::D)) {
-			if (currPage < buttonsOfPage.size()-1)
-				currPage++;
-			goto DRAWPAGE;
-		}
-		if (Console::KeyPress(KeyCode::R)) {
-			return "";
-		}
-		if (Console::KeyPress(KeyCode::ENTER)) {
-			return buttons[currButton].GetText();
-		}
-	}
-}
 
 void Game::ReadGame(string fileName) {
 	ifstream in("save_game_files/" + fileName, ios::binary);
@@ -848,7 +744,7 @@ void Game::LoadGame() {
 	t_running = 0;
 	if (t_game.joinable()) t_game.join();
 	if (t_tlight.joinable()) t_tlight.join();
-	string fileName = HookLoadGame(50, 6);
+	string fileName = menu.HookLoadGame(50, 6);
 	if (fileName.size()) {
 		ReadGame(fileName);
 		DrawGame();
@@ -975,7 +871,7 @@ void Game::GameOver()
 			this_thread::sleep_for(milliseconds(50));
 			if (command == 0)
 			{
-				ResetGame();
+				//ResetGame();
 				menu.setMenuStatus(1, 0);
 			}
 			else

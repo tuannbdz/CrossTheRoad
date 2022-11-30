@@ -62,7 +62,6 @@ public:
 	bool isRunning();
 	bool isWinning();
 
-	string HookLoadGame(short, short);
 
 	template<class T>
 	void Sound(std::vector<T*>& l_obj);
