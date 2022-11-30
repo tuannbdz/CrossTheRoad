@@ -680,6 +680,9 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		for (auto& i : idlePl)
 			readBin(in, i);
 		in.close();
+		g_board.clear();
+		setMap();
+
 		DrawGame();
 	} else
 	//DrawGame();
