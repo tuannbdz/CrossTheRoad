@@ -87,6 +87,7 @@ public:
 	void StartGame();
 	void ProcessGame();
 	void ProcessTLight();
+	void ReadGame(string);
 };
 
 const int boardX = 10;

@@ -113,12 +113,10 @@ void Game::StartGame() {
 
 void Game::Run() {
 BLOCK1:
-	//Game();
 
 	if (menu.getIsRunning() && !menu.getGameStartedStatus()) {
 		menu.Run();
 	}
-
 	if (menu.getGameStartedStatus() && !menu.getIsRunning()) {
 		setbg_music();
 		if (Getbg_mucsic())
@@ -798,6 +796,53 @@ DRAWPAGE:
 	}
 }
 
+void Game::ReadGame(string fileName) {
+	ifstream in("save_game_files/" + fileName, ios::binary);
+	// read player
+	int x, y, state;
+	readBin(in, x);
+	readBin(in, y);
+	readBin(in, state);
+	pl.SetData(x, y, state);
+
+	readBin(in, score);
+	readBin(in, level);
+
+	readBin(in, numIdlePl);
+	int idlePlSize;
+	readBin(in, idlePlSize);
+	idlePl.resize(idlePlSize);
+	for (auto& i : idlePl)
+		readBin(in, i);
+
+	int tlightSize;
+	readBin(in, tlightSize);
+	tlight.resize(tlightSize);
+	for (auto& l : tlight) {
+		bool state = l.IsGreen();
+		int lx = l.GetX();
+		int ly = l.GetY();
+		int timeOut = l.GetTimeOut();
+		readBin(in, lx);
+		readBin(in, ly);
+		readBin(in, timeOut);
+		readBin(in, state);
+		l.SetData(lx, ly, state, timeOut);
+	}
+
+	// read obstacles
+	readVector<Truck>(in, tr);
+	readVector<Car>(in, car);
+	readVector<Bike>(in, bike);
+	readVector<Shark>(in, shark);
+	// read traffic lights
+
+
+	in.close();
+
+	setMap();
+}
+
 void Game::LoadGame() {
 	if (t_running == 0) return;
 	t_running = 0;
@@ -805,51 +850,8 @@ void Game::LoadGame() {
 	if (t_tlight.joinable()) t_tlight.join();
 	string fileName = HookLoadGame(50, 6);
 	if (fileName.size()) {
-		ifstream in("save_game_files/" + fileName, ios::binary);
-		// read player
-		int x, y, state;
-		readBin(in, x);
-		readBin(in, y);
-		readBin(in, state);
-		pl.SetData(x, y, state);
-
-		readBin(in, score);
-		readBin(in, level);
-
-		readBin(in, numIdlePl);
-		int idlePlSize;
-		readBin(in, idlePlSize);
-		idlePl.resize(idlePlSize);
-		for (auto& i : idlePl)
-			readBin(in, i);
-		
-		int tlightSize;
-		readBin(in, tlightSize);
-		tlight.resize(tlightSize);
-		for (auto& l : tlight) {
-			bool state = l.IsGreen();
-			int lx = l.GetX();
-			int ly = l.GetY();
-			int timeOut = l.GetTimeOut();
-			readBin(in, lx);
-			readBin(in, ly);
-			readBin(in, timeOut);
-			readBin(in, state);
-			l.SetData(lx, ly, state, timeOut);
-		}
-
-		// read obstacles
-		readVector<Truck>(in, tr);
-		readVector<Car>(in, car);
-		readVector<Bike>(in, bike);
-		readVector<Shark>(in, shark);
-		// read traffic lights
-		
-
-		in.close();
-
-		setMap();
-		DrawGame();
+		ReadGame(fileName);
+		//DrawGame();
 	} else
 	//DrawGame();
 		Graphics::DrawGraphics(g_board, { 50, 6 }, 50 - boardX, 6 - boardY, 63, 24, Graphics::GetColor(Color::gray, Color::brightwhite));
