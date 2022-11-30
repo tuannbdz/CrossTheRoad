@@ -25,10 +25,18 @@ const enum class Mode {
 class Menu
 {
 	int command; 
-	bool gameStarted, isRunning; 
-	vector<Button>buttons; 
-	//vector<string> title;
+	bool gameStarted, isRunning;
+	bool bg_music,  g_music, g_play, g_exit;
 
+	std::thread t_Sound;
+
+	vector<Button>buttons; 
+
+	int volume;
+
+	Console* console;
+	//vector<string> title;
+	
 public: 
 	void DrawMainMenu(); 
 	void DrawSettings(); 
@@ -38,10 +46,17 @@ public:
 	void LoadGame();
 	void AddMainMenuButtons(); 
 	void AddSettingButtons(); 
+	void Music();
+	void Sound_on();
+	void Sound_off();
+	void Sound();
 
 	Menu(); 
+	~Menu();
 	void Run();
 
+	bool getgMusic();
+	bool getbgMusic();
 	void setButtons(const vector<Button>& newButtons);
 	void setMenuStatus(bool gameStarted, bool isRunning); 
 	bool getGameStartedStatus() const; 

@@ -15,6 +15,7 @@
 class Game {
 private:
 	bool g_running;
+	bool bg_music, g_music;
 	int score, level;
 	int speed;
 	int numIdlePl;
@@ -25,7 +26,6 @@ private:
 	vector< Shark* > shark;
 	vector< Truck* > tr;
 	vector<int> idlePl;
-	//string data; //this is the filename that the user entered to save game process
 	
 public:
 	Game();
@@ -33,12 +33,17 @@ public:
 	~Game();
 	void Init();
 	void InitLevel(int);
+	void Sound();
 
-	void setMap(); 
+	void setMap();
+	void setg_music(Menu& menu);
+	void setbg_music(Menu& menu);
 
 	Player& GetPlayer();
 	vector<TLight>& GetTLight();
 	int GetLevel();
+	bool Getg_mucsic();
+	bool Getbg_mucsic();
 
 	void DrawGame();
 	void DrawEmptyBoard();
@@ -55,6 +60,9 @@ public:
 
 	string HookLoadGame(short, short);
 
+	template<class T>
+	void Sound(std::vector<T*>& l_obj);
+
 	void UpdateGameStatus();
 	void UpdatePlayer();
 	void UpdateTruck();
@@ -68,6 +76,8 @@ public:
 	void DrawCar();
 	void DrawShark();
 	void DrawIdlePl();
+	void DrawScore();
+	void DrawLevel();
 };
 
 const int boardX = 10;

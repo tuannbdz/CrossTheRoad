@@ -6,5 +6,6 @@ public:
 	Car();
 	Car(int, int);
 	~Car();
+	void Sound();
 };
 

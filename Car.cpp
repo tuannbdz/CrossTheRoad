@@ -18,6 +18,11 @@ Car::Car(int _x, int _y) {
     color = Graphics::GetColor(Color::gray, Color::lightgreen);
 }
 
+void Car::Sound()
+{
+    PlaySound(L"music/car.wav", NULL, SND_FILENAME | SND_ASYNC);
+}
+
 Car::~Car() {
 
 }

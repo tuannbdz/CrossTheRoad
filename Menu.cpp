@@ -1,16 +1,52 @@
 #include "Menu.h"
 
+bool Menu::getgMusic() {
+	return g_music;
+}
+
+bool Menu::getbgMusic() {
+	return bg_music;
+}
+
 Menu::Menu()
 {
+	console = new Console();
 	command = 0; 
 	gameStarted = false;
 	isRunning = true; 
+	bg_music = true;
+	g_music = true;
+	g_play = true;
+	g_exit = false;
+	volume = 400;
+	t_Sound = std::thread(&Menu::Music, this);
+
 }
+
+
+Menu::~Menu()
+{
+	g_exit = true;
+	bg_music = true;
+	g_music = false;
+	g_play = false;
+
+	Sleep(40);
+
+	delete console;
+	console = nullptr;
+
+	t_Sound.join();
+}
+
+
 
 void Menu::setMenuStatus(bool gameStarted, bool isRunning)
 {
 	this->gameStarted = gameStarted; 
 	this->isRunning = isRunning; 
+	if(!this->isRunning && this->gameStarted)
+		this->g_play = false;
 }
 
 bool Menu::getGameStartedStatus() const
@@ -33,10 +69,17 @@ void Menu::AddMainMenuButtons()
 
 void Menu::AddSettingButtons()
 {
-	buttons.push_back(Button("Background Music",	{ 75, 14 }, UNSELECTED_COLOR, "graphics/Menu/settings/bg_music.txt"));
-	buttons.push_back(Button("Sound effect",		{ 75, 19 }, UNSELECTED_COLOR, "graphics/Menu/settings/sound.txt"));
+	if(bg_music)
+		buttons.push_back(Button("Background Music",	{ 75, 14 }, UNSELECTED_COLOR, "graphics/Menu/settings/bg_music_on.txt"));
+	else
+		buttons.push_back(Button("Background Music", { 75, 14 }, UNSELECTED_COLOR, "graphics/Menu/settings/bg_music_off.txt"));
+	if(g_music)
+		buttons.push_back(Button("Sound effect",		{ 75, 19 }, UNSELECTED_COLOR, "graphics/Menu/settings/sound_on.txt"));
+	else
+		buttons.push_back(Button("Sound effect", { 75, 19 }, UNSELECTED_COLOR, "graphics/Menu/settings/sound_off.txt"));
 	buttons.push_back(Button("Level",				{ 75, 24 }, UNSELECTED_COLOR, "graphics/Menu/settings/level.txt"));
 	buttons.push_back(Button("Return",			{ 75, 29 }, UNSELECTED_COLOR, "graphics/Menu/settings/return.txt"));
+			
 }
 
 void Menu::DrawMainMenu()
@@ -105,6 +148,10 @@ void Menu::DrawAbout()
 void Menu::Run()
 {
 	//AddMainMenuButtons(); 
+	if (bg_music)
+		Sound_on();
+	else
+		Sound_off();
 	DrawMainMenu(); 
 	ChooseCommand(75, 14, Mode::mainMenu); 
 
@@ -115,7 +162,6 @@ void Menu::ChooseCommand(int cX, int cY, Mode mode)
 	//pY : previous Y, cY = current Y the command is at
 	int pY = cY;
 	int pC = command;
-	
 	do
 	{
 		int n = buttons.size();
@@ -147,14 +193,16 @@ void Menu::ChooseCommand(int cX, int cY, Mode mode)
 					command = (command + 1) % n;
 					cY = command + 5;
 				}
+
 	} while (isRunning);
+	
 }
 
 void Menu::ExecuteCommands(const Mode& mode)
 {
 	int n = buttons.size();
 	int c; 
-
+	
 	if (mode == Mode::mainMenu)
 	{
 		switch (command)
@@ -170,7 +218,7 @@ void Menu::ExecuteCommands(const Mode& mode)
 
 			break;
 		case (int)MainMenuButtons::settings:
-			//Graphics::RemoveArea({75, 14}, {125, 35}); 
+			//Graphics::RemoveArea({75, 14}, {125, 35});
 			DrawSettings(); 
 			ChooseCommand(75, 14, Mode::settings); 
 			break;
@@ -194,9 +242,19 @@ void Menu::ExecuteCommands(const Mode& mode)
 	{
 		switch (command)
 		{
-		case (int)SettingButtons::bg_music: 
+		case (int)SettingButtons::bg_music:
+			bg_music = !bg_music;
+			if (bg_music)
+				Sound_on();
+			else
+				Sound_off();
+			DrawSettings();
+			ChooseCommand(75, 14, Mode::settings);
 			break; 
 		case (int)SettingButtons::sound: 
+			g_music = !g_music;
+			DrawSettings();
+			ChooseCommand(75, 14, Mode::settings);
 			break; 
 		case (int)SettingButtons::level: 
 			break; 
@@ -206,7 +264,6 @@ void Menu::ExecuteCommands(const Mode& mode)
 			ChooseCommand(75, 14, Mode::mainMenu);
 			break;
 		}
-
 	}
 }
 
@@ -218,3 +275,42 @@ void Menu::setButtons(const vector<Button>& newButtons)
 		buttons.push_back(button); 
 	}
 }
+
+void Menu::Music()
+{
+	bool isOpen = false, isStop = false;
+	console->OpenMusic(L"music/Start.mp3");
+
+	while (g_play == true)
+	{
+		if (!bg_music && !isStop)
+		{
+			console->StopMusic();
+			isStop = true;
+			isOpen = false;
+		}
+		else if (bg_music && !isOpen)
+		{
+			console->PlayMusic(volume);
+			isStop = false;
+			isOpen = true;
+		}
+	}
+
+	console->CloseMusic();
+}
+
+void Menu::Sound_on()
+{
+	PlaySound(L"music/Start.wav", NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void Menu::Sound_off()
+{
+	PlaySound(0,0,0);
+}
+
+
+
+
+

@@ -18,6 +18,11 @@ Truck::Truck(int _x, int _y) {
     color = Graphics::GetColor(Color::gray, Color::brightwhite);
 }
 
+void Truck::Sound() 
+{
+    PlaySound(L"music/truck.wav", NULL, SND_FILENAME | SND_ASYNC);
+}
+
 Truck::~Truck() {
 
 }

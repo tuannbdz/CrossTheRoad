@@ -18,6 +18,11 @@ Bike::Bike(int _x, int _y) {
     color = Graphics::GetColor(Color::gray, Color::lightyellow);
 }
 
+void Bike::Sound()
+{
+    PlaySound(L"music/bike.wav", NULL, SND_FILENAME | SND_ASYNC);
+}
+
 Bike::~Bike() {
 
 }

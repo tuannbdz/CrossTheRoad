@@ -12,7 +12,6 @@ void Game::Init() {
 void Game::InitLevel(int _l) {
 	t_running = 1;
 	g_running = 1;
-	score = 0;
 	level = _l;
 
 	setMap();
@@ -222,6 +221,14 @@ void Game::setMap()
 	}
 }
 
+void Game::setg_music(Menu& menu) {
+	this->g_music = menu.getgMusic();
+}
+
+void Game::setbg_music(Menu& menu) {
+	this->bg_music = menu.getbgMusic();
+}
+
 void Game::ResetGame() {
 	Graphics::ClearScreen(); 
 
@@ -278,14 +285,35 @@ int Game::GetLevel() {
 	return level;
 }
 
+bool Game::Getg_mucsic() {
+	return g_music;
+}
+
+bool Game::Getbg_mucsic() {
+	return bg_music;
+}
+
+void Game::Sound()
+{
+	PlaySound(L"music/bgmusic.wav", NULL, SND_FILENAME | SND_ASYNC);
+}
+
 void Game::DrawGame() {
 	Graphics::ClearScreen();
 
-	Graphics::DrawGraphics({ 10, 2 }, "graphics/Game/levels/level1/level1_frame_start.txt", Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawGraphics({ 10, 2 }, "graphics/Game/levels/level_frame_start.txt", Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	Graphics::DrawGraphics(g_board, { 10, 6 }, 0, 0, g_board[0].size(), g_board.size(), Graphics::GetColor(Color::gray, Color::brightwhite));
+	DrawLevel();
+	DrawScore();
 
 	Console::SetFont(L"Consolas Bold");
-	Graphics::DrawGraphics({ 138, 20 }, "graphics/Game/load_game_ingame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
+	//Draw instructions
+	Console::SetColor(Graphics::GetColor(Color::brightwhite, Color::blue)); 
+	Graphics::DrawTexts("There are 3 levels. Each level.", { 138, 20 }); 
+	Graphics::DrawTexts("rewarded you 300 score.", { 138, 21 }); 
+	Graphics::DrawTexts("Obstacle speed is increased", { 138, 22 }); 
+	Graphics::DrawTexts("after each level.", { 138, 23 }); 
+	Graphics::DrawTexts("Traffic lights are helpful.", { 138, 24 }); 
 	Graphics::DrawGraphics({ 138, 2 }, "graphics/Game/controls.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 
 	DrawIdlePl();
@@ -312,7 +340,6 @@ void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(),
 	Graphics::DrawGraphics({ 48, 16 }, "graphics/Game/game_over/game_over_frame.txt", Graphics::GetColor(Color::brightwhite, Color::lightblue));
 	Color unselectedColor = Graphics::GetColor(Color::brightwhite, Color::blue),
 		selectedColor = Graphics::GetColor(Color::brightwhite, Color::yellow);
-
 	Graphics::DrawTexts("EXIT GAME ?", { 60, 18 }, unselectedColor);
 
 	Button b_yes("YES", { 60, 19 });
@@ -376,7 +403,6 @@ void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(),
 
 	} while (game_over_running);
 	fflush(stdin);
-
 
 }
 
@@ -498,28 +524,40 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	writeBin(out, pX);
 	writeBin(out, pY);
 	writeBin(out, state);
+	writeBin(out, score);
+	writeBin(out, level);
+
+	// write idlePl needed to pass current level
+	writeBin(out, numIdlePl);
+	// write current idle on this level
+
+	int idlePlSize = idlePl.size();
+	writeBin(out, idlePlSize);
+	for (auto& i : idlePl)
+		writeBin(out, i);
+
+	// write traffic lights
+	int tlsize = tlight.size();
+	writeBin(out, tlsize);
+	for (auto& l : tlight) {
+		bool state = l.IsGreen();
+		int lx = l.GetX();
+		int ly = l.GetY();
+		int timeOut = l.GetTimeOut();
+		writeBin(out, lx);
+		writeBin(out, ly);
+		writeBin(out, timeOut);
+		writeBin(out, state);
+	}
+
 	// write obstacles
 	writeVector<Truck>(out, tr);
 	writeVector<Car>(out, car);
 	writeVector<Bike>(out, bike);
 	writeVector<Shark>(out, shark);
-	// write traffic lights
-	for (auto &l : tlight) {
-		bool state = l.IsGreen();
-		writeBin(out, state);
-	}
-	// write score
-	writeBin(out, score);
-	// write level
-	writeBin(out, level);
-	// write idlePl needed to pass current level
-	writeBin(out, numIdlePl);
-	// write current idle on this level
-	int idlePlSize = idlePl.size();
-	writeBin(out, idlePlSize);
-	for (auto& i : idlePl)
-		writeBin(out,i);
-	//
+	
+	
+	
 	out.close();
 	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX + 1, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
 
@@ -656,33 +694,43 @@ void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 		readBin(in, y);
 		readBin(in, state);
 		pl.SetData(x, y, state);
+
+		readBin(in, score);
+		readBin(in, level);
+
+		readBin(in, numIdlePl);
+		int idlePlSize;
+		readBin(in, idlePlSize);
+		idlePl.resize(idlePlSize);
+		for (auto& i : idlePl)
+			readBin(in, i);
+		
+		int tlightSize;
+		readBin(in, tlightSize);
+		tlight.resize(tlightSize);
+		for (auto& l : tlight) {
+			bool state = l.IsGreen();
+			int lx = l.GetX();
+			int ly = l.GetY();
+			int timeOut = l.GetTimeOut();
+			readBin(in, lx);
+			readBin(in, ly);
+			readBin(in, timeOut);
+			readBin(in, state);
+			l.SetData(lx, ly, state, timeOut);
+		}
+
 		// read obstacles
 		readVector<Truck>(in, tr);
 		readVector<Car>(in, car);
 		readVector<Bike>(in, bike);
 		readVector<Shark>(in, shark);
 		// read traffic lights
-		for (auto& l : tlight) {
-			bool state = l.IsGreen();
-			readBin(in, state);
-			l.SetState(state);
-		}
-		// read score
-		readBin(in, score);
-		// read level
-		readBin(in, level);
-		// read idlePl needed to pass current level
-		readBin(in, numIdlePl);
-		// read current idle player on this level
-		int idlePlSize;
-		readBin(in, idlePlSize);
-		idlePl.resize(idlePlSize);
-		for (auto& i : idlePl)
-			readBin(in, i);
-		in.close();
-		g_board.clear();
-		setMap();
+		
 
+		in.close();
+
+		setMap();
 		DrawGame();
 	} else
 	//DrawGame();
@@ -735,7 +783,7 @@ void Game::GameOver(void (*func)(), Menu& menu)
 	vector<string>effect1 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect.txt"); 
 	vector<string>effect2 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect2.txt");
 
-	short x_pos = 28, y_pos = 26;
+	short x_pos = 28, y_pos = 26 - (level == 1 ? 5 : level == 2 ? 3 : 0);
 	Color color = Graphics::GetColor(Color::gray, Color::lightyellow),
 		colorON = Graphics::GetColor(Color::gray, Color::lightyellow),
 		colorOFF = Graphics::GetColor(Color::gray, Color::lightred); 
@@ -844,6 +892,8 @@ void Game::UpdateGameStatus() {
 		{
 			idlePl.push_back(pl.GetX());
 			numIdlePl--;
+			score += 100;
+			DrawScore();
 		}
 		else
 		{
@@ -852,6 +902,7 @@ void Game::UpdateGameStatus() {
 			{
 				ClearData();
 				InitLevel(level + 1);
+				score += 300;
 				DrawGame();
 			}
 		}
@@ -869,24 +920,32 @@ void Game::UpdatePlayer() {
 	}
 	for (auto& i : car) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			if(Getg_mucsic())
+				i->Sound();
 			pl.SetState(0);
 			return;
 		}
 	}
 	for (auto& i : tr) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			if (Getg_mucsic())
+				i->Sound();
 			pl.SetState(0);
 			return;
 		}
 	}
 	for (auto& i : shark) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			if (Getg_mucsic())
+				i->Sound();
 			pl.SetState(0);
 			return;
 		}
 	}
 	for (auto& i : bike) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
+			if (Getg_mucsic())
+				i->Sound();
 			pl.SetState(0);
 			return;
 		}
@@ -951,4 +1010,31 @@ void Game::DrawIdlePl() {
 		Console::gotoxy(x, 9);
 		cerr << "/ \\";
 	}
+}
+
+void Game::DrawScore() {
+	int t = score;
+	vector <int> tmp;
+	do {
+		tmp.push_back(t % 10);
+		t /= 10;
+	} while (t);
+	reverse(tmp.begin(), tmp.end());
+	int preX = 10 + 110 - 1;
+	int preY = 3;
+	Graphics::RemoveArea({ short(preX), short(preY) }, { short(preX + 10), short(preY + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	for (auto& x : tmp)
+	{
+		Graphics::DrawGraphics(numberGraphics[x], {short(preX), short(preY)}, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+		preX += numberGraphics[x][0].size() + 1;
+	}
+}
+
+void Game::DrawLevel() {
+	int preX = 10 + 24;
+	int preY = 3;
+	//Graphics::DrawGraphics()
+	Graphics::RemoveArea({ short(preX), short(preY) }, { short(preX + 3), short(preY + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+	Graphics::DrawGraphics(numberGraphics[level], { short(preX), short(preY) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+
 }

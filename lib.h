@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <cstring>
@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 using namespace std::chrono;

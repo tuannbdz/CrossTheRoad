@@ -20,7 +20,7 @@ public:
 	void SetXY(int, int);
 	void SetState(bool);
 	void SetSprite(vector<string>&);
-	void SetData(int, int, bool);
+	void SetData(int, int, bool, int);
 	void SetTimeOut(int);
 
 	void DrawSelf();
