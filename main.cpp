@@ -139,6 +139,7 @@ void runLobby(){
     menu.DrawMainMenu();
     menu.ChooseCommand(75, 14, Mode::mainMenu);
 }
+
 void runGame(){}
 
 void run() {

@@ -6,7 +6,7 @@ void Game::Init() {
 	score = 0, level = 1;
 
 	InitLevel(level);
-	setMap(); 
+
 }
 
 void Game::InitLevel(int _l) {
