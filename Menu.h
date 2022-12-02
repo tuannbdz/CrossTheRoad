@@ -27,6 +27,7 @@ class Menu
 	int command; 
 	bool gameStarted, isRunning;
 	bool bg_music,  g_music, g_play, g_exit;
+	string g_load;
 
 	std::thread t_Sound;
 
@@ -42,7 +43,7 @@ public:
 	void DrawSettings(); 
 	void DrawLoadGame(); 
 	void DrawAbout(); 
-	void HookLoadGame();
+	string HookLoadGame(short, short);
 	void LoadGame();
 	void AddMainMenuButtons(); 
 	void AddSettingButtons(); 
@@ -64,4 +65,6 @@ public:
 	void ChooseCommand(int, int, Mode); 
 	void ExecuteCommands(const Mode&); 
 
+	string Load();
+	void SetLoad(string);
 };
