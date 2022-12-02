@@ -1,5 +1,70 @@
 ﻿#include "Game.h"
 
+void Game::ProcessTLight() {
+	int i = 0;
+	while (t_running) {
+		this_thread::sleep_for(milliseconds(500));
+		i = (i + 1) % 50;
+		for (auto& x : tlight) {
+			if (i % x.GetTimeOut() == 0) {
+				x.SetState(x.IsGreen() ^ 1);
+			}
+		}
+	}
+}
+
+void Game::ProcessGame() {
+	this_thread::sleep_for(milliseconds(10));
+	while (isRunning() && t_running) {
+		UpdatePlayer(); //update player's status
+		UpdateGameStatus();
+		UpdateTLight();
+		if (GetLevel() == 1)
+		{
+			if (GetTLight()[0].IsGreen())
+				UpdateBike();
+			else DrawBike();
+
+			if (GetTLight()[1].IsGreen())
+				UpdateCar();
+			else DrawCar();
+		}
+		else
+		if (GetLevel() == 2) {
+			if (GetTLight()[0].IsGreen())
+				UpdateCar();
+			else DrawCar();
+
+			if (GetTLight()[1].IsGreen())
+				UpdateTruck();
+			else DrawTruck();
+
+			if (GetTLight()[2].IsGreen())
+				UpdateBike();
+			else DrawBike();
+		}
+		else
+		if (GetLevel() == 3)
+		{
+			if (GetTLight()[3].IsGreen())
+				UpdateBike();
+			else DrawBike();
+
+			if (GetTLight()[2].IsGreen())
+				UpdateCar();
+			else DrawCar();
+
+			if (GetTLight()[1].IsGreen())
+				UpdateShark();
+			else DrawShark();
+
+			if (GetTLight()[0].IsGreen())
+				UpdateTruck();
+			else DrawTruck();
+		}
+	}
+}
+
 void Game::Init() {
 	t_running = 1;
 	g_running = 1;
@@ -7,6 +72,67 @@ void Game::Init() {
 
 	InitLevel(level);
 
+}
+
+void Game::StartGame() {
+	setg_music();
+	DrawGame();
+	//checks before assigning thread or else abort() will be called
+	if (t_game.joinable())
+		t_game.join();
+	if (t_tlight.joinable())
+		t_tlight.join();
+	t_game = thread(&Game::ProcessGame, this);
+	t_tlight = thread(&Game::ProcessTLight, this);
+
+	while (isRunning()) {
+		if (Console::KeyPress(KeyCode::ESC)) {
+			if (t_running) {
+				ExitGame();
+			}
+		}
+		else
+		if (Console::KeyPress(KeyCode::R)) {
+			PauseGame();
+		}
+		else
+		if (Console::KeyPress(KeyCode::L)) {
+			SaveGame();
+		}
+		else
+		if (Console::KeyPress(KeyCode::T)) {
+			LoadGame();
+		}
+	}
+	if (t_running)
+	{
+		t_running = 0;
+		t_game.join();
+		if (t_tlight.joinable()) t_tlight.join();
+		GameOver();
+	}
+}
+
+void Game::Run() {
+BLOCK1:
+	ClearData();
+	Init();
+	if (menu.getIsRunning() && !menu.getGameStartedStatus()) {
+		menu.Run();
+	}
+	if (menu.getGameStartedStatus() && !menu.getIsRunning()) {
+		setbg_music();
+		if (Getbg_mucsic())
+			Sound();
+		string fileName = menu.Load();
+		if (fileName.size()) {
+			ReadGame(fileName);
+			menu.SetLoad("");
+		}
+		StartGame();
+	}
+
+	goto BLOCK1;
 }
 
 void Game::InitLevel(int _l) {
@@ -221,11 +347,11 @@ void Game::setMap()
 	}
 }
 
-void Game::setg_music(Menu& menu) {
+void Game::setg_music() {
 	this->g_music = menu.getgMusic();
 }
 
-void Game::setbg_music(Menu& menu) {
+void Game::setbg_music() {
 	this->bg_music = menu.getbgMusic();
 }
 
@@ -328,13 +454,13 @@ template <class T> void drawVector(vector<T*>& obj) {
 		o->UpdateSprite();
 }
 
-void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(), void (*func2)()) {
+void Game::ExitGame() {
 	if (t_running == 0) return;
 	//pause game for pop up
 	if (t_running) {
 		t_running = 0;
-		if (t.joinable()) t.join();
-		if (tl.joinable()) tl.join();
+		if (t_game.joinable()) t_game.join();
+		if (t_tlight.joinable()) t_tlight.join();
 	}
 
 	Graphics::DrawGraphics({ 48, 16 }, "graphics/Game/game_over/game_over_frame.txt", Graphics::GetColor(Color::brightwhite, Color::lightblue));
@@ -372,17 +498,15 @@ void Game::ExitGame(thread& t, thread& tl, Game*& g, Menu& menu, void (*func)(),
 			this_thread::sleep_for(milliseconds(50));
 			if (command == 0)
 			{
-				g->g_running = 0;
+				g_running = 0;
 				menu.setMenuStatus(0, 1);
-				delete g;
-				g = NULL;
 			}
 			else
 			{
 				Graphics::DrawGraphics(g_board, { 48, 16 }, 39, 10, 44, 11, Graphics::GetColor(Color::gray, Color::brightwhite));
 				t_running = 1;
-				t = thread(func);
-				tl = thread(func2);
+				t_game = thread(&Game::ProcessGame, this);
+				t_tlight = thread(&Game::ProcessTLight, this);
 			}
 			game_over_running = false;
 		}
@@ -472,11 +596,11 @@ template <class T> void readVector(istream& in, vector<T*>& obj) {
 	}
 }
 
-void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
+void Game::SaveGame() {
 	if (t_running == 0) return;
 	t_running = 0;
-	if(tl.joinable()) tl.join();
-	if(t.joinable()) t.join();
+	if(t_tlight.joinable()) t_tlight.join();
+	if(t_game.joinable()) t_game.join();
 
 	// save game
 	// draw input board
@@ -493,8 +617,8 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 			//DrawEmptyBoard();
 			Console::setCursor(0);
 			t_running = 1;
-			t = thread(func);
-			tl = thread(func2);
+			t_game = thread(&Game::ProcessGame, this);
+			t_tlight = thread(&Game::ProcessTLight, this);
 			return;
 		}
 		if (c == KEY_ENTER) break;
@@ -563,190 +687,82 @@ void Game::SaveGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 
 	Console::setCursor(0);
 	t_running = 1;
-	t = thread(func);
-	tl = thread(func2);
+	t_game = thread(&Game::ProcessGame, this);
+	t_tlight = thread(&Game::ProcessTLight, this);
 }
 
-string Game::HookLoadGame(short x, short y) {
-	// Draw frame
-	Graphics::DrawGraphics({ x, y }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
-	Console::SetFont(L"Consolas Bold");
-	Graphics::DrawTexts("NAME", { short(x + 6), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("LEVEl", { short(x + 38), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("SCORE", { short(x + 52), short(y + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("PREVIOUS PAGE [A]", { short(x + 5), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("RETURN [R]", { short(x + 27), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
-	Graphics::DrawTexts("NEXT PAGE [D]", { short(x + 45), short(y + 21 ) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 
-	// get file names	
-	WIN32_FIND_DATAA data;
-	//HANDLE hFind = FindFirstFileA("./save_game_files/*.bin", &data);
-	HANDLE hFind = FindFirstFileA("./save_game_files/*.bin", &data);
-	vector<string> files;
-	if (hFind != INVALID_HANDLE_VALUE) {
-		do {
-			files.push_back(data.cFileName);
-		} while (FindNextFileA(hFind, &data));
+void Game::ReadGame(string fileName) {
+	ifstream in("save_game_files/" + fileName, ios::binary);
+	// read player
+	int x, y, state;
+	readBin(in, x);
+	readBin(in, y);
+	readBin(in, state);
+	pl.SetData(x, y, state);
 
-		FindClose(hFind);
+	readBin(in, score);
+	readBin(in, level);
+
+	readBin(in, numIdlePl);
+	int idlePlSize;
+	readBin(in, idlePlSize);
+	idlePl.resize(idlePlSize);
+	for (auto& i : idlePl)
+		readBin(in, i);
+
+	int tlightSize;
+	readBin(in, tlightSize);
+	tlight.resize(tlightSize);
+	for (auto& l : tlight) {
+		bool state = l.IsGreen();
+		int lx = l.GetX();
+		int ly = l.GetY();
+		int timeOut = l.GetTimeOut();
+		readBin(in, lx);
+		readBin(in, ly);
+		readBin(in, timeOut);
+		readBin(in, state);
+		l.SetData(lx, ly, state, timeOut);
 	}
 
-	Color unselectedColor = Graphics::GetColor(Color::lightblue, Color::brightwhite),
-		selectedColor = Graphics::GetColor(Color::brightwhite, Color::lightblue);
+	// read obstacles
+	readVector<Truck>(in, tr);
+	readVector<Car>(in, car);
+	readVector<Bike>(in, bike);
+	readVector<Shark>(in, shark);
+	// read traffic lights
 
-	int maxLines = 19;
-	// turn file names into buttons to display on the screen
-	vector<vector<Button>> buttonsOfPage;
-	vector<Button> buttons;
-	short buttonPosY = y+5, buttonPosX = x+7;
-	int buttonDist = 1;
-	for (auto& fileName : files) {
-		if (buttonPosY > y + 5 + maxLines - 1) {
-			buttonsOfPage.push_back(buttons);
-			buttons.clear();
-			buttonPosY = y + 5;
-		}
-		Button b(fileName, { buttonPosX, buttonPosY });
-		buttons.push_back(b);
-		buttonPosY += buttonDist;
-	}
-	if (buttons.size() <= maxLines && buttons.size())
-		buttonsOfPage.push_back(buttons);
 
-	// if there's no file to load
-	while (buttonsOfPage.size() == 0) {
-		if (Console::KeyPress(KeyCode::R)) {
-			return "";
-		}
-	}
-	
-	// now draw the buttons for the first page
+	in.close();
 
-	int currPage = 0;
-
-	int currButton = 0, prevButton = 0;
-
-	bool moveCursor = false;
-
-DRAWPAGE:
-	int lines = buttonsOfPage[currPage].size();
-
-	for (auto& b : buttonsOfPage[currPage]) {
-		b.Draw(unselectedColor);
-	}
-	// make the first file name selected by default
-	buttonsOfPage[currPage][0].Draw(selectedColor);
-
-	while (1) {
-		if (moveCursor) {
-			// draw the previous button unselected
-			COORD prevPos = buttonsOfPage[currPage][prevButton].GetPos();
-			Console::gotoxy(prevPos.X, prevPos.Y);
-			buttonsOfPage[currPage][prevButton].Draw(unselectedColor);
-
-			// draw current button selected
-			COORD curPos = buttonsOfPage[currPage][currButton].GetPos();
-			Console::gotoxy(curPos.X, curPos.Y);
-			buttonsOfPage[currPage][currButton].Draw(selectedColor);
-			moveCursor = false;
-		}
-
-		if (Console::KeyPress(KeyCode::UP) || Console::KeyPress(KeyCode::W)) {
-			prevButton = currButton;
-			currButton = (currButton + lines - 1) % lines;
-			moveCursor = 1;
-		}
-		if (Console::KeyPress(KeyCode::DOWN) || Console::KeyPress(KeyCode::S)) {
-			prevButton = currButton;
-			currButton = (currButton + 1) % lines;
-			moveCursor = 1;
-		}
-		if (Console::KeyPress(KeyCode::LEFT) || Console::KeyPress(KeyCode::A)) {
-			if (currPage)
-				currPage--;
-			goto DRAWPAGE;
-		}
-		if (Console::KeyPress(KeyCode::RIGHT) || Console::KeyPress(KeyCode::D)) {
-			if (currPage < buttonsOfPage.size()-1)
-				currPage++;
-			goto DRAWPAGE;
-		}
-		if (Console::KeyPress(KeyCode::R)) {
-			return "";
-		}
-		if (Console::KeyPress(KeyCode::ENTER)) {
-			return buttons[currButton].GetText();
-		}
-	}
+	setMap();
 }
 
-void Game::LoadGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
+void Game::LoadGame() {
 	if (t_running == 0) return;
 	t_running = 0;
-	if (t.joinable()) t.join();
-	if (tl.joinable()) tl.join();
-	string fileName = HookLoadGame(50, 6);
+	if (t_game.joinable()) t_game.join();
+	if (t_tlight.joinable()) t_tlight.join();
+	string fileName = menu.HookLoadGame(50, 6);
 	if (fileName.size()) {
-		ifstream in("save_game_files/" + fileName, ios::binary);
-		// read player
-		int x, y, state;
-		readBin(in, x);
-		readBin(in, y);
-		readBin(in, state);
-		pl.SetData(x, y, state);
-
-		readBin(in, score);
-		readBin(in, level);
-
-		readBin(in, numIdlePl);
-		int idlePlSize;
-		readBin(in, idlePlSize);
-		idlePl.resize(idlePlSize);
-		for (auto& i : idlePl)
-			readBin(in, i);
-		
-		int tlightSize;
-		readBin(in, tlightSize);
-		tlight.resize(tlightSize);
-		for (auto& l : tlight) {
-			bool state = l.IsGreen();
-			int lx = l.GetX();
-			int ly = l.GetY();
-			int timeOut = l.GetTimeOut();
-			readBin(in, lx);
-			readBin(in, ly);
-			readBin(in, timeOut);
-			readBin(in, state);
-			l.SetData(lx, ly, state, timeOut);
-		}
-
-		// read obstacles
-		readVector<Truck>(in, tr);
-		readVector<Car>(in, car);
-		readVector<Bike>(in, bike);
-		readVector<Shark>(in, shark);
-		// read traffic lights
-		
-
-		in.close();
-
-		setMap();
+		ReadGame(fileName);
 		DrawGame();
 	} else
 	//DrawGame();
 		Graphics::DrawGraphics(g_board, { 50, 6 }, 50 - boardX, 6 - boardY, 63, 24, Graphics::GetColor(Color::gray, Color::brightwhite));
 	//Graphics::DrawGraphics({ 58, 6 }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
 	t_running = 1;
-	t = thread(func);
-	tl = thread(func2);
+	t_game = thread(&Game::ProcessGame, this);
+	t_tlight = thread(&Game::ProcessTLight, this);
 
 }
 
-void Game::PauseGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
+void Game::PauseGame() {
 	if (t_running) {
 		t_running = 0;
-		if(t.joinable()) t.join();
-		if(tl.joinable()) tl.join();
+		if (t_game.joinable()) t_game.join();
+		if (t_tlight.joinable()) t_tlight.join();
 		Graphics::DrawGraphics({ 48, 16 }, "graphics/Game/pause_frame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 		Graphics::DrawGraphics({ 55, 15 }, "graphics/Game/pause_text.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 		
@@ -757,12 +773,12 @@ void Game::PauseGame(thread& t, thread& tl, void (*func)(), void (*func2)()) {
 	else {
 		Graphics::DrawGraphics(g_board, { 48, 15 }, 39, 9, 42, 11, Graphics::GetColor(Color::gray, Color::brightwhite));
 		t_running = 1;
-		t = thread(func);
-		tl = thread(func2);
+		t_game = thread(&Game::ProcessGame, this);
+		t_tlight = thread(&Game::ProcessTLight, this);
 	}
 }
 
-void Game::GameOver(void (*func)(), Menu& menu)
+void Game::GameOver()
 {
 	ClearData();
 	this_thread::sleep_for(milliseconds(20));
@@ -855,7 +871,7 @@ void Game::GameOver(void (*func)(), Menu& menu)
 			this_thread::sleep_for(milliseconds(50));
 			if (command == 0)
 			{
-				ResetGame();
+				//ResetGame();
 				menu.setMenuStatus(1, 0);
 			}
 			else
