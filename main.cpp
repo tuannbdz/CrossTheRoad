@@ -6,6 +6,7 @@
 
 vector<wstring>g_board;
 <<<<<<< HEAD
+<<<<<<< HEAD
 bool t_running;
 thread t_game;
 thread t_tlight;
@@ -151,6 +152,8 @@ START:
     goto START;
 }
 =======
+=======
+>>>>>>> 08f49f35891a4411b31b414c083d2324bb638ee1
 //bool t_running;
 //thread t_game;
 //thread t_tlight;
@@ -277,6 +280,9 @@ START:
 //    
 //    goto BLOCK1;
 //}
+<<<<<<< HEAD
+>>>>>>> 08f49f35891a4411b31b414c083d2324bb638ee1
+=======
 >>>>>>> 08f49f35891a4411b31b414c083d2324bb638ee1
 
 int main() {

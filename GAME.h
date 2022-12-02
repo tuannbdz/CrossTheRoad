@@ -14,11 +14,12 @@
 
 class Game {
 private:
-	bool g_running;
+	bool g_running, t_running;
 	bool bg_music, g_music;
 	int score, level;
 	int speed;
 	int numIdlePl;
+	Menu menu;
 	Player pl;
 	vector<TLight> tlight;
 	vector< Bike* > bike;
@@ -26,6 +27,9 @@ private:
 	vector< Shark* > shark;
 	vector< Truck* > tr;
 	vector<int> idlePl;
+
+	thread t_game;
+	thread t_tlight;
 	
 public:
 	Game();
@@ -36,8 +40,8 @@ public:
 	void Sound();
 
 	void setMap();
-	void setg_music(Menu& menu);
-	void setbg_music(Menu& menu);
+	void setg_music();
+	void setbg_music();
 
 	Player& GetPlayer();
 	vector<TLight>& GetTLight();
@@ -48,17 +52,16 @@ public:
 	void DrawGame();
 	void DrawEmptyBoard();
 	void ResetGame();
-	void PauseGame(thread &, thread& ,void (*func)(), void (*func2)());
-	void GameOver(void (*func)(), Menu& menu);
-	void ExitGame(thread&, thread&, Game*& g, Menu& menu, void (*func)(), void (*func2)());
-	void SaveGame(thread&, thread&, void (*func)(), void (*func2)());
-	void LoadGame(thread&, thread&, void (*func)(), void (*func2)());
+	void PauseGame();
+	void GameOver();
+	void ExitGame();
+	void SaveGame();
+	void LoadGame();
 	void ClearData();
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
 	bool isWinning();
 
-	string HookLoadGame(short, short);
 
 	template<class T>
 	void Sound(std::vector<T*>& l_obj);
@@ -78,6 +81,12 @@ public:
 	void DrawIdlePl();
 	void DrawScore();
 	void DrawLevel();
+
+	void Run();
+	void StartGame();
+	void ProcessGame();
+	void ProcessTLight();
+	void ReadGame(string);
 };
 
 const int boardX = 10;
