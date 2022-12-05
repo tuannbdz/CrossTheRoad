@@ -29,7 +29,7 @@ class Menu
 	bool bg_music,  g_music, g_play, g_exit;
 	string g_load;
 
-	std::thread t_Sound;
+	//std::thread t_Sound;
 
 	vector<Button>buttons; 
 
