@@ -69,7 +69,7 @@ void Game::Init() {
 	t_running = 1;
 	g_running = 1;
 	score = 0, level = 1;
-
+	pl.SetState(1);
 	InitLevel(level);
 
 }
