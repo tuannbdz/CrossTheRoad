@@ -691,7 +691,6 @@ void Game::SaveGame() {
 	t_tlight = thread(&Game::ProcessTLight, this);
 }
 
-
 void Game::ReadGame(string fileName) {
 	ifstream in("save_game_files/" + fileName, ios::binary);
 	// read player

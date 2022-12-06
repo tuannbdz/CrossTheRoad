@@ -22,6 +22,7 @@ const enum class Mode {
 	mainMenu, 
 	settings
 };
+
 class Menu
 {
 	int command; 

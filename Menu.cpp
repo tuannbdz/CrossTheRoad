@@ -243,6 +243,7 @@ DRAWPAGE:
 string Menu::Load() {
 	return g_load;
 }
+
 void Menu::SetLoad(string fileName) {
 	g_load = fileName;
 }
