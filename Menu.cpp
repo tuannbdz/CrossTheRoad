@@ -18,6 +18,7 @@ Menu::Menu()
 	g_music = true;
 	g_play = true;
 	g_exit = false;
+	startLevel = 1; 
 	volume = 400;
 	//t_Sound = std::thread(&Menu::Music, this);
 
@@ -54,6 +55,11 @@ bool Menu::getGameStartedStatus() const
 	return gameStarted; 
 }
 
+int Menu::getStartLevel() const
+{
+	return startLevel; 
+}
+
 bool Menu::getIsRunning() const
 {
 	return isRunning;
@@ -77,7 +83,8 @@ void Menu::AddSettingButtons()
 		buttons.push_back(Button("Sound effect",		{ 75, 19 }, UNSELECTED_COLOR, "graphics/Menu/settings/sound_on.txt"));
 	else
 		buttons.push_back(Button("Sound effect", { 75, 19 }, UNSELECTED_COLOR, "graphics/Menu/settings/sound_off.txt"));
-	buttons.push_back(Button("Level",				{ 75, 24 }, UNSELECTED_COLOR, "graphics/Menu/settings/level.txt"));
+	string dir = "graphics/Menu/settings/level_" + to_string(startLevel) + ".txt";
+	buttons.push_back(Button("Level",				{ 75, 24 }, UNSELECTED_COLOR, dir));
 	buttons.push_back(Button("Return",			{ 75, 29 }, UNSELECTED_COLOR, "graphics/Menu/settings/return.txt"));
 			
 }
@@ -326,7 +333,9 @@ void Menu::ExecuteCommands(const Mode& mode)
 {
 	int n = buttons.size();
 	int c; 
-	
+	string text; 
+
+
 	if (mode == Mode::mainMenu)
 	{
 		switch (command)
@@ -380,6 +389,13 @@ void Menu::ExecuteCommands(const Mode& mode)
 			ChooseCommand(75, 14, Mode::settings);
 			break; 
 		case (int)SettingButtons::level: 
+			//Graphics::DrawGraphics(numberGraphics[2], {100 , 24}, Graphics::GetColor(Color::brightwhite, Color::yellow));
+			startLevel = startLevel + 1; 
+			if (startLevel > 3)
+				startLevel = 1; 
+			text = "graphics/Menu/settings/level_" + to_string(startLevel) + ".txt";
+			Graphics::RemoveArea({ 75, 24 }, { 102, 26 }); 
+			buttons[2].SetFilename(text); 
 			break; 
 		case (int)SettingButtons::returnToMain:
 			Graphics::RemoveArea({ 75, 14 }, { 125, 35 });

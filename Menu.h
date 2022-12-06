@@ -29,6 +29,7 @@ class Menu
 	bool gameStarted, isRunning;
 	bool bg_music,  g_music, g_play, g_exit;
 	string g_load;
+	int startLevel; 
 
 	//std::thread t_Sound;
 
@@ -59,10 +60,12 @@ public:
 
 	bool getgMusic();
 	bool getbgMusic();
+	bool getIsRunning() const; 
+	bool getGameStartedStatus() const;
+	int getStartLevel() const; 
+
 	void setButtons(const vector<Button>& newButtons);
 	void setMenuStatus(bool gameStarted, bool isRunning); 
-	bool getGameStartedStatus() const; 
-	bool getIsRunning() const; 
 	void ChooseCommand(int, int, Mode); 
 	void ExecuteCommands(const Mode&); 
 
