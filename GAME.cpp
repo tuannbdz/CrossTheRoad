@@ -116,11 +116,12 @@ void Game::StartGame() {
 void Game::Run() {
 BLOCK1:
 	ClearData();
-	Init();
+	//Init();
 	if (menu.getIsRunning() && !menu.getGameStartedStatus()) {
 		menu.Run();
 	}
 	if (menu.getGameStartedStatus() && !menu.getIsRunning()) {
+		Game::InitLevel(menu.getStartLevel()); 
 		setbg_music();
 		if (Getbg_mucsic())
 			Sound();
@@ -376,7 +377,7 @@ void Game::ResetGame() {
 }
 
 Game::Game() {
-	Init();
+	//Init();
 }
 
 Game::Game(int _l) {
@@ -435,11 +436,13 @@ void Game::DrawGame() {
 	Console::SetFont(L"Consolas Bold");
 	//Draw instructions
 	Console::SetColor(Graphics::GetColor(Color::brightwhite, Color::blue)); 
-	Graphics::DrawTexts("There are 3 levels. Each level.", { 138, 20 }); 
-	Graphics::DrawTexts("rewarded you 300 score.", { 138, 21 }); 
-	Graphics::DrawTexts("Obstacle speed is increased", { 138, 22 }); 
-	Graphics::DrawTexts("after each level.", { 138, 23 }); 
-	Graphics::DrawTexts("Traffic lights are helpful.", { 138, 24 }); 
+	Graphics::DrawGraphics({138, 22}, "graphics/Game/instruction_frame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
+	Graphics::DrawTexts("There are 3 levels. Each level.", { 140, 23 }); 
+	Graphics::DrawTexts("rewarded you 300 score.", { 140, 24 });
+	Graphics::DrawTexts("Obstacle speed is increased", { 140, 25 });
+	Graphics::DrawTexts("after each level.", { 140, 26 });
+	Graphics::DrawTexts("Traffic lights are helpful.", { 140, 27 });
+
 	Graphics::DrawGraphics({ 138, 2 }, "graphics/Game/controls.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 
 	DrawIdlePl();

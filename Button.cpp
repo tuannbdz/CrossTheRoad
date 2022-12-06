@@ -89,6 +89,10 @@ void Button::SetText(const string& text)
 {
 	b_text = text;
 }
+void Button::SetFilename(const string& fn)
+{
+	filename = fn; 
+}
 
 void Button::SetColor(const Color& color)
 {
