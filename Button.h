@@ -11,8 +11,8 @@ private:
 	Color b_color;
 	string filename; 
 	const HANDLE g_handle = GetStdHandle(STD_OUTPUT_HANDLE);
-
 	void Initialize();
+
 public:
 	Button();
 	Button(const string& text);
@@ -29,6 +29,7 @@ public:
 	void DrawGraphics(const Color& color);
 	void DrawEffect(const Color& color);
 	void SetText(const string& text);
+	void SetFilename(const string& fn); 
 	void SetColor(const Color& color);
 };
 
