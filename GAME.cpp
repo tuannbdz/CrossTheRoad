@@ -421,7 +421,7 @@ bool Game::Getbg_mucsic() {
 
 void Game::Sound()
 {
-	PlaySound(L"music/bgmusic.wav", NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(L"music/bgmusic.wav", NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
 }
 
 void Game::DrawGame() {
@@ -870,11 +870,12 @@ void Game::GameOver()
 			this_thread::sleep_for(milliseconds(50));
 			if (command == 0)
 			{
-				//ResetGame();
+				//replay
 				menu.setMenuStatus(1, 0);
 			}
 			else
 			{
+				//back to menu
 				menu.setMenuStatus(0, 1);
 			}
 			game_over_running = false;

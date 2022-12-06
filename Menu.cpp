@@ -19,7 +19,7 @@ Menu::Menu()
 	g_play = true;
 	g_exit = false;
 	volume = 400;
-	t_Sound = std::thread(&Menu::Music, this);
+	//t_Sound = std::thread(&Menu::Music, this);
 
 }
 
@@ -36,7 +36,7 @@ Menu::~Menu()
 	delete console;
 	console = nullptr;
 
-	t_Sound.join();
+	//t_Sound.join();
 }
 
 
@@ -425,7 +425,7 @@ void Menu::Music()
 
 void Menu::Sound_on()
 {
-	PlaySound(L"music/Start.wav", NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(L"music/Start.wav", NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
 }
 
 void Menu::Sound_off()
