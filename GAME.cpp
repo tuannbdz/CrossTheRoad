@@ -121,7 +121,7 @@ BLOCK1:
 		menu.Run();
 	}
 	if (menu.getGameStartedStatus() && !menu.getIsRunning()) {
-		Game::InitLevel(menu.getStartLevel()); 
+		InitLevel(menu.getStartLevel()); 
 		setbg_music();
 		if (Getbg_mucsic())
 			Sound();
@@ -140,7 +140,7 @@ void Game::InitLevel(int _l) {
 	t_running = 1;
 	g_running = 1;
 	level = _l;
-
+	pl.SetState(1);
 	setMap();
 
 	if (level == 1) {
@@ -377,7 +377,7 @@ void Game::ResetGame() {
 }
 
 Game::Game() {
-	//Init();
+	Init();
 }
 
 Game::Game(int _l) {
