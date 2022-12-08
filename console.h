@@ -10,7 +10,7 @@
 #pragma execution_character_set("utf-8")
 #pragma comment(lib, "winmm.lib")
 
-const enum class KeyCode
+enum class KeyCode
 {
 	ENTER = 0x0D,
 	ESC = 0x1B,
