@@ -20,7 +20,6 @@ Menu::Menu()
 	g_exit = false;
 	startLevel = 1; 
 	volume = 400;
-	//t_Sound = std::thread(&Menu::Music, this);
 
 }
 
@@ -37,7 +36,6 @@ Menu::~Menu()
 	delete console;
 	console = nullptr;
 
-	//t_Sound.join();
 }
 
 
