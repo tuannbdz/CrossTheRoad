@@ -31,8 +31,6 @@ class Menu
 	string g_load;
 	int startLevel; 
 
-	//std::thread t_Sound;
-
 	vector<Button>buttons; 
 
 	int volume;
@@ -49,10 +47,10 @@ public:
 	void LoadGame();
 	void AddMainMenuButtons(); 
 	void AddSettingButtons(); 
-	void Music();
+	//void Music();
 	void Sound_on();
 	void Sound_off();
-	void Sound();
+	//void Sound();
 
 	Menu(); 
 	~Menu();

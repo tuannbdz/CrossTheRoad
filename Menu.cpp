@@ -413,29 +413,29 @@ void Menu::setButtons(const vector<Button>& newButtons)
 	}
 }
 
-void Menu::Music()
-{
-	bool isOpen = false, isStop = false;
-	console->OpenMusic(L"music/Start.mp3");
-
-	while (g_play == true)
-	{
-		if (!bg_music && !isStop)
-		{
-			console->StopMusic();
-			isStop = true;
-			isOpen = false;
-		}
-		else if (bg_music && !isOpen)
-		{
-			console->PlayMusic(volume);
-			isStop = false;
-			isOpen = true;
-		}
-	}
-
-	console->CloseMusic();
-}
+//void Menu::Music()
+//{
+//	bool isOpen = false, isStop = false;
+//	console->OpenMusic(L"music/Start.mp3");
+//
+//	while (g_play == true)
+//	{
+//		if (!bg_music && !isStop)
+//		{
+//			console->StopMusic();
+//			isStop = true;
+//			isOpen = false;
+//		}
+//		else if (bg_music && !isOpen)
+//		{
+//			console->PlayMusic(volume);
+//			isStop = false;
+//			isOpen = true;
+//		}
+//	}
+//
+//	console->CloseMusic();
+//}
 
 void Menu::Sound_on()
 {
