@@ -614,6 +614,7 @@ void Game::SaveGame() {
 	int curX = 71;
 	string fileName;
 	while (1) {
+		Console::gotoxy(curX, 18);
 		char c = _getch();
 		if (c == KEY_DOWN) { // Down to return
 			Graphics::DrawGraphics(g_board, { 50, 15 }, 41, 9, 48, 10, Graphics::GetColor(Color::gray, Color::brightwhite));
@@ -624,7 +625,18 @@ void Game::SaveGame() {
 			t_tlight = thread(&Game::ProcessTLight, this);
 			return;
 		}
-		if (c == KEY_ENTER) break;
+		if (c == KEY_ENTER)
+		{
+			if (fileName.size() > 0)
+				break;
+			else {
+				Graphics::DrawTexts("Filename must not be empty.", { 50, 23 }); 
+				Sleep(1000); 
+				Graphics::RemoveArea({ 50, 23 }, { 80, 23 });
+				continue; 
+			}
+		}
+		
 		if (c == KEY_BACKSPACE){
 
 			if (curX == 71)
