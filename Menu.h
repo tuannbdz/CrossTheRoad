@@ -3,7 +3,7 @@
 #include "Button.h"
 #include "common.h"
 
-const enum class MainMenuButtons {
+enum class MainMenuButtons {
 	newGame, 
 	loadGame, 
 	settings, 
@@ -11,14 +11,14 @@ const enum class MainMenuButtons {
 	exit
 };
 
-const enum class SettingButtons {
+enum class SettingButtons {
 	bg_music, 
 	sound, 
 	level,
 	returnToMain
 };
 
-const enum class Mode {
+enum class Mode {
 	mainMenu, 
 	settings
 };
@@ -30,8 +30,6 @@ class Menu
 	bool bg_music,  g_music, g_play, g_exit;
 	string g_load;
 	int startLevel; 
-
-	//std::thread t_Sound;
 
 	vector<Button>buttons; 
 
@@ -49,10 +47,10 @@ public:
 	void LoadGame();
 	void AddMainMenuButtons(); 
 	void AddSettingButtons(); 
-	void Music();
+	//void Music();
 	void Sound_on();
 	void Sound_off();
-	void Sound();
+	//void Sound();
 
 	Menu(); 
 	~Menu();

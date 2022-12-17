@@ -2,7 +2,7 @@
 #include "lib.h"
 #include "common.h"
 
-const enum class Color
+enum class Color
 {
 	black,
 	blue,

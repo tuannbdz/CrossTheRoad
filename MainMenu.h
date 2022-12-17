@@ -1,7 +1,7 @@
 #pragma once
 #include "Button.h"
 
-const enum class MainMenuButtons {
+enum class MainMenuButtons {
 	newGame,
 	loadGame,
 	settings,
@@ -9,14 +9,14 @@ const enum class MainMenuButtons {
 	exit
 };
 
-const enum class SettingButtons {
+enum class SettingButtons {
 	bg_music,
 	sound,
 	level,
 	returnToMain
 };
 
-const enum class Mode {
+enum class Mode {
 	mainMenu,
 	settings
 };
