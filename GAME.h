@@ -9,8 +9,6 @@
 #include "Bike.h"
 #include "Shark.h"
 #include "TLight.h"
-//#include "Console.h" //not supposed to include them here so this is temporary
-//#include "Graphics.h"
 
 class Game {
 private:

@@ -611,6 +611,7 @@ void Game::SaveGame() {
 	int curX = 71;
 	string fileName;
 	while (1) {
+		Console::gotoxy(curX, 18);
 		char c = _getch();
 		if (c == KEY_DOWN) { // Down to return
 			Graphics::DrawGraphics(g_board, { 50, 15 }, 41, 9, 48, 10, Graphics::GetColor(Color::gray, Color::brightwhite));
@@ -621,7 +622,18 @@ void Game::SaveGame() {
 			t_tlight = thread(&Game::ProcessTLight, this);
 			return;
 		}
-		if (c == KEY_ENTER) break;
+		if (c == KEY_ENTER)
+		{
+			if (fileName.size() > 0)
+				break;
+			else {
+				Graphics::DrawTexts("Filename must not be empty.", { 50, 23 }); 
+				Sleep(1000); 
+				Graphics::RemoveArea({ 50, 23 }, { 80, 23 });
+				continue; 
+			}
+		}
+		
 		if (c == KEY_BACKSPACE){
 
 			if (curX == 71)
@@ -653,8 +665,8 @@ void Game::SaveGame() {
 
 	// write idlePl needed to pass current level
 	writeBin(out, numIdlePl);
-	// write current idle on this level
 
+	// write current idle on this level
 	int idlePlSize = idlePl.size();
 	writeBin(out, idlePlSize);
 	for (auto& i : idlePl)
@@ -680,7 +692,12 @@ void Game::SaveGame() {
 	writeVector<Bike>(out, bike);
 	writeVector<Shark>(out, shark);
 	
+	// write bool
+	writeBin(out, g_running);
+	writeBin(out, t_running);
 	
+	writeBin(out, bg_music);
+	writeBin(out, g_music);
 	
 	out.close();
 	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX + 1, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
@@ -703,21 +720,23 @@ void Game::ReadGame(string fileName) {
 	readBin(in, score);
 	readBin(in, level);
 
+	// write idlePl needed to pass current level
 	readBin(in, numIdlePl);
+
+	// write current idle on this level
 	int idlePlSize;
 	readBin(in, idlePlSize);
 	idlePl.resize(idlePlSize);
 	for (auto& i : idlePl)
 		readBin(in, i);
 
+	// read traffic lights
 	int tlightSize;
 	readBin(in, tlightSize);
 	tlight.resize(tlightSize);
 	for (auto& l : tlight) {
-		bool state = l.IsGreen();
-		int lx = l.GetX();
-		int ly = l.GetY();
-		int timeOut = l.GetTimeOut();
+		bool state;
+		int lx, ly, timeOut;
 		readBin(in, lx);
 		readBin(in, ly);
 		readBin(in, timeOut);
@@ -730,8 +749,13 @@ void Game::ReadGame(string fileName) {
 	readVector<Car>(in, car);
 	readVector<Bike>(in, bike);
 	readVector<Shark>(in, shark);
-	// read traffic lights
 
+	// read bool
+	readBin(in, g_running);
+	readBin(in, t_running);
+
+	readBin(in, bg_music);
+	readBin(in, g_music);
 
 	in.close();
 
