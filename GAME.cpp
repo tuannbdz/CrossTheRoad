@@ -237,14 +237,11 @@ void Game::InitLevel(int _l) {
 		car.push_back(new Car(130, 17));
 
 		bike.push_back(new Bike());
-		bike.push_back(new Bike(50, 12));
-		bike.push_back(new Bike(70, 12));
+		bike.push_back(new Bike(60, 12));
 		bike.push_back(new Bike(90, 12));
-		bike.push_back(new Bike(110, 12));
 		bike.push_back(new Bike(130, 12));
-		bike.push_back(new Bike(150, 12));
 
-		
+		speed = 0;
 	}
 }
 
