@@ -30,38 +30,38 @@ void Game::ProcessGame() {
 			else DrawCar();
 		}
 		else
-		if (GetLevel() == 2) {
-			if (GetTLight()[0].IsGreen())
-				UpdateCar();
-			else DrawCar();
+			if (GetLevel() == 2) {
+				if (GetTLight()[0].IsGreen())
+					UpdateCar();
+				else DrawCar();
 
-			if (GetTLight()[1].IsGreen())
-				UpdateTruck();
-			else DrawTruck();
+				if (GetTLight()[1].IsGreen())
+					UpdateTruck();
+				else DrawTruck();
 
-			if (GetTLight()[2].IsGreen())
-				UpdateBike();
-			else DrawBike();
-		}
-		else
-		if (GetLevel() == 3)
-		{
-			if (GetTLight()[3].IsGreen())
-				UpdateBike();
-			else DrawBike();
+				if (GetTLight()[2].IsGreen())
+					UpdateBike();
+				else DrawBike();
+			}
+			else
+				if (GetLevel() == 3)
+				{
+					if (GetTLight()[3].IsGreen())
+						UpdateBike();
+					else DrawBike();
 
-			if (GetTLight()[2].IsGreen())
-				UpdateCar();
-			else DrawCar();
+					if (GetTLight()[2].IsGreen())
+						UpdateCar();
+					else DrawCar();
 
-			if (GetTLight()[1].IsGreen())
-				UpdateShark();
-			else DrawShark();
+					if (GetTLight()[1].IsGreen())
+						UpdateShark();
+					else DrawShark();
 
-			if (GetTLight()[0].IsGreen())
-				UpdateTruck();
-			else DrawTruck();
-		}
+					if (GetTLight()[0].IsGreen())
+						UpdateTruck();
+					else DrawTruck();
+				}
 	}
 }
 
@@ -92,17 +92,17 @@ void Game::StartGame() {
 			}
 		}
 		else
-		if (Console::KeyPress(KeyCode::R)) {
-			PauseGame();
-		}
-		else
-		if (Console::KeyPress(KeyCode::L)) {
-			SaveGame();
-		}
-		else
-		if (Console::KeyPress(KeyCode::T)) {
-			LoadGame();
-		}
+			if (Console::KeyPress(KeyCode::R)) {
+				PauseGame();
+			}
+			else
+				if (Console::KeyPress(KeyCode::L)) {
+					SaveGame();
+				}
+				else
+					if (Console::KeyPress(KeyCode::T)) {
+						LoadGame();
+					}
 	}
 	if (t_running)
 	{
@@ -121,7 +121,7 @@ BLOCK1:
 		menu.Run();
 	}
 	if (menu.getGameStartedStatus() && !menu.getIsRunning()) {
-		InitLevel(menu.getStartLevel()); 
+		InitLevel(menu.getStartLevel());
 		setbg_music();
 		if (Getbg_mucsic())
 			Sound();
@@ -170,95 +170,95 @@ void Game::InitLevel(int _l) {
 		speed = 30;
 	}
 	else
-	if (level == 2) {
-		numIdlePl = 2;
-		pl.SetXY(78, 30);
+		if (level == 2) {
+			numIdlePl = 2;
+			pl.SetXY(78, 30);
 
-		tlight.resize(3);
-		tlight[0].SetXY(3, 11);
-		tlight[1].SetXY(3, 18);
-		tlight[2].SetXY(3, 24);
-		tlight[0].SetTimeOut(2);
-		tlight[1].SetTimeOut(2);
-		tlight[2].SetTimeOut(3);
+			tlight.resize(3);
+			tlight[0].SetXY(3, 11);
+			tlight[1].SetXY(3, 18);
+			tlight[2].SetXY(3, 24);
+			tlight[0].SetTimeOut(2);
+			tlight[1].SetTimeOut(2);
+			tlight[2].SetTimeOut(3);
 
-		bike.push_back(new Bike(30, 25));
-		bike.push_back(new Bike(50, 25));
-		bike.push_back(new Bike(70, 25));
-		bike.push_back(new Bike(90, 25));
-		bike.push_back(new Bike(110, 25));
-		bike.push_back(new Bike(130, 25));
-		bike.push_back(new Bike(150, 25));
+			bike.push_back(new Bike(30, 25));
+			bike.push_back(new Bike(50, 25));
+			bike.push_back(new Bike(70, 25));
+			bike.push_back(new Bike(90, 25));
+			bike.push_back(new Bike(110, 25));
+			bike.push_back(new Bike(130, 25));
+			bike.push_back(new Bike(150, 25));
 
-		car.push_back(new Car(35, 12));
-		car.push_back(new Car(55, 12));
-		car.push_back(new Car(80, 12));
-		car.push_back(new Car(105, 12));
-		car.push_back(new Car(130, 12));
+			car.push_back(new Car(35, 12));
+			car.push_back(new Car(55, 12));
+			car.push_back(new Car(80, 12));
+			car.push_back(new Car(105, 12));
+			car.push_back(new Car(130, 12));
 
-		tr.push_back(new Truck(60, 18));
-		tr.push_back(new Truck(90, 18));
-		tr.push_back(new Truck(120, 18));
-		tr.push_back(new Truck(150, 18));
+			tr.push_back(new Truck(60, 18));
+			tr.push_back(new Truck(90, 18));
+			tr.push_back(new Truck(120, 18));
+			tr.push_back(new Truck(150, 18));
 
-		speed = 10;
-	}
-	else
-	{
-		numIdlePl = 3;
-		pl.SetXY(78, 33);
+			speed = 10;
+		}
+		else
+		{
+			numIdlePl = 3;
+			pl.SetXY(78, 33);
 
-		tlight.resize(4);
-		tlight[0].SetXY(3, 28);
-		tlight[1].SetXY(3, 23);
-		tlight[2].SetXY(3, 17);
-		tlight[3].SetXY(3, 12);
+			tlight.resize(4);
+			tlight[0].SetXY(3, 28);
+			tlight[1].SetXY(3, 23);
+			tlight[2].SetXY(3, 17);
+			tlight[3].SetXY(3, 12);
 
-		tlight[0].SetTimeOut(2);
-		tlight[1].SetTimeOut(3);
-		tlight[2].SetTimeOut(3);
-		tlight[3].SetTimeOut(3);
+			tlight[0].SetTimeOut(2);
+			tlight[1].SetTimeOut(3);
+			tlight[2].SetTimeOut(3);
+			tlight[3].SetTimeOut(3);
 
-		tr.push_back(new Truck());
-		tr.push_back(new Truck(60, 28));
-		tr.push_back(new Truck(90, 28));
-		tr.push_back(new Truck(120, 28));
-		tr.push_back(new Truck(150, 28));
+			tr.push_back(new Truck());
+			tr.push_back(new Truck(60, 28));
+			tr.push_back(new Truck(90, 28));
+			tr.push_back(new Truck(120, 28));
+			tr.push_back(new Truck(150, 28));
 
-		shark.push_back(new Shark(0, 23));
-		shark.push_back(new Shark(40, 23));
-		shark.push_back(new Shark(80, 23));
-		shark.push_back(new Shark(110, 23));
+			shark.push_back(new Shark(0, 23));
+			shark.push_back(new Shark(40, 23));
+			shark.push_back(new Shark(80, 23));
+			shark.push_back(new Shark(110, 23));
 
-		car.push_back(new Car());
-		car.push_back(new Car(55, 17));
-		car.push_back(new Car(80, 17));
-		car.push_back(new Car(105, 17));
-		car.push_back(new Car(130, 17));
+			car.push_back(new Car());
+			car.push_back(new Car(55, 17));
+			car.push_back(new Car(80, 17));
+			car.push_back(new Car(105, 17));
+			car.push_back(new Car(130, 17));
 
-		bike.push_back(new Bike());
-		bike.push_back(new Bike(60, 12));
-		bike.push_back(new Bike(90, 12));
-		bike.push_back(new Bike(130, 12));
+			bike.push_back(new Bike());
+			bike.push_back(new Bike(60, 12));
+			bike.push_back(new Bike(90, 12));
+			bike.push_back(new Bike(130, 12));
 
-		speed = 0;
-	}
+			speed = 0;
+		}
 }
 
 void Game::setMap()
 {
-	g_board.clear(); 
+	g_board.clear();
 
 	switch (level)
 	{
-	case 1: 
-		g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████"); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
+	case 1:
+		g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
 		g_board.push_back(L"                                                                                                                          ");
 		g_board.push_back(L"                                                                                                                          ");
 		g_board.push_back(L"                                                                                                                          ");
@@ -266,8 +266,8 @@ void Game::setMap()
 		g_board.push_back(L"                                                                                                                          ");
 		g_board.push_back(L"                                                                                                                          ");
 		g_board.push_back(L"                                                                                                                          ");
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  "); 
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  ");
 		g_board.push_back(L"                                                                                                                          ");
 		g_board.push_back(L"                                                                                                                          ");
 		g_board.push_back(L"                                                                                                                          ");
@@ -278,70 +278,70 @@ void Game::setMap()
 		g_board.push_back(L"                                                                                                                          ");
 		g_board.push_back(L"                                                                                                                          ");
 		g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
-		break; 
-	case 2: 
+		break;
+	case 2:
 		g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
-	    g_board.push_back(L"                                                                                                                          ");
-		g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"                                                                                                                          "); 
-	    g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████"); 
-		break; 
-	case 3: 
-		g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████"); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"                                                                                                                          "); 
-		g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████"); 
-		break; 
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
+		break;
+	case 3:
+		g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"  ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■        ■■■■■■  ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"                                                                                                                          ");
+		g_board.push_back(L"██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████");
+		break;
 	}
 }
 
@@ -354,7 +354,7 @@ void Game::setbg_music() {
 }
 
 void Game::ResetGame() {
-	Graphics::ClearScreen(); 
+	Graphics::ClearScreen();
 
 	for (auto& i : car)
 		delete i;
@@ -381,7 +381,7 @@ Game::Game(int _l) {
 	InitLevel(_l);
 }
 
-Game::~Game(){
+Game::~Game() {
 	for (auto& i : car)
 		delete i;
 	for (auto& i : tr)
@@ -432,9 +432,9 @@ void Game::DrawGame() {
 
 	Console::SetFont(L"Consolas Bold");
 	//Draw instructions
-	Console::SetColor(Graphics::GetColor(Color::brightwhite, Color::blue)); 
-	Graphics::DrawGraphics({138, 22}, "graphics/Game/instruction_frame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
-	Graphics::DrawTexts("There are 3 levels. Each level.", { 140, 23 }); 
+	Console::SetColor(Graphics::GetColor(Color::brightwhite, Color::blue));
+	Graphics::DrawGraphics({ 138, 22 }, "graphics/Game/instruction_frame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
+	Graphics::DrawTexts("There are 3 levels. Each level.", { 140, 23 });
 	Graphics::DrawTexts("rewarded you 300 score.", { 140, 24 });
 	Graphics::DrawTexts("Obstacle speed is increased", { 140, 25 });
 	Graphics::DrawTexts("after each level.", { 140, 26 });
@@ -599,8 +599,8 @@ template <class T> void readVector(istream& in, vector<T*>& obj) {
 void Game::SaveGame() {
 	if (t_running == 0) return;
 	t_running = 0;
-	if(t_tlight.joinable()) t_tlight.join();
-	if(t_game.joinable()) t_game.join();
+	if (t_tlight.joinable()) t_tlight.join();
+	if (t_game.joinable()) t_game.join();
 
 	// save game
 	// draw input board
@@ -611,7 +611,6 @@ void Game::SaveGame() {
 	int curX = 71;
 	string fileName;
 	while (1) {
-		Console::gotoxy(curX, 18);
 		char c = _getch();
 		if (c == KEY_DOWN) { // Down to return
 			Graphics::DrawGraphics(g_board, { 50, 15 }, 41, 9, 48, 10, Graphics::GetColor(Color::gray, Color::brightwhite));
@@ -622,19 +621,8 @@ void Game::SaveGame() {
 			t_tlight = thread(&Game::ProcessTLight, this);
 			return;
 		}
-		if (c == KEY_ENTER)
-		{
-			if (fileName.size() > 0)
-				break;
-			else {
-				Graphics::DrawTexts("Filename must not be empty.", { 50, 23 }); 
-				Sleep(1000); 
-				Graphics::RemoveArea({ 50, 23 }, { 80, 23 });
-				continue; 
-			}
-		}
-		
-		if (c == KEY_BACKSPACE){
+		if (c == KEY_ENTER) break;
+		if (c == KEY_BACKSPACE) {
 
 			if (curX == 71)
 				continue;
@@ -665,8 +653,8 @@ void Game::SaveGame() {
 
 	// write idlePl needed to pass current level
 	writeBin(out, numIdlePl);
-
 	// write current idle on this level
+
 	int idlePlSize = idlePl.size();
 	writeBin(out, idlePlSize);
 	for (auto& i : idlePl)
@@ -691,14 +679,9 @@ void Game::SaveGame() {
 	writeVector<Car>(out, car);
 	writeVector<Bike>(out, bike);
 	writeVector<Shark>(out, shark);
-	
-	// write bool
-	writeBin(out, g_running);
-	writeBin(out, t_running);
-	
-	writeBin(out, bg_music);
-	writeBin(out, g_music);
-	
+
+
+
 	out.close();
 	Graphics::DrawGraphics(g_board, { 50, 15 }, 50 - boardX + 1, 15 - boardY, 44, 9, Graphics::GetColor(Color::gray, Color::brightwhite));
 
@@ -720,23 +703,21 @@ void Game::ReadGame(string fileName) {
 	readBin(in, score);
 	readBin(in, level);
 
-	// write idlePl needed to pass current level
 	readBin(in, numIdlePl);
-
-	// write current idle on this level
 	int idlePlSize;
 	readBin(in, idlePlSize);
 	idlePl.resize(idlePlSize);
 	for (auto& i : idlePl)
 		readBin(in, i);
 
-	// read traffic lights
 	int tlightSize;
 	readBin(in, tlightSize);
 	tlight.resize(tlightSize);
 	for (auto& l : tlight) {
-		bool state;
-		int lx, ly, timeOut;
+		bool state = l.IsGreen();
+		int lx = l.GetX();
+		int ly = l.GetY();
+		int timeOut = l.GetTimeOut();
 		readBin(in, lx);
 		readBin(in, ly);
 		readBin(in, timeOut);
@@ -749,13 +730,8 @@ void Game::ReadGame(string fileName) {
 	readVector<Car>(in, car);
 	readVector<Bike>(in, bike);
 	readVector<Shark>(in, shark);
+	// read traffic lights
 
-	// read bool
-	readBin(in, g_running);
-	readBin(in, t_running);
-
-	readBin(in, bg_music);
-	readBin(in, g_music);
 
 	in.close();
 
@@ -771,8 +747,9 @@ void Game::LoadGame() {
 	if (fileName.size()) {
 		ReadGame(fileName);
 		DrawGame();
-	} else
-	//DrawGame();
+	}
+	else
+		//DrawGame();
 		Graphics::DrawGraphics(g_board, { 50, 6 }, 50 - boardX, 6 - boardY, 63, 24, Graphics::GetColor(Color::gray, Color::brightwhite));
 	//Graphics::DrawGraphics({ 58, 6 }, "graphics/Menu/load_game_frame.txt", Graphics::GetColor(Color::lightblue, Color::lightyellow));
 	t_running = 1;
@@ -788,7 +765,7 @@ void Game::PauseGame() {
 		if (t_tlight.joinable()) t_tlight.join();
 		Graphics::DrawGraphics({ 48, 16 }, "graphics/Game/pause_frame.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
 		Graphics::DrawGraphics({ 55, 15 }, "graphics/Game/pause_text.txt", Graphics::GetColor(Color::brightwhite, Color::blue));
-		
+
 		Graphics::DrawTexts("GAME IS PAUSED.", { 60, 19 }, Graphics::GetColor(Color::brightwhite, Color::yellow));
 		Graphics::DrawTexts("PRESS R TO RESUME.", { 60, 20 }, Graphics::GetColor(Color::brightwhite, Color::yellow));
 
@@ -808,10 +785,10 @@ void Game::GameOver()
 	for (int i = 0; i < 3; i++)
 	{
 		pl.SetSprite({ L"\\0/", L" | ", L"/ \\" });
-		pl.Draw(); 
+		pl.Draw();
 		this_thread::sleep_for(milliseconds(100));
 		pl.SetSprite({ L" 0 ", L"/|\\", L"/ \\" });
-		pl.Draw(); 
+		pl.Draw();
 		this_thread::sleep_for(milliseconds(100));
 	}
 	//Graphics::ClearScreen(); 
@@ -819,29 +796,29 @@ void Game::GameOver()
 	//--------------Draw animation
 	DrawEmptyBoard();
 	vector<string> firework = Graphics::GetGraphics("graphics/Game/game_over/firework_flying.txt");
-	vector<string>effect1 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect.txt"); 
+	vector<string>effect1 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect.txt");
 	vector<string>effect2 = Graphics::GetGraphics("graphics/Game/game_over/firework_effect2.txt");
 
 	short x_pos = 28, y_pos = 26 - (level == 1 ? 5 : level == 2 ? 3 : 0);
 	Color color = Graphics::GetColor(Color::gray, Color::lightyellow),
 		colorON = Graphics::GetColor(Color::gray, Color::lightyellow),
-		colorOFF = Graphics::GetColor(Color::gray, Color::lightred); 
+		colorOFF = Graphics::GetColor(Color::gray, Color::lightred);
 
-	int row = g_board.size(), col = g_board[0].size(); 
-	int fw_row = firework.size(), fw_col = firework[0].size(); 
-	int curCol = 18; 
+	int row = g_board.size(), col = g_board[0].size();
+	int fw_row = firework.size(), fw_col = firework[0].size();
+	int curCol = 18;
 
 	while (x_pos < 100 && y_pos >= 18)
 	{
 		Graphics::DrawGraphics(firework, { x_pos, y_pos }, color);
 
-		Sleep(200); 
+		Sleep(200);
 		//Graphics::RemoveArea({ x_pos, y_pos }, {short( x_pos + firework[0].size() + 1), (short)(y_pos + firework.size() - 1)});
-		int d = y_pos - boardY + fw_row  - 1;
+		int d = y_pos - boardY + fw_row - 1;
 		Graphics::DrawGraphics(g_board, { x_pos, y_pos }, x_pos - boardX, y_pos - boardY, fw_col + 2, (d > g_board.size() ? g_board.size() - (y_pos - boardY) : fw_row), Graphics::GetColor(Color::gray, Color::brightwhite));
 		//Graphics::DrawGraphics(g_board, { 10, 6 }, 0, 0, g_board[0].size(), g_board.size(), Graphics::GetColor(Color::gray, Color::brightwhite));
 
-		x_pos += 10, y_pos -= 4; 
+		x_pos += 10, y_pos -= 4;
 		curCol += fw_col + 2;
 		row -= 4;
 	}
@@ -870,13 +847,13 @@ void Game::GameOver()
 	Button b_menu("BACK TO MENU", { 73, 21 });
 	Graphics::DrawTexts("BACK TO MENU", { 73, 21 }, unselectedColor);
 
-	vector<Button>buttons = {b_replay, b_menu };
+	vector<Button>buttons = { b_replay, b_menu };
 
 	bool game_over_running = 1;
 
 	int cY = 20, command = 0;
 	int pY = cY, pC = command, cX = 56;
-	
+
 
 	do
 	{
@@ -905,19 +882,19 @@ void Game::GameOver()
 			game_over_running = false;
 		}
 		else
-			if (Console::KeyPress(KeyCode::UP) || Console::KeyPress(KeyCode::W)){
+			if (Console::KeyPress(KeyCode::UP) || Console::KeyPress(KeyCode::W)) {
 				pY = cY;
 				pC = command;
 				command = (command - 1 + n) % n;
 				cY = command + 5;
 			}
-		else
-			if (Console::KeyPress(KeyCode::DOWN) || Console::KeyPress(KeyCode::S)) {
-				pY = cY;
-				pC = command;
-				command = (command + 1) % n;
-				cY = command + 5;
-			}
+			else
+				if (Console::KeyPress(KeyCode::DOWN) || Console::KeyPress(KeyCode::S)) {
+					pY = cY;
+					pC = command;
+					command = (command + 1) % n;
+					cY = command + 5;
+				}
 
 	} while (game_over_running);
 	fflush(stdin);
@@ -937,7 +914,7 @@ void Game::UpdateGameStatus() {
 		}
 		else
 		{
-			if(level ==  3) g_running = 0;
+			if (level == 3) g_running = 0;
 			else
 			{
 				ClearData();
@@ -960,7 +937,7 @@ void Game::UpdatePlayer() {
 	}
 	for (auto& i : car) {
 		if (isCollide(pl.GetX(), pl.GetY(), pl.GetX() + 2, pl.GetY() + 3, i->GetX(), i->GetY(), i->GetBX(), i->GetBY())) {
-			if(Getg_mucsic())
+			if (Getg_mucsic())
 				i->Sound();
 			pl.SetState(0);
 			return;
@@ -1000,7 +977,7 @@ void Game::UpdatePlayer() {
 }
 
 void Game::UpdateCar() {
-	for(auto &i : car)
+	for (auto& i : car)
 		i->Move();
 }
 
@@ -1065,7 +1042,7 @@ void Game::DrawScore() {
 	Graphics::RemoveArea({ short(preX), short(preY) }, { short(preX + 10), short(preY + 2) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 	for (auto& x : tmp)
 	{
-		Graphics::DrawGraphics(numberGraphics[x], {short(preX), short(preY)}, Graphics::GetColor(Color::lightblue, Color::brightwhite));
+		Graphics::DrawGraphics(numberGraphics[x], { short(preX), short(preY) }, Graphics::GetColor(Color::lightblue, Color::brightwhite));
 		preX += numberGraphics[x][0].size() + 1;
 	}
 }
