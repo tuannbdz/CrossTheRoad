@@ -12,6 +12,7 @@
 
 class Game {
 private:
+	static Game* instance;
 	bool g_running, t_running;
 	bool bg_music, g_music;
 	int score, level;
@@ -33,6 +34,8 @@ public:
 	Game();
 	Game(int);
 	~Game();
+	static Game* GetInstance();
+	static void DeleteInstance();
 	void Init();
 	void InitLevel(int);
 	void Sound();
