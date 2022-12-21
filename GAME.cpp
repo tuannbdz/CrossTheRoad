@@ -1,5 +1,15 @@
 ﻿#include "Game.h"
 
+Game* Game::GetInstance() {
+	if (!instance)
+		instance = new Game;
+	return instance;
+}
+void Game::DeleteInstance() {
+	if (instance)
+		delete instance;
+}
+
 void Game::ProcessTLight() {
 	int i = 0;
 	while (t_running) {
