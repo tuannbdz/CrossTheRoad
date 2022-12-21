@@ -650,7 +650,7 @@ void Game::SaveGame() {
 	writeBin(out, state);
 	writeBin(out, score);
 	writeBin(out, level);
-
+	writeBin(out, speed);
 	// write idlePl needed to pass current level
 	writeBin(out, numIdlePl);
 	// write current idle on this level
@@ -702,7 +702,7 @@ void Game::ReadGame(string fileName) {
 
 	readBin(in, score);
 	readBin(in, level);
-
+	readBin(in, speed);
 	readBin(in, numIdlePl);
 	int idlePlSize;
 	readBin(in, idlePlSize);
@@ -902,6 +902,7 @@ void Game::GameOver()
 
 void Game::UpdateGameStatus() {
 	if (pl.GetState() == 0) {
+		score = 0;
 		g_running = 0;
 	}
 	else if (pl.GetState() == 2) {

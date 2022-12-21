@@ -25,10 +25,8 @@ private:
 	vector< Shark* > shark;
 	vector< Truck* > tr;
 	vector<int> idlePl;
-
 	thread t_game;
 	thread t_tlight;
-	
 public:
 	Game();
 	Game(int);
@@ -36,17 +34,14 @@ public:
 	void Init();
 	void InitLevel(int);
 	void Sound();
-
 	void setMap();
 	void setg_music();
 	void setbg_music();
-
 	Player& GetPlayer();
 	vector<TLight>& GetTLight();
 	int GetLevel();
 	bool Getg_mucsic();
 	bool Getbg_mucsic();
-
 	void DrawGame();
 	void DrawEmptyBoard();
 	void ResetGame();
@@ -59,11 +54,6 @@ public:
 	bool isCollide(const int&, const int&, const int&, const int&, const int&, const int&, const int&, const int&);
 	bool isRunning();
 	bool isWinning();
-
-
-	template<class T>
-	void Sound(std::vector<T*>& l_obj);
-
 	void UpdateGameStatus();
 	void UpdatePlayer();
 	void UpdateTruck();
@@ -71,7 +61,6 @@ public:
 	void UpdateCar();
 	void UpdateShark();
 	void UpdateTLight();
-
 	void DrawTruck();
 	void DrawBike();
 	void DrawCar();
@@ -79,7 +68,6 @@ public:
 	void DrawIdlePl();
 	void DrawScore();
 	void DrawLevel();
-
 	void Run();
 	void StartGame();
 	void ProcessGame();
