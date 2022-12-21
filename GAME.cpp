@@ -150,7 +150,7 @@ void Game::InitLevel(int _l) {
 		tlight.resize(2);
 		tlight[0].SetXY(3, 11);
 		tlight[1].SetXY(3, 22);
-		tlight[0].SetTimeOut(2);
+		tlight[0].SetTimeOut(2);	
 		tlight[1].SetTimeOut(3);
 
 		bike.push_back(new Bike());
@@ -902,6 +902,7 @@ void Game::GameOver()
 
 void Game::UpdateGameStatus() {
 	if (pl.GetState() == 0) {
+		score = 0; //level 1: fix
 		g_running = 0;
 	}
 	else if (pl.GetState() == 2) {
